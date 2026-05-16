@@ -17,6 +17,8 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 
+import asyncio
+
 import bcrypt
 import jwt
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -151,6 +153,14 @@ class TaskUpdateIn(BaseModel):
     agent_id: Optional[str] = None
     priority: Optional[str] = None
     result: Optional[str] = None
+
+
+class ContactLeadIn(BaseModel):
+    first_name: str = Field(min_length=1, max_length=80)
+    last_name: str = Field(min_length=1, max_length=80)
+    email: EmailStr
+    message: str = Field(min_length=1, max_length=2000)
+    phone: Optional[str] = Field(default=None, max_length=40)
 
 
 # ---------------------------------------------------------------------------
@@ -289,6 +299,30 @@ def build_eon_router(
             )
         except Exception as exc:  # pragma: no cover
             logger.debug("activity log failed: %s", exc)
+
+    async def _web_search(query: str, n: int = 6) -> list[dict]:
+        """DuckDuckGo text search (sync lib → run in thread). Returns
+        [{title, url, snippet}, ...]."""
+        def _q() -> list[dict]:
+            try:
+                from ddgs import DDGS  # type: ignore
+                with DDGS() as d:
+                    raw = list(d.text(query, max_results=n))
+                # ddgs returns dicts with keys title/href/body. Normalize.
+                out = []
+                for r in raw:
+                    out.append(
+                        {
+                            "title": (r.get("title") or "")[:200],
+                            "url": r.get("href") or r.get("url") or "",
+                            "snippet": (r.get("body") or "")[:400],
+                        }
+                    )
+                return out
+            except Exception as exc:
+                logger.warning("EON web search failed: %s", exc)
+                return []
+        return await asyncio.to_thread(_q)
 
     # ---- thread helpers ----------------------------------------------------
     async def _ensure_default_thread(uid: str) -> dict:
@@ -696,6 +730,7 @@ def build_eon_router(
             "agent_id": t.get("agent_id"),
             "priority": t.get("priority", "normal"),
             "result": t.get("result", ""),
+            "sources": t.get("sources", []),
             "created_at": t.get("created_at", ""),
             "updated_at": t.get("updated_at", ""),
         }
@@ -797,12 +832,41 @@ def build_eon_router(
         agent_name = agent["name"] if agent else "EON"
         agent_brief = agent["tagline"] if agent else "general assistant"
 
+        # For the Researcher agent: fetch live web results first so the reply
+        # is grounded with real sources instead of hallucinated.
+        sources_block = ""
+        sources_meta = []
+        if t.get("agent_id") == "researcher":
+            search_query = f"{t['title']} {t.get('description') or ''}".strip()[:200]
+            results = await _web_search(search_query, n=6)
+            sources_meta = results
+            if results:
+                lines = []
+                for i, r in enumerate(results, 1):
+                    lines.append(
+                        f"[{i}] {r['title']}\n    {r['url']}\n    {r['snippet']}"
+                    )
+                sources_block = (
+                    "\n\nLive web results (use these; cite as [1], [2] inline):\n"
+                    + "\n".join(lines)
+                )
+
         system = (
             f"You are the EON {agent_name} sub-agent — {agent_brief} "
             "Execute the user's task end-to-end. Produce the deliverable directly, "
             "not a description of how you'd do it. Keep it tight and useful."
         )
-        prompt = f"Task: {t['title']}\n\nDetails: {t.get('description') or '(none)'}\n\nDeliver the result now."
+        if t.get("agent_id") == "researcher":
+            system += (
+                " You have live web results. Synthesize them into a clean answer "
+                "with inline [n] citations matching the numbered sources, then list "
+                "the sources at the bottom as 'Sources:\\n[1] title — url'."
+            )
+
+        prompt = (
+            f"Task: {t['title']}\n\nDetails: {t.get('description') or '(none)'}"
+            f"{sources_block}\n\nDeliver the result now."
+        )
 
         reply = await _llm_reply(
             session_id=f"{u['id']}:task:{task_id}",
@@ -812,10 +876,10 @@ def build_eon_router(
         )
 
         now = datetime.now(timezone.utc).isoformat()
-        await tasks_col.update_one(
-            {"id": task_id},
-            {"$set": {"status": "done", "result": reply, "updated_at": now}},
-        )
+        update_doc = {"status": "done", "result": reply, "updated_at": now}
+        if sources_meta:
+            update_doc["sources"] = sources_meta
+        await tasks_col.update_one({"id": task_id}, {"$set": update_doc})
         if not is_admin:
             await users.update_one({"id": u["id"]}, {"$inc": {"message_count": 1}})
 
@@ -825,6 +889,8 @@ def build_eon_router(
             {"task_id": task_id, "agent_id": t.get("agent_id")},
         )
         merged = {**t, "status": "done", "result": reply, "updated_at": now}
+        if sources_meta:
+            merged["sources"] = sources_meta
         return {"task": _task_out(merged)}
 
     @r.get("/activity")
@@ -867,5 +933,26 @@ def build_eon_router(
             "agents": agent_stats,
             "recent_activity": recent_activity,
         }
+
+    @r.post("/contact-lead")
+    async def create_contact_lead(body: ContactLeadIn):
+        """Public endpoint — the homepage orb contact form posts here.
+        Stores a lead in `eon_contact_leads` and returns ok."""
+        doc = {
+            "id": str(uuid.uuid4()),
+            "first_name": body.first_name.strip()[:80],
+            "last_name": body.last_name.strip()[:80],
+            "email": body.email.lower().strip(),
+            "phone": (body.phone or "").strip()[:40],
+            "message": body.message.strip()[:2000],
+            "status": "new",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        }
+        try:
+            await db.eon_contact_leads.insert_one(doc)
+        except Exception as exc:  # pragma: no cover
+            logger.warning("contact lead store failed: %s", exc)
+            raise HTTPException(status_code=500, detail="Could not save your request.")
+        return {"ok": True}
 
     return r

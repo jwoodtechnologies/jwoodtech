@@ -659,3 +659,135 @@ iframe[src*="emergent.sh"] {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ============================================================
+   Home page floating EON orb — premium pulse + drift
+   ============================================================ */
+.home-orb-btn {
+  position: fixed;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  isolation: isolate;
+}
+.home-orb-btn:focus { outline: none; }
+.home-orb-btn:focus-visible .home-orb-wrap {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.55),
+    0 0 36px rgba(120, 170, 255, 0.5);
+}
+
+.home-orb-wrap {
+  position: relative;
+  z-index: 2;
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.65) 65%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 220ms ease, border-color 220ms ease;
+}
+.home-orb-btn:hover .home-orb-wrap {
+  transform: translateY(-2px) scale(1.05);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.home-orb-pulse {
+  position: absolute;
+  inset: -8px;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, rgba(125, 170, 255, 0.55), rgba(125, 170, 255, 0) 70%);
+  filter: blur(10px);
+  animation: home-orb-pulse 2.8s ease-in-out infinite;
+  z-index: 1;
+}
+.home-orb-pulse-2 {
+  inset: -22px;
+  background: radial-gradient(closest-side, rgba(198, 168, 255, 0.32), rgba(198, 168, 255, 0) 70%);
+  animation: home-orb-pulse 4s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
+@keyframes home-orb-pulse {
+  0%   { transform: scale(0.85); opacity: 0.55; }
+  50%  { transform: scale(1.18); opacity: 0.95; }
+  100% { transform: scale(0.85); opacity: 0.55; }
+}
+
+/* Subtle drift on the orb itself */
+.home-orb {
+  animation: home-orb-drift 9s ease-in-out infinite;
+}
+@keyframes home-orb-drift {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(2px, -3px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-orb,
+  .home-orb-pulse,
+  .home-orb-pulse-2 { animation: none; }
+}
+
+/* ============================================================
+   NXT1 footer mark
+   ============================================================ */
+.nxt1-strip {
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: 28px;
+  padding: 22px 0 18px;
+  text-align: center;
+}
+.nxt1-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 11.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.48);
+  text-decoration: none;
+  transition: color 200ms ease, transform 200ms ease;
+}
+.nxt1-link:hover {
+  color: rgba(255, 255, 255, 0.92);
+  transform: translateY(-1px);
+}
+.nxt1-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(125, 170, 255, 0.85);
+  box-shadow: 0 0 10px rgba(125, 170, 255, 0.7);
+  display: inline-block;
+}
+.nxt1-mark {
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.85);
+}
+.nxt1-link:hover .nxt1-mark { color: #ffffff; }
+.nxt1-arrow { opacity: 0.55; }
+.nxt1-link:hover .nxt1-arrow { opacity: 1; }
+
+.eon-nxt1-foot {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  text-align: center;
+  pointer-events: none;
+}
+.eon-nxt1-foot .nxt1-link { pointer-events: auto; }
+

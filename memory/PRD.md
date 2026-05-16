@@ -50,35 +50,19 @@ Branding & UX constraints (user-stated, verbatim where relevant):
 ## What's been implemented — 2026-05-16
 - Installed `jwoodtech-main` codebase (backend + frontend) into `/app`.
 - Added `EMERGENT_LLM_KEY` + `JWT_SECRET` to `backend/.env`.
-- Extended `eon_app.py`:
-  - New `EON_SYSTEM_PROMPT` (agent-platform tone).
-  - `EON_AGENTS` static roster (Researcher / Planner / Writer / Analyst).
-  - `_llm_reply` helper using `emergentintegrations.LlmChat` (Claude
-    Sonnet 4.5). Falls back to the previous `openai_client` path when
-    set, and to the Emergent universal key otherwise.
-  - `_log_activity` for activity-feed entries.
-  - New endpoints: `GET /agents`, `GET /tasks`, `POST /tasks`,
-    `PATCH /tasks/{id}`, `DELETE /tasks/{id}`,
-    `POST /tasks/{id}/run` (executes the task end-to-end via the
-    specialist agent's persona), `GET /activity`, `GET /dashboard`.
-- Rewrote `frontend/src/pages/Eon.jsx`:
-  - **Splash** is EON-only ("EON" + "Personal AI agent system").
-  - **No login wall** — app opens to Dashboard immediately.
-  - **Sidebar** with Dashboard / Agent / Tasks / Wallet (SOON) /
-    Market & News (SOON), mobile-collapsible.
-  - **AuthGate modal** pops up only when a gated action is attempted;
-    preserves the typed prompt in `sessionStorage` and auto-sends it
-    after successful sign-in. Includes a visual "Continue with Google"
-    button (currently toasts "coming soon").
-  - **DashboardView**: stats (messages / threads / tasks), 4 specialist
-    agents cards, Recent activity panel.
-  - **AgentView**: chat with EON, hero chips, voice input, prompt
-    save-on-gate.
-  - **TasksView**: create + agent dropdown, Run button (calls
-    `/tasks/{id}/run`), result block, delete.
-  - **ComingSoon** panels for Wallet + Market/News.
-- Test report `iteration_1.json` — 100% backend, 100% frontend
-  acceptance criteria passing. 15/15 pytest cases green.
+- Built out full EON Agent Platform (Dashboard / Agent / Tasks).
+- **Researcher agent now does real web search** (`ddgs` DuckDuckGo) and
+  feeds 6 sources into the LLM so answers cite inline `[1][2]...` with a
+  Sources footer. Sources are stored on the task doc and returned in
+  `_task_out`.
+- **Homepage orb** rewritten as a customer-contact widget. Floating
+  glowing orb (pulse + drift animations) in bottom-right; click opens a
+  modal with First / Last / Email / Phone / Message fields. Posts to
+  `POST /api/eon-app/contact-lead`, stored in `eon_contact_leads`.
+  Promises a 24–48 hour reply.
+- **Removed Wallet + Market/News** from the EON sidebar (user request).
+- **NXT1 footer** added on the homepage and inside the EON app
+  (`https://nxtone.tech`). Glowing blue dot + monospace mark.
 
 ## Backlog (not yet built)
 - **P1**: Wallet section (credits, billing, per-agent usage).

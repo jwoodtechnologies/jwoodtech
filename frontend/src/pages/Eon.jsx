@@ -427,8 +427,6 @@ const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "agent", label: "Agent", icon: Bot },
   { id: "tasks", label: "Tasks", icon: ListChecks },
-  { id: "wallet", label: "Wallet", icon: WalletIcon, soon: true },
-  { id: "news", label: "Market / News", icon: Newspaper, soon: true },
 ];
 
 const Sidebar = ({ view, setView, user, onSignOut, mobileOpen, setMobileOpen }) => (
@@ -1165,22 +1163,6 @@ const Eon = () => {
         return <AgentView user={user} setUser={setUser} openAuth={openAuth} />;
       case "tasks":
         return <TasksView user={user} openAuth={openAuth} agents={agents} />;
-      case "wallet":
-        return (
-          <ComingSoon
-            title="Wallet"
-            sub="EON Wallet is coming — manage credits, billing, and per-agent usage in one place."
-            testid="eon-wallet"
-          />
-        );
-      case "news":
-        return (
-          <ComingSoon
-            title="Market / News"
-            sub="Live market signals and news, curated and summarized by your Researcher agent."
-            testid="eon-news"
-          />
-        );
       default:
         return (
           <DashboardView
@@ -1270,6 +1252,20 @@ const Eon = () => {
               )}
             </div>
             {renderView()}
+            <div className="nxt1-strip" style={{ marginTop: 48 }}>
+              <a
+                href="https://nxtone.tech"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="nxt1-link"
+                data-testid="eon-nxt1"
+              >
+                <span className="nxt1-dot" />
+                <span className="nxt1-mark">NXT1</span>
+                <span>nxtone.tech</span>
+                <span className="nxt1-arrow">↗</span>
+              </a>
+            </div>
           </main>
         </div>
       )}

@@ -464,6 +464,21 @@ const Home = () => {
               </a>
             </div>
           </div>
+          {/* NXT1 strip */}
+          <div className="nxt1-strip">
+            <a
+              href="https://nxtone.tech"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="nxt1-link"
+              data-testid="home-nxt1"
+            >
+              <span className="nxt1-dot" />
+              <span className="nxt1-mark">NXT1</span>
+              <span>nxtone.tech</span>
+              <span className="nxt1-arrow">↗</span>
+            </a>
+          </div>
         </div>
       </footer>
 
