@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Unbounded:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Unbounded:wght@400;500;600;700;800&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap");
 @import "../node_modules/@cometchat/chat-uikit-react/dist/styles/css-variables.css";
 
 @tailwind base;
@@ -662,64 +662,30 @@ iframe[src*="emergent.sh"] {
 }
 
 /* ============================================================
-   Home page floating EON orb — premium pulse + drift
+   Home page floating EON orb — minimal, single orb (no extra pulses)
    ============================================================ */
-.home-orb-btn {
-  position: fixed;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 76px;
-  height: 76px;
+.home-eon-launcher {
+  width: 64px;
+  height: 64px;
   border: none;
   background: transparent;
   cursor: pointer;
-  isolation: isolate;
-}
-.home-orb-btn:focus { outline: none; }
-.home-orb-btn:focus-visible .home-orb-wrap {
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.55),
-    0 0 36px rgba(120, 170, 255, 0.5);
-}
-
-.home-orb-wrap {
-  position: relative;
-  z-index: 2;
-  width: 64px;
-  height: 64px;
+  padding: 0;
   display: grid;
   place-items: center;
-  border-radius: 999px;
-  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.65) 65%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: transform 220ms ease, border-color 220ms ease;
 }
-.home-orb-btn:hover .home-orb-wrap {
+.home-eon-launcher:focus { outline: none; }
+.home-eon-launcher:focus-visible {
+  border-radius: 999px;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+.home-eon-launcher .home-orb {
+  filter: drop-shadow(0 0 24px rgba(125, 170, 255, 0.55));
+  transition: transform 220ms ease, filter 220ms ease;
+}
+.home-eon-launcher:hover .home-orb {
   transform: translateY(-2px) scale(1.05);
-  border-color: rgba(255, 255, 255, 0.28);
-}
-
-.home-orb-pulse {
-  position: absolute;
-  inset: -8px;
-  border-radius: 999px;
-  background: radial-gradient(closest-side, rgba(125, 170, 255, 0.55), rgba(125, 170, 255, 0) 70%);
-  filter: blur(10px);
-  animation: home-orb-pulse 2.8s ease-in-out infinite;
-  z-index: 1;
-}
-.home-orb-pulse-2 {
-  inset: -22px;
-  background: radial-gradient(closest-side, rgba(198, 168, 255, 0.32), rgba(198, 168, 255, 0) 70%);
-  animation: home-orb-pulse 4s ease-in-out infinite;
-  animation-delay: 0.4s;
-}
-@keyframes home-orb-pulse {
-  0%   { transform: scale(0.85); opacity: 0.55; }
-  50%  { transform: scale(1.18); opacity: 0.95; }
-  100% { transform: scale(0.85); opacity: 0.55; }
+  filter: drop-shadow(0 0 30px rgba(125, 170, 255, 0.75));
 }
 
 /* Subtle drift on the orb itself */
@@ -731,66 +697,247 @@ iframe[src*="emergent.sh"] {
   50%  { transform: translate3d(2px, -3px, 0); }
   100% { transform: translate3d(0, 0, 0); }
 }
-
 @media (prefers-reduced-motion: reduce) {
-  .home-orb,
-  .home-orb-pulse,
-  .home-orb-pulse-2 { animation: none; }
+  .home-orb { animation: none; }
+  .home-eon-launcher .home-orb { transition: none; }
 }
 
 /* ============================================================
-   NXT1 footer mark
+   Home EON modal — full-screen starfield chat
    ============================================================ */
-.nxt1-strip {
+.home-eon-canvas {
+  position: fixed;
+  inset: 0;
   width: 100%;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  margin-top: 28px;
-  padding: 22px 0 18px;
-  text-align: center;
+  height: 100%;
+  z-index: 0;
 }
-.nxt1-link {
+
+.home-eon-shell {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 16px;
+  background: rgba(8, 9, 16, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: min(640px, 86vh);
+  overflow: hidden;
+  font-family: "Geist", "Inter Tight", -apple-system, system-ui, sans-serif;
+  color: #f3f5fa;
+  animation: home-eon-rise 360ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes home-eon-rise {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+.home-eon-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.home-eon-title {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.home-eon-tag {
+  font-family: "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+}
+.home-eon-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.home-eon-close:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
+
+.home-eon-thread {
+  overflow-y: auto;
+  padding: 22px 22px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.home-eon-msg {
+  max-width: 86%;
+  padding: 11px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  animation: home-eon-msg-in 240ms ease;
+}
+@keyframes home-eon-msg-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.home-eon-msg-eon {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f3f5fa;
+  border-bottom-left-radius: 4px;
+}
+.home-eon-msg-me {
+  align-self: flex-end;
+  background: linear-gradient(180deg, #ffffff, #d8e0f5);
+  color: #0a0b10;
+  border-bottom-right-radius: 4px;
+}
+.home-eon-typing {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-family: "Inter", system-ui, sans-serif;
-  font-size: 11.5px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.48);
-  text-decoration: none;
-  transition: color 200ms ease, transform 200ms ease;
+  gap: 5px;
+  padding: 12px 16px;
 }
-.nxt1-link:hover {
-  color: rgba(255, 255, 255, 0.92);
-  transform: translateY(-1px);
-}
-.nxt1-dot {
+.home-eon-typing span {
   width: 6px;
   height: 6px;
   border-radius: 999px;
-  background: rgba(125, 170, 255, 0.85);
-  box-shadow: 0 0 10px rgba(125, 170, 255, 0.7);
-  display: inline-block;
+  background: rgba(255, 255, 255, 0.6);
+  animation: home-eon-typing 1.2s infinite ease-in-out;
 }
-.nxt1-mark {
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.85);
+.home-eon-typing span:nth-child(2) { animation-delay: 0.15s; }
+.home-eon-typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes home-eon-typing {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30%           { opacity: 1;   transform: translateY(-2px); }
 }
-.nxt1-link:hover .nxt1-mark { color: #ffffff; }
-.nxt1-arrow { opacity: 0.55; }
-.nxt1-link:hover .nxt1-arrow { opacity: 1; }
 
-.eon-nxt1-foot {
-  position: absolute;
-  bottom: 14px;
-  left: 0;
-  right: 0;
-  z-index: 5;
-  text-align: center;
-  pointer-events: none;
+.home-eon-compose {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  padding: 14px 18px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(8, 9, 16, 0.6);
 }
-.eon-nxt1-foot .nxt1-link { pointer-events: auto; }
+.home-eon-compose input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: #f3f5fa;
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+.home-eon-compose input:focus {
+  border-color: rgba(125, 170, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+}
+.home-eon-send-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0a0b10;
+  border: none;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.home-eon-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+@media (max-width: 640px) {
+  .home-eon-shell {
+    height: 88vh;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 18px 18px 0 0;
+    align-self: end;
+  }
+}
+
+/* ============================================================
+   "Products of Jwood Technologies" footer band
+   ============================================================ */
+.products-band {
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 20px 0 0;
+}
+.products-band-label {
+  font-family: "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 14px;
+  text-align: center;
+}
+.products-band-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.products-band-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  transition: background 220ms ease, border-color 220ms ease, transform 220ms ease;
+}
+.products-band-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+}
+.products-band-name {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.products-band-desc {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.4;
+}
+.products-band-arrow {
+  margin-left: auto;
+  align-self: end;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+}
+.products-band-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(125, 170, 255, 0.9);
+  box-shadow: 0 0 10px rgba(125, 170, 255, 0.7);
+  margin-bottom: 2px;
+}
+@media (max-width: 720px) {
+  .products-band-grid { grid-template-columns: 1fr; }
+}
 
 
 /* ============================================================

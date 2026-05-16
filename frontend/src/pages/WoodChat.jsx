@@ -16,7 +16,7 @@
  * Guest mode: page is fully viewable; "Send message", "Start chat",
  * etc. open the auth modal instead of working anonymously.
  */
-import { useEffect, useMemo, useState, useCallback, lazy, Suspense } from "react";
+import { useEffect, useMemo, useState, useCallback, useRef, lazy, Suspense } from "react";
 import {
   MessageSquare,
   Users,
@@ -59,10 +59,22 @@ const COMETCHAT_AUTH_KEY = process.env.REACT_APP_COMETCHAT_AUTH_KEY || "";
 const CometChatSurface = lazy(() => import("../components/CometChatSurface"));
 
 // ---------------------------------------------------------------------------
-// Logo
+// Logo (real WoodX mark — white PNG; light theme inverts via CSS filter)
 // ---------------------------------------------------------------------------
-const WxLogo = () => (
-  <div className="wx-logo-circle" aria-hidden="true">WX</div>
+const WxLogo = ({ className = "wx-brand-logo" }) => (
+  <img src="/woodx-logo.png" alt="WoodX" className={className} />
+);
+
+// ---------------------------------------------------------------------------
+// Google icon
+// ---------------------------------------------------------------------------
+const GoogleSVG = () => (
+  <svg viewBox="0 0 48 48" aria-hidden="true">
+    <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.6 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 2.9l5.7-5.7C34.6 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/>
+    <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3 0 5.8 1.1 7.9 2.9l5.7-5.7C34.6 6.1 29.6 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+    <path fill="#4CAF50" d="M24 44c5.4 0 10.3-2 14-5.4l-6.5-5.3C29.4 34.7 26.8 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.6 5C9.5 39.6 16.2 44 24 44z"/>
+    <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.7 2.1-2.1 3.9-3.9 5.2l6.5 5.3C40.9 36.1 44 30.6 44 24c0-1.3-.1-2.3-.4-3.5z"/>
+  </svg>
 );
 
 // ---------------------------------------------------------------------------
@@ -110,27 +122,42 @@ const AuthModal = ({ onAuthed, onClose, intent }) => {
   return (
     <div className="wx-modal-veil" data-testid="wx-auth-modal">
       <div className="wx-modal" role="dialog" aria-modal="true">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
-          <div>
-            <div className="wx-modal-title">
-              {mode === "login" ? "Welcome back to WoodX" : "Create your WoodX account"}
-            </div>
-            <div className="wx-modal-sub">
-              {intent ||
-                "Sign in to message, join groups, and unlock the full WoodX experience."}
-            </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="wx-modal-close"
+          data-testid="wx-auth-close"
+          aria-label="Close"
+        >
+          <XIcon size={15} />
+        </button>
+
+        <div className="wx-modal-head">
+          <WxLogo className="wx-modal-logo" />
+          <div className="wx-modal-title">
+            {mode === "login" ? "Welcome back" : "Create your account"}
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="wx-btn wx-btn-ghost"
-            style={{ padding: "6px 8px" }}
-            data-testid="wx-auth-close"
-            aria-label="Close"
-          >
-            <XIcon size={14} />
-          </button>
+          <div className="wx-modal-sub">
+            {intent ||
+              (mode === "login"
+                ? "Sign in to continue on WoodX."
+                : "Encrypted messaging, end-to-end private.")}
+          </div>
         </div>
+
+        <button
+          type="button"
+          className="wx-google-btn"
+          onClick={() =>
+            toast.message("Google sign-in is coming soon — use email for now.")
+          }
+          data-testid="wx-google-btn"
+        >
+          <GoogleSVG />
+          Continue with Google
+        </button>
+
+        <div className="wx-or-divider">or</div>
 
         <div className="wx-tab-row">
           <button
@@ -207,7 +234,7 @@ const AuthModal = ({ onAuthed, onClose, intent }) => {
             type="submit"
             className="wx-btn wx-btn-solid"
             disabled={busy}
-            style={{ width: "100%", justifyContent: "center" }}
+            style={{ width: "100%", justifyContent: "center", marginTop: 4 }}
             data-testid="wx-auth-submit"
           >
             {busy ? (
@@ -224,10 +251,13 @@ const AuthModal = ({ onAuthed, onClose, intent }) => {
               fontSize: 11,
               color: "var(--wx-fg-quiet)",
               textAlign: "center",
-              marginTop: 10,
+              marginTop: 12,
+              fontFamily: "var(--wx-font-mono)",
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
             }}
           >
-            Encrypted. Private. No spam.
+            Encrypted · Private · No spam
           </p>
         </form>
       </div>
@@ -251,13 +281,20 @@ const ComingSoon = ({ title, sub, testid, Icon }) => (
 // Sidebar
 // ---------------------------------------------------------------------------
 const NAV = [
-  { id: "chats",   label: "Chats",        icon: MessageSquare },
-  { id: "groups",  label: "Groups",       icon: Users },
-  { id: "contacts",label: "Contacts",     icon: ContactIcon },
-  { id: "wallet",  label: "Wallet",       icon: WalletIcon,  soon: true },
-  { id: "news",    label: "Market / News",icon: Newspaper,   soon: true },
-  { id: "eon",     label: "EON",          icon: Sparkles,    soon: true },
+  { id: "chats",   label: "Chats",         icon: MessageSquare },
+  { id: "groups",  label: "Groups",        icon: Users },
+  { id: "contacts",label: "Contacts",      icon: ContactIcon },
+  { id: "eon",     label: "EON",           icon: Sparkles },
+  { id: "wallet",  label: "Wallet",        icon: WalletIcon,  soon: true },
+  { id: "news",    label: "Market / News", icon: Newspaper,   soon: true },
 ];
+
+const initials = (u) => {
+  if (!u) return "";
+  const f = (u.first_name || "").charAt(0);
+  const l = (u.last_name || "").charAt(0);
+  return ((f + l) || (u.username || u.email || "?").charAt(0)).toUpperCase();
+};
 
 const Sidebar = ({ view, setView, user, theme, toggleTheme, onSignOut, openAuth, mobileOpen, setMobileOpen }) => (
   <aside className={`wx-side ${mobileOpen ? "is-open" : ""}`} data-testid="wx-sidebar">
@@ -265,7 +302,7 @@ const Sidebar = ({ view, setView, user, theme, toggleTheme, onSignOut, openAuth,
       <WxLogo />
       <div>
         <div className="wx-brand-name">WoodX</div>
-        <div className="wx-brand-tag">Encrypted messaging</div>
+        <div className="wx-brand-tag">Encrypted</div>
       </div>
     </div>
 
@@ -289,50 +326,173 @@ const Sidebar = ({ view, setView, user, theme, toggleTheme, onSignOut, openAuth,
 
     <div className="wx-side-foot">
       <button type="button" className="wx-theme-toggle" onClick={toggleTheme} data-testid="wx-theme-toggle">
-        {theme === "dark" ? <Moon size={14} /> : <Sun size={14} />}
-        {theme === "dark" ? "Dark mode" : "Light mode"}
-        <span style={{ marginLeft: "auto", fontSize: 11, color: "var(--wx-fg-quiet)" }}>
-          Toggle
-        </span>
+        {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
+        <span>{theme === "dark" ? "Light mode" : "Dark mode"}</span>
       </button>
 
       {user ? (
-        <>
-          <div style={{ padding: "0 6px" }}>
-            <div style={{ color: "var(--wx-fg)", fontWeight: 500 }}>
-              {user.first_name || user.username || user.email}
+        <div className="wx-side-user">
+          <div className="wx-avatar">{initials(user)}</div>
+          <div className="wx-user-text" style={{ flex: 1, minWidth: 0 }}>
+            <div className="wx-user-name" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {user.first_name || user.username || "WoodX user"}
             </div>
-            <div style={{ fontSize: 11, color: "var(--wx-fg-quiet)" }}>
-              @{user.username || user.email?.split("@")[0]}
+            <div className="wx-user-handle">
+              @{(user.username || user.email?.split("@")[0] || "").slice(0, 16)}
             </div>
           </div>
-          <button type="button" className="wx-btn wx-btn-ghost" onClick={onSignOut} data-testid="wx-signout">
-            <LogOut size={13} /> Sign out
+          <button
+            type="button"
+            onClick={onSignOut}
+            className="wx-btn wx-btn-ghost"
+            style={{ padding: "6px 8px" }}
+            data-testid="wx-signout"
+            aria-label="Sign out"
+            title="Sign out"
+          >
+            <LogOut size={13} />
           </button>
-        </>
+        </div>
       ) : (
-        <button type="button" className="wx-btn wx-btn-solid" onClick={() => openAuth()} data-testid="wx-side-signin">
-          Sign in to WoodX <ArrowRight size={13} />
+        <button type="button" className="wx-btn wx-btn-solid" onClick={() => openAuth()} data-testid="wx-side-signin" style={{ justifyContent: "center" }}>
+          Sign in <ArrowRight size={13} />
         </button>
       )}
-
-      <div className="wx-products">
-        <a href="/" data-testid="wx-side-home">Home</a>
-        <a href="/eon" data-testid="wx-side-eon">EON ↗</a>
-        <a href="https://nxtone.tech" target="_blank" rel="noreferrer noopener" data-testid="wx-side-nxt1">
-          <span className="wx-nxt-dot" /> NXT1 ↗
-        </a>
-      </div>
     </div>
   </aside>
 );
+
+// ---------------------------------------------------------------------------
+// EON Agent panel — live AI chat embedded in WoodX
+// ---------------------------------------------------------------------------
+const EonAgentPanel = ({ user, openAuth }) => {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [busy, setBusy] = useState(false);
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages.length, busy]);
+
+  const send = async (override) => {
+    const text = (override ?? input).trim();
+    if (!text || busy) return;
+    if (!user) {
+      openAuth("Sign in to chat with EON.");
+      return;
+    }
+    setMessages((m) => [...m, { role: "user", content: text }]);
+    setInput("");
+    setBusy(true);
+    try {
+      const history = messages.map((m) => ({ role: m.role, content: m.content }));
+      const { data } = await wcClient.post("/eon/chat", { message: text, history });
+      setMessages((m) => [...m, { role: "assistant", content: data.reply }]);
+    } catch (err) {
+      setMessages((m) => [
+        ...m,
+        { role: "assistant", content: "EON is unavailable right now. Please try again in a moment." },
+      ]);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const prompts = [
+    "Summarize my last conversation.",
+    "Draft a quick reply.",
+    "Plan my next 3 hours.",
+    "What should I follow up on today?",
+  ];
+
+  return (
+    <div className="wx-eon-stage" data-testid="wx-eon-stage">
+      <div className="wx-eon-hero">
+        <div className="wx-eon-orb">
+          <span className="wx-orb-glow" />
+          <span className="wx-orb-core" />
+        </div>
+        <div className="wx-eon-hero-text">
+          <h2>EON</h2>
+          <p>
+            Your AI agent inside WoodX — summarize threads, draft replies,
+            plan tasks, research questions.
+          </p>
+        </div>
+      </div>
+
+      <div className="wx-eon-scroll" ref={scrollRef}>
+        {messages.length === 0 ? (
+          <div className="wx-eon-empty">
+            <div style={{ marginBottom: 16 }}>Try one of these:</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center" }}>
+              {prompts.map((p) => (
+                <button
+                  key={p}
+                  type="button"
+                  className="wx-btn wx-btn-ghost"
+                  style={{ fontSize: 12, padding: "7px 12px" }}
+                  onClick={() => send(p)}
+                  data-testid={`wx-eon-chip-${p.slice(0, 6)}`}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          messages.map((m, i) => (
+            <div
+              key={i}
+              className={`wx-eon-msg ${m.role === "user" ? "wx-eon-msg-me" : "wx-eon-msg-ai"}`}
+            >
+              {m.content}
+            </div>
+          ))
+        )}
+        {busy && (
+          <div className="wx-eon-msg wx-eon-msg-ai" style={{ opacity: 0.7 }}>
+            <Loader2 size={14} className="animate-spin" style={{ display: "inline-block", marginRight: 6 }} />
+            Thinking…
+          </div>
+        )}
+      </div>
+
+      <form
+        className="wx-eon-compose"
+        onSubmit={(e) => {
+          e.preventDefault();
+          send();
+        }}
+      >
+        <input
+          placeholder={user ? "Ask EON anything…" : "Sign in to chat with EON…"}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          data-testid="wx-eon-input"
+        />
+        <button
+          type="submit"
+          className="wx-eon-send"
+          disabled={!input.trim() || busy}
+          data-testid="wx-eon-send"
+          aria-label="Send"
+        >
+          {busy ? <Loader2 size={16} className="animate-spin" /> : <ArrowRight size={16} />}
+        </button>
+      </form>
+    </div>
+  );
+};
 
 // ---------------------------------------------------------------------------
 // Main page
 // ---------------------------------------------------------------------------
 const WoodChat = () => {
   const [theme, setTheme] = useState(() =>
-    localStorage.getItem(WX_THEME_KEY) || "light"
+    localStorage.getItem(WX_THEME_KEY) || "dark"
   );
   const [user, setUser] = useState(null);
   const [booting, setBooting] = useState(true);
@@ -432,10 +592,16 @@ const WoodChat = () => {
     contacts: "People on WoodX you can reach.",
     wallet: "Send and receive value — coming soon.",
     news: "Live market signals — coming soon.",
-    eon: "EON Messaging Agent — coming soon.",
+    eon: "Your AI agent — built into WoodX.",
   };
 
+  // ---- EON-in-WoodX chat panel ----------------------------------------
+  const renderEonAgent = () => (
+    <EonAgentPanel user={user} openAuth={openAuth} />
+  );
+
   const renderContent = () => {
+    if (view === "eon") return renderEonAgent();
     if (view === "wallet") {
       return (
         <ComingSoon
@@ -453,16 +619,6 @@ const WoodChat = () => {
           sub="Live market signals and news, curated and pushed into your chat. Your Researcher agent does the work."
           testid="wx-news"
           Icon={Newspaper}
-        />
-      );
-    }
-    if (view === "eon") {
-      return (
-        <ComingSoon
-          title="EON Messaging Agent"
-          sub="EON for WoodX is coming soon — an AI messaging agent built to help summarize conversations, organize communication, and surface important updates."
-          testid="wx-eon-soon"
-          Icon={Sparkles}
         />
       );
     }
@@ -530,6 +686,7 @@ const WoodChat = () => {
               onClick={() => setMobileNav(true)}
               data-testid="wx-mobile-menu"
               style={{ padding: "6px 10px" }}
+              aria-label="Open menu"
             >
               <Menu size={14} />
             </button>
@@ -538,33 +695,33 @@ const WoodChat = () => {
               <div className="wx-page-sub">{subByView[view]}</div>
             </div>
           </div>
-          <div style={{ display: "flex", gap: 8 }}>
-            {!user ? (
-              <button
-                type="button"
-                className="wx-btn wx-btn-solid"
-                onClick={() => openAuth("Sign in to use this section.")}
-                data-testid="wx-top-signin"
-              >
-                Sign in <ArrowRight size={14} />
-              </button>
-            ) : null}
-          </div>
+          {!user ? (
+            <button
+              type="button"
+              className="wx-btn wx-btn-solid"
+              onClick={() => openAuth("Sign in to use this section.")}
+              data-testid="wx-top-signin"
+            >
+              Sign in <ArrowRight size={14} />
+            </button>
+          ) : null}
         </header>
 
         <section className="wx-content">
-          {!user && view !== "wallet" && view !== "news" && view !== "eon" ? (
+          {!user && (view === "chats" || view === "groups" || view === "contacts" || view === "eon") ? (
             <div className="wx-guest-banner" data-testid="wx-guest-banner">
               <Sparkles size={14} />
-              You're browsing as a guest. Sign in to message, join groups, and save contacts.
+              <span>
+                Browsing as <strong>guest</strong>. Sign in to message, run EON, and save contacts.
+              </span>
             </div>
           ) : null}
           <div style={{ flex: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
             {renderContent()}
           </div>
           <footer className="wx-foot">
-            <div>© {new Date().getFullYear()} Jwood Technologies · WoodX</div>
-            <div>
+            <div>© {new Date().getFullYear()} Jwood Technologies</div>
+            <div className="wx-foot-links">
               <a href="/" data-testid="wx-foot-home">Home</a>
               <a href="/eon" data-testid="wx-foot-eon">EON ↗</a>
               <a

@@ -777,11 +777,12 @@ const DashboardView = ({ user, openAuth, agents, setView }) => {
         </div>
         <button
           type="button"
-          className="eon-btn eon-btn-solid"
+          className="eon-dash-orb-btn"
           onClick={() => setView("agent")}
           data-testid="eon-dash-start"
+          aria-label="Talk to EON"
         >
-          <Sparkles size={14} /> Talk to EON
+          <EonMark size={56} interactive={false} />
         </button>
       </div>
 

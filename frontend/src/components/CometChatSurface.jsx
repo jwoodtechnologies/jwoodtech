@@ -18,8 +18,11 @@ let initPromise = null;
 let SDKModule = null;
 let activeLogin = null; // { uid, promise } — serializes parallel login calls
 
-const ensureInit = async ({ appId, region, authKey }) => {
-  if (!appId || !authKey) {
+const ensureInit = async ({ appId, region, authKey, hasAuthToken }) => {
+  if (!appId) {
+    throw new Error("CometChat App ID missing.");
+  }
+  if (!authKey && !hasAuthToken) {
     throw new Error("CometChat credentials missing on the server response.");
   }
   if (!SDKModule) {
@@ -27,19 +30,18 @@ const ensureInit = async ({ appId, region, authKey }) => {
   }
   const { CometChatUIKit, UIKitSettingsBuilder } = SDKModule;
   if (!initPromise) {
-    const settings = new UIKitSettingsBuilder()
+    const builder = new UIKitSettingsBuilder()
       .setAppId(appId)
       .setRegion(region)
-      .setAuthKey(authKey)
-      .subscribePresenceForAllUsers()
-      .build();
-    initPromise = CometChatUIKit.init(settings);
+      .subscribePresenceForAllUsers();
+    if (authKey) builder.setAuthKey(authKey);
+    initPromise = CometChatUIKit.init(builder.build());
   }
   await initPromise;
   return SDKModule;
 };
 
-const loginOnce = async (CometChatUIKit, uid) => {
+const loginOnce = async (CometChatUIKit, uid, authToken) => {
   if (activeLogin && activeLogin.uid === uid) {
     return activeLogin.promise;
   }
@@ -55,7 +57,10 @@ const loginOnce = async (CometChatUIKit, uid) => {
   if (logged) {
     try { await CometChatUIKit.logout(); } catch { /* ignore */ }
   }
-  const p = CometChatUIKit.login(uid).finally(() => {
+  const p = (authToken
+    ? CometChatUIKit.loginWithAuthToken(authToken)
+    : CometChatUIKit.login(uid)
+  ).finally(() => {
     if (activeLogin && activeLogin.uid === uid && activeLogin.promise === p) {
       activeLogin = null;
     }
@@ -79,14 +84,19 @@ const CometChatSurface = ({ view = "chats" }) => {
         const { data: cfg } = await axios.get(`${base}/comet/config`, {
           headers: t ? { Authorization: `Bearer ${t}` } : {},
         });
-        const { uid, app_id, region, auth_key } = cfg;
+        const { uid, app_id, region, auth_key, auth_token } = cfg;
 
-        // 2) Init UI Kit.
-        const m = await ensureInit({ appId: app_id, region, authKey: auth_key });
+        // 2) Init UI Kit (auth_key only used in dev fallback).
+        const m = await ensureInit({
+          appId: app_id,
+          region,
+          authKey: auth_key || "",
+          hasAuthToken: !!auth_token,
+        });
         const { CometChatUIKit } = m;
 
-        // 3) Login (serialized).
-        await loginOnce(CometChatUIKit, uid);
+        // 3) Login (serialized) — prefer auth_token (production) over uid (dev).
+        await loginOnce(CometChatUIKit, uid, auth_token);
 
         if (!cancelled) {
           setMod(m);

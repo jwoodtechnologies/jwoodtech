@@ -194,55 +194,140 @@ def build_woodchat_router(
             raise HTTPException(status_code=401, detail="User not found")
         return u
 
-    # ---- registration / login ----------------------------------------------
-    # CometChat provisioning helper (server-side, uses Auth Key as apikey).
+    # CometChat provisioning helper (server-side, uses REST API key when
+    # set, falls back to Auth Key for dev).
     async def _comet_provision(uid: str, name: str) -> str:
         """Idempotently create the CometChat user. Returns the safe uid."""
-        import re
         safe = re.sub(r"[^a-z0-9_-]", "_", uid.lower())[:80]
         app_id = os.environ.get("COMETCHAT_APP_ID", "")
         region = os.environ.get("COMETCHAT_REGION", "us")
-        api_key = os.environ.get("COMETCHAT_AUTH_KEY", "")
+        rest_key = os.environ.get("COMETCHAT_REST_API_KEY", "").strip()
+        auth_key = os.environ.get("COMETCHAT_AUTH_KEY", "").strip()
+        api_key = rest_key or auth_key
         if not (app_id and api_key):
-            return safe  # nothing to do — caller still gets the uid
+            return safe
         url = f"https://{app_id}.api-{region}.cometchat.io/v3/users"
         try:
             import httpx  # type: ignore
             async with httpx.AsyncClient(timeout=10.0) as client:
                 resp = await client.post(
                     url,
-                    headers={
-                        "Content-Type": "application/json",
-                        "apikey": api_key,
-                    },
+                    headers={"Content-Type": "application/json", "apikey": api_key},
                     json={"uid": safe, "name": name[:100] or safe},
                 )
                 if resp.status_code not in (200, 201, 409):
                     body = (resp.text or "")[:200]
-                    logger.warning(
-                        "CometChat provision failed (%s): %s",
-                        resp.status_code,
-                        body,
-                    )
+                    logger.warning("CometChat provision failed (%s): %s", resp.status_code, body)
         except Exception as exc:  # pragma: no cover
             logger.warning("CometChat provision exception: %s", exc)
         return safe
 
+    async def _comet_issue_auth_token(uid: str) -> Optional[str]:
+        """Issue a short-lived auth token for the given uid using the REST
+        API key. Returns None if REST key not configured."""
+        rest_key = os.environ.get("COMETCHAT_REST_API_KEY", "").strip()
+        app_id = os.environ.get("COMETCHAT_APP_ID", "")
+        region = os.environ.get("COMETCHAT_REGION", "us")
+        if not (rest_key and app_id):
+            return None
+        url = f"https://{app_id}.api-{region}.cometchat.io/v3/users/{uid}/auth_tokens"
+        try:
+            import httpx  # type: ignore
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                resp = await client.post(
+                    url,
+                    headers={"Content-Type": "application/json", "apikey": rest_key},
+                    json={"force": True},
+                )
+                if resp.status_code in (200, 201):
+                    return resp.json().get("data", {}).get("authToken")
+                logger.warning(
+                    "CometChat auth_token failed (%s): %s",
+                    resp.status_code,
+                    (resp.text or "")[:200],
+                )
+        except Exception as exc:  # pragma: no cover
+            logger.warning("CometChat auth_token exception: %s", exc)
+        return None
+
     @r.get("/comet/config")
     async def comet_config(u=Depends(current_user)):
-        """Provision the CometChat user for the signed-in WoodX user and
-        return the public config the frontend needs to log them in."""
+        """Provision the CometChat user and return the public config the
+        frontend needs to log them in.
+
+        If REST_API_KEY is set: returns an auth_token (preferred — Auth Key
+        stays server-side). If not, falls back to returning the Auth Key
+        for dev-mode `login(uid)`.
+        """
         display = " ".join(filter(None, [u.get("first_name"), u.get("last_name")])).strip()
         if not display:
             display = u.get("username") or u.get("email") or "WoodX user"
         uid = await _comet_provision(u["id"], display)
-        return {
+        token = await _comet_issue_auth_token(uid)
+
+        # Ensure the EON synthetic bot user also exists (idempotent).
+        await _comet_provision("eon_bot", "EON")
+
+        payload = {
             "uid": uid,
             "display_name": display,
             "app_id": os.environ.get("COMETCHAT_APP_ID", ""),
             "region": os.environ.get("COMETCHAT_REGION", "us"),
-            "auth_key": os.environ.get("COMETCHAT_AUTH_KEY", ""),
+            "eon_bot_uid": "eon_bot",
         }
+        if token:
+            payload["auth_token"] = token
+        else:
+            # Dev fallback only — Auth Key on the wire. Replace by setting
+            # COMETCHAT_REST_API_KEY in backend/.env.
+            payload["auth_key"] = os.environ.get("COMETCHAT_AUTH_KEY", "")
+        return payload
+
+    @r.post("/eon/chat")
+    async def eon_in_woodx_chat(body: dict, u=Depends(current_user)):
+        """EON Messaging Agent for WoodX. Takes {message, history?} and
+        returns {reply}. Uses the EMERGENT_LLM_KEY (Claude Sonnet 4.5)."""
+        text = (body.get("message") or "").strip()
+        if not text:
+            raise HTTPException(status_code=400, detail="Empty message.")
+        history = body.get("history") or []
+        if not isinstance(history, list):
+            history = []
+
+        EMERGENT_KEY = os.environ.get("EMERGENT_LLM_KEY", "")
+        LLM_PROVIDER = os.environ.get("EON_LLM_PROVIDER", "anthropic")
+        LLM_MODEL = os.environ.get("EON_LLM_MODEL", "claude-sonnet-4-5-20250929")
+        if not EMERGENT_KEY:
+            return {"reply": "EON's model brain isn't connected yet."}
+
+        system = (
+            "You are EON — a personal AI agent embedded inside WoodX, a "
+            "secure messaging app. You help users summarize conversations, "
+            "draft replies, plan tasks, and research questions. Be tight, "
+            "useful, and friendly. Plain prose. Never claim to be human."
+        )
+        try:
+            from emergentintegrations.llm.chat import LlmChat, UserMessage  # type: ignore
+            chat = (
+                LlmChat(
+                    api_key=EMERGENT_KEY,
+                    session_id=f"woodx:{u['id']}:eon",
+                    system_message=system,
+                )
+                .with_model(LLM_PROVIDER, LLM_MODEL)
+            )
+            payload = text
+            if history:
+                lines = []
+                for m in history[-10:]:
+                    role = "User" if m.get("role") == "user" else "EON"
+                    lines.append(f"{role}: {(m.get('content') or '')[:600]}")
+                payload = "Conversation so far:\n" + "\n".join(lines) + "\n\nUser now says:\n" + text
+            resp = await chat.send_message(UserMessage(text=payload))
+            return {"reply": (resp or "").strip() or "(EON had no reply.)"}
+        except Exception as exc:
+            logger.warning("WoodX EON chat failed: %s", exc, exc_info=True)
+            return {"reply": "EON ran into a model error. Please try again in a moment."}
 
     @r.post("/auth/register", response_model=AuthOut)
     async def register(body: RegisterIn):

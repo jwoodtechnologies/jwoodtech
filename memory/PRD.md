@@ -48,36 +48,25 @@ Branding & UX constraints (user-stated, verbatim where relevant):
 8. Task lifecycle: queued → running → done | failed.
 
 ## What's been implemented — 2026-05-16
-- Installed `jwoodtech-main` codebase (backend + frontend) into `/app`.
-- Added `EMERGENT_LLM_KEY` + `JWT_SECRET` to `backend/.env`.
-- Built out full EON Agent Platform (Dashboard / Agent / Tasks).
-- **Researcher agent now does real web search** (`ddgs`) and feeds 6
-  sources into the LLM → inline `[1][2]` citations + Sources footer.
-- **Homepage orb is a customer-contact form** (`POST /eon-app/contact-lead`,
-  stored in `eon_contact_leads`). Promises a 24–48 hour reply.
-- **Removed Wallet + Market/News from EON sidebar** (user request).
-- **Footer overhauled**: `EON → · WOODX → · ●NXT1 →` sit together as
-  product links on Home; the standalone NXT1 strip was removed.
-- **CometChat integrated for WoodX (`/woodchat`):**
-  - Frontend: lazy-loaded `@cometchat/chat-uikit-react` (web). Premium
-    sidebar (Chats / Groups / Contacts / Wallet (Soon) /
-    Market & News (Soon) / EON (Soon)). Light + Dark mode toggle. WoodX
-    logo treatment. Composed CometChat UI from
-    `CometChatConversations` / `CometChatUsers` / `CometChatGroups` +
-    `CometChatMessageHeader` / `MessageList` / `MessageComposer`.
-  - Backend: new `GET /api/woodchat/comet/config` provisions the
-    CometChat user via REST (`apikey` = WoodX Auth Key) and returns
-    `{uid, app_id, region, auth_key}`. Frontend then calls
-    `CometChatUIKit.login(uid)` — never exposes secret keys
-    that don't belong on the client.
-  - StrictMode race fixed with a `loginOnce` serializer module-side.
-  - Guest mode: WoodX is fully browsable as a guest; sign-in modal pops
-    when the user clicks Sign in or tries to use a gated section. EON
-    Messaging Agent labeled Coming Soon.
-- env: added `COMETCHAT_APP_ID`, `COMETCHAT_REGION`, `COMETCHAT_AUTH_KEY`
-  to backend; `REACT_APP_COMETCHAT_*` mirrors on frontend (kept for
-  future client-only dev fallback, but server-issued config is the
-  primary path).
+- Installed `jwoodtech-main` codebase + built EON Agent Platform (Dashboard / Agent / Tasks) with Researcher web-search citations.
+- **Homepage**:
+  - Single floating EON orb (clean, no extra halos) — opens a **conversational lead-capture chatbot** with a full-screen **animated starfield backdrop**. Multi-step flow: greeting → first name → last name → email (validated) → message → "Got it — Jwood Technologies will get back to you within 24–48 hours." Stored in `eon_contact_leads`.
+  - Footer: **"PRODUCTS OF JWOOD TECHNOLOGIES"** band with 3 card links (EON · WoodX · NXT1). Tight legal row underneath with socials.
+- **EON page**:
+  - Dashboard "Talk to EON" white button replaced with the **glowing EON orb** that opens the Agent chat view.
+- **WoodX (`/woodchat`)**:
+  - **Default theme: dark carbon-black** (premium). Light mode available.
+  - **Premium typography: Geist + Geist Mono**.
+  - **Real WoodX logo** (white PNG, inverted via CSS filter for light mode) replacing the old WX box mark.
+  - Cleaner sidebar: brand row, workspace nav (Chats / Groups / Contacts / **EON** live / Wallet (Soon) / Market & News (Soon)), theme toggle, user pill, sign-out.
+  - Minimal legal footer: `© · HOME · EON ↗ · ●NXT1 ↗`.
+  - **Auth modal redesign**: WoodX logo head, **Continue with Google** button (visual only — toasts "coming soon"), "or" divider, Sign in / Create account tabs, encrypted-private-no-spam tagline.
+  - **EON live inside WoodX** via `POST /api/woodchat/eon/chat` (Claude Sonnet 4.5).
+  - **CometChat auth_token flow**: when `COMETCHAT_REST_API_KEY` is set, backend issues an auth_token and the frontend uses `loginWithAuthToken` — Auth Key never leaves the server.
+  - Mobile: collapsing sidebar, condensed topbar/footer, fully responsive.
+- **Backend** new endpoints under `/api/woodchat/`:
+  - `GET /comet/config` — idempotent CometChat user creation + token issuance.
+  - `POST /eon/chat` — EON Messaging Agent (Claude Sonnet 4.5 via Emergent LLM key, multi-turn).
 
 ## Backlog (not yet built)
 - **P1**: Wallet section (credits, billing, per-agent usage).

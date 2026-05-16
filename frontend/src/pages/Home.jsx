@@ -380,88 +380,37 @@ const Home = () => {
         data-testid="home-footer"
       >
         <div className="hairline pt-8 space-y-5">
-          {/* Products row */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex items-center gap-5 text-[12px] font-mono tracking-[0.18em] text-white/70 uppercase">
-              <a
-                href="/eon"
-                className="hover:text-white transition-colors"
-                data-testid="home-eon-link"
-              >
-                EON →
+          {/* Products of Jwood Technologies */}
+          <div className="products-band">
+            <div className="products-band-label">Products of Jwood Technologies</div>
+            <div className="products-band-grid">
+              <a href="/eon" className="products-band-card" data-testid="home-eon-link">
+                <div className="products-band-name">EON</div>
+                <div className="products-band-desc">Personal AI agent system</div>
+                <span className="products-band-arrow">↗</span>
               </a>
-              <a
-                href="/woodchat"
-                className="hover:text-white transition-colors"
-                data-testid="home-woodchat-link"
-              >
-                WoodX →
+              <a href="/woodchat" className="products-band-card" data-testid="home-woodchat-link">
+                <div className="products-band-name">WoodX</div>
+                <div className="products-band-desc">Encrypted messaging platform</div>
+                <span className="products-band-arrow">↗</span>
               </a>
               <a
                 href="https://nxtone.tech"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
+                className="products-band-card"
                 data-testid="home-nxt1-link"
               >
-                <span
-                  className="inline-block h-1.5 w-1.5 rounded-full"
-                  style={{
-                    background: "rgba(125, 170, 255, 0.85)",
-                    boxShadow: "0 0 8px rgba(125, 170, 255, 0.7)",
-                  }}
-                />
-                NXT1 →
-              </a>
-            </div>
-            <div className="flex items-center gap-4 text-[12px] font-mono tracking-[0.18em] text-white/55 uppercase">
-              <a
-                href="https://www.instagram.com/jwoodtechnologies"
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="Instagram"
-                className="group inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 hover:border-white/30 hover:bg-white/5 transition-colors"
-                data-testid="home-instagram"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  className="h-4 w-4 text-white/70 group-hover:text-white transition-colors"
-                >
-                  <rect x="3" y="3" width="18" height="18" rx="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" />
-                </svg>
-              </a>
-              <a
-                href="https://www.linkedin.com/company/jwoodnxt/"
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="LinkedIn"
-                className="group inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 hover:border-white/30 hover:bg-white/5 transition-colors"
-                data-testid="home-linkedin"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="h-[15px] w-[15px] text-white/70 group-hover:text-white transition-colors"
-                >
-                  <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8h4.56v14H.22V8zm7.42 0h4.37v1.92h.06c.61-1.15 2.1-2.36 4.32-2.36 4.63 0 5.48 3.05 5.48 7.02V22h-4.56v-6.1c0-1.46-.03-3.34-2.04-3.34-2.04 0-2.36 1.59-2.36 3.23V22H7.64V8z" />
-                </svg>
-              </a>
-              <a
-                href="mailto:info@jwoodtechnologies.com"
-                className="hover:text-white transition-colors hidden sm:inline"
-                data-testid="home-email"
-              >
-                info@jwoodtechnologies.com
+                <span className="products-band-dot" />
+                <div className="products-band-name">NXT1</div>
+                <div className="products-band-desc">nxtone.tech</div>
+                <span className="products-band-arrow">↗</span>
               </a>
             </div>
           </div>
-          {/* Legal row */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-[11px] font-mono tracking-[0.18em] text-white/40 uppercase">
+
+          {/* Legal row + socials */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-[11px] font-mono tracking-[0.18em] text-white/40 uppercase mt-8">
             <div>© {new Date().getFullYear()} Jwood Technologies</div>
             <div className="flex items-center gap-4">
               <a
@@ -478,12 +427,48 @@ const Home = () => {
               >
                 Terms
               </a>
+              <a
+                href="https://www.instagram.com/jwoodtechnologies"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="Instagram"
+                className="group inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 hover:border-white/30 hover:bg-white/5 transition-colors"
+                data-testid="home-instagram"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  className="h-3.5 w-3.5 text-white/70 group-hover:text-white transition-colors"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" />
+                </svg>
+              </a>
+              <a
+                href="https://www.linkedin.com/company/jwoodnxt/"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="LinkedIn"
+                className="group inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 hover:border-white/30 hover:bg-white/5 transition-colors"
+                data-testid="home-linkedin"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-[13px] w-[13px] text-white/70 group-hover:text-white transition-colors"
+                >
+                  <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8h4.56v14H.22V8zm7.42 0h4.37v1.92h.06c.61-1.15 2.1-2.36 4.32-2.36 4.63 0 5.48 3.05 5.48 7.02V22h-4.56v-6.1c0-1.46-.03-3.34-2.04-3.34-2.04 0-2.36 1.59-2.36 3.23V22H7.64V8z" />
+                </svg>
+              </a>
             </div>
           </div>
         </div>
       </footer>
 
-      {/* Floating Wood AI chatbot */}
+      {/* Floating EON chatbot */}
       <HomeEon />
     </div>
   );

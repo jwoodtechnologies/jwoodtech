@@ -1081,6 +1081,26 @@
   .eon-auth-card { padding: 26px 22px 18px; }
 }
 
+/* Dashboard "Talk to EON" orb-button */
+.eon-dash-orb-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 220ms ease, filter 220ms ease;
+  filter: drop-shadow(0 0 24px rgba(125, 170, 255, 0.45));
+}
+.eon-dash-orb-btn:hover {
+  transform: translateY(-3px) scale(1.06);
+  filter: drop-shadow(0 0 32px rgba(125, 170, 255, 0.72));
+}
+.eon-dash-orb-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+}
+
+
 /* =========================================================================
    EON v2 — Agent Platform shell (sidebar + sections)
    ========================================================================= */

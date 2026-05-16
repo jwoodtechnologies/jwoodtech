@@ -1,19 +1,92 @@
-import { useState } from "react";
-import { Loader2, X, CheckCircle2, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Loader2, X, Send } from "lucide-react";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api";
 
-// Glowing moving orb (used both as the floating launcher and the modal hero)
-const Orb = ({ size = 120 }) => (
-  <div
-    className="relative shrink-0 home-orb"
-    style={{ width: size, height: size }}
-    aria-hidden="true"
-  >
+// ---------------------------------------------------------------------------
+// Animated starfield (canvas) — premium drifting stars for the modal
+// ---------------------------------------------------------------------------
+const Starfield = () => {
+  const ref = useRef(null);
+  useEffect(() => {
+    const c = ref.current;
+    if (!c) return;
+    const ctx = c.getContext("2d");
+    let raf;
+    let stars = [];
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    const resize = () => {
+      c.width = c.clientWidth * dpr;
+      c.height = c.clientHeight * dpr;
+      const count = Math.min(Math.floor((c.width * c.height) / 4500), 600);
+      stars = new Array(count).fill(0).map(() => {
+        const z = Math.random() < 0.6 ? 0.3 : Math.random() < 0.9 ? 0.6 : 1.0;
+        return {
+          x: Math.random() * c.width,
+          y: Math.random() * c.height,
+          z,
+          vx: 0.015 * z * dpr,
+          vy: -0.008 * z * dpr,
+          tw: Math.random() * Math.PI * 2,
+          tf: 0.5 + Math.random() * 1.4,
+        };
+      });
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const tick = () => {
+      ctx.fillStyle = "rgb(2,2,6)";
+      ctx.fillRect(0, 0, c.width, c.height);
+      const t = Date.now() / 22000;
+      const gx = c.width * (0.5 + Math.sin(t) * 0.2);
+      const gy = c.height * (0.45 + Math.cos(t * 0.9) * 0.12);
+      const g = ctx.createRadialGradient(gx, gy, 0, gx, gy, Math.max(c.width, c.height) * 0.65);
+      g.addColorStop(0, "rgba(80,120,220,0.14)");
+      g.addColorStop(0.5, "rgba(30,40,90,0.04)");
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, c.width, c.height);
+      const now = Date.now() / 1000;
+      for (const s of stars) {
+        s.x += s.vx;
+        s.y += s.vy;
+        if (s.x < 0) s.x += c.width;
+        if (s.x > c.width) s.x -= c.width;
+        if (s.y < 0) s.y += c.height;
+        if (s.y > c.height) s.y -= c.height;
+        const alpha = (0.28 + Math.sin(now * s.tf + s.tw) * 0.38) * s.z;
+        ctx.globalAlpha = Math.max(0.05, Math.min(1, alpha));
+        const r = s.z * 1.25 * dpr;
+        if (s.z > 0.7) {
+          ctx.fillStyle = "rgba(220,230,255,0.55)";
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, r * 1.9, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.fillStyle = "#e8edff";
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+  return <canvas ref={ref} className="home-eon-canvas" aria-hidden="true" />;
+};
+
+// ---------------------------------------------------------------------------
+// Orb visuals (reuse wc-orb classes from existing CSS)
+// ---------------------------------------------------------------------------
+const Orb = ({ size = 64 }) => (
+  <div className="relative shrink-0 home-orb" style={{ width: size, height: size }} aria-hidden="true">
     <div className="wc-orb wc-orb-a absolute inset-0 rounded-full" />
     <div className="wc-orb wc-orb-b absolute inset-0 rounded-full" />
     <div className="wc-orb wc-orb-c absolute inset-0 rounded-full" />
@@ -22,235 +95,182 @@ const Orb = ({ size = 120 }) => (
   </div>
 );
 
-const initialForm = {
-  first_name: "",
-  last_name: "",
-  email: "",
-  phone: "",
-  message: "",
-};
+// ---------------------------------------------------------------------------
+// Conversational chatbot — step-by-step lead capture
+// ---------------------------------------------------------------------------
+const STEPS = [
+  { id: "first_name", greet: "Hey, this is EON — how can I help you today?\nWhat's your first name?",
+    accept: (v, ctx) => `Nice to meet you, ${v}. What's your last name?` },
+  { id: "last_name", greet: "",
+    accept: (v, ctx) => `Thanks, ${ctx.first_name} ${v}. What's the best email to reach you at?` },
+  { id: "email", greet: "",
+    accept: () => "Got it. So — anything we can build for you, or do you have a question about one of our products?",
+    validate: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || "Hmm, that email doesn't look right — try again." },
+  { id: "message", greet: "",
+    accept: () => "Got it — Jwood Technologies will get back to you within 24–48 hours. Thanks for reaching out." },
+];
 
-/**
- * HomeEon
- * -------
- * Floating orb (bottom-right) on the homepage. Click it → premium modal
- * with a short customer-contact form. EON greets the visitor, captures
- * first name / last name / email / what they need, and promises a reply
- * in 24–48 hours. This is NOT a chat — it's a lead-capture surface.
- */
 const HomeEon = () => {
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState(initialForm);
-  const [submitting, setSubmitting] = useState(false);
+  const [thread, setThread] = useState([]);  // [{role:'eon'|'me', text}]
+  const [step, setStep] = useState(0);
+  const [input, setInput] = useState("");
+  const [data, setData] = useState({});
   const [done, setDone] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const scrollRef = useRef(null);
 
-  const set = (k) => (e) =>
-    setForm((f) => ({ ...f, [k]: e?.target ? e.target.value : e }));
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [thread.length, busy]);
+
+  const reset = useCallback(() => {
+    setThread([]);
+    setStep(0);
+    setInput("");
+    setData({});
+    setDone(false);
+    setBusy(false);
+  }, []);
+
+  // Open → seed greeting
+  useEffect(() => {
+    if (open && thread.length === 0) {
+      setThread([{ role: "eon", text: STEPS[0].greet }]);
+    }
+  }, [open, thread.length]);
 
   const close = () => {
     setOpen(false);
-    // Reset success state once the closing animation has passed.
-    setTimeout(() => {
-      setDone(false);
-      setForm(initialForm);
-    }, 220);
+    setTimeout(reset, 240);
   };
 
-  const submit = async (e) => {
-    e.preventDefault();
-    if (!form.first_name.trim() || !form.last_name.trim() || !form.email.trim() || !form.message.trim()) {
-      toast.error("Please fill in your name, email, and message.");
-      return;
-    }
-    setSubmitting(true);
+  const submitFinal = async (collected) => {
+    setBusy(true);
     try {
       await apiClient.post("/eon-app/contact-lead", {
-        first_name: form.first_name.trim(),
-        last_name: form.last_name.trim(),
-        email: form.email.trim(),
-        phone: form.phone.trim() || undefined,
-        message: form.message.trim(),
+        first_name: collected.first_name,
+        last_name: collected.last_name,
+        email: collected.email,
+        message: collected.message,
       });
       setDone(true);
     } catch (err) {
       const msg = err?.response?.data?.detail || "Couldn't send right now. Try again in a moment.";
       toast.error(msg);
+      setThread((t) => [...t, { role: "eon", text: "Hm, something went wrong sending that. Mind retrying?" }]);
     } finally {
-      setSubmitting(false);
+      setBusy(false);
+    }
+  };
+
+  const send = (e) => {
+    e?.preventDefault();
+    const text = input.trim();
+    if (!text || busy || done) return;
+    const current = STEPS[step];
+    if (current.validate) {
+      const v = current.validate(text);
+      if (v !== true) {
+        setThread((t) => [...t, { role: "me", text }, { role: "eon", text: v }]);
+        setInput("");
+        return;
+      }
+    }
+    const nextData = { ...data, [current.id]: text };
+    setData(nextData);
+    const reply = current.accept(text, nextData);
+    setThread((t) => [...t, { role: "me", text }, { role: "eon", text: reply }]);
+    setInput("");
+    const nextStep = step + 1;
+    if (nextStep >= STEPS.length) {
+      submitFinal(nextData);
+    } else {
+      setStep(nextStep);
     }
   };
 
   return (
     <>
-      {/* Floating launcher — pure glowing orb, no label */}
+      {/* Floating launcher orb */}
       <button
+        type="button"
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-40 home-orb-btn group"
+        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-40 home-eon-launcher"
         data-testid="home-eon-launcher"
-        aria-label="Open EON contact"
+        aria-label="Open EON"
       >
-        <span className="home-orb-pulse" aria-hidden="true" />
-        <span className="home-orb-pulse home-orb-pulse-2" aria-hidden="true" />
-        <span className="home-orb-wrap">
-          <Orb size={56} />
-        </span>
+        <Orb size={56} />
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center px-3 md:px-6 pb-3 md:pb-0" data-testid="home-eon-dialog">
-          {/* Backdrop */}
+        <div className="fixed inset-0 z-[60] flex items-center justify-center" data-testid="home-eon-dialog">
+          <Starfield />
           <button
             type="button"
-            className="absolute inset-0 bg-black/72 backdrop-blur-md"
+            className="absolute inset-0 bg-black/40"
             onClick={close}
             aria-label="Close"
+            style={{ background: "transparent" }}
           />
-
-          {/* Modal */}
-          <div
-            className="relative z-10 w-full max-w-[460px] rounded-3xl border border-white/10 bg-[rgba(10,12,22,0.88)] shadow-[0_40px_120px_-30px_rgba(0,0,0,0.85)] overflow-hidden"
-            data-testid="home-eon-modal"
-          >
-            <button
-              type="button"
-              className="absolute top-3 right-3 h-9 w-9 rounded-full grid place-items-center text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors z-20"
-              onClick={close}
-              data-testid="home-eon-close"
-              aria-label="Close"
-            >
-              <X className="h-4 w-4" />
-            </button>
-
-            {/* Hero strip with orb */}
-            <div className="relative px-7 pt-7 pb-5 text-center border-b border-white/[0.06] bg-gradient-to-b from-white/[0.04] to-transparent">
-              <div className="flex justify-center mb-4">
-                <Orb size={72} />
-              </div>
-              <div className="font-mono text-[10.5px] tracking-[0.32em] uppercase text-[rgb(var(--wc-accent))]">
-                Hi, I'm EON
-              </div>
-              <h2 className="mt-2 text-white text-[22px] font-light tracking-tight">
-                {done ? "Got it — we'll be in touch." : "Tell us what you're building."}
-              </h2>
-              <p className="mt-2 text-white/55 text-[13px] leading-relaxed max-w-[340px] mx-auto">
-                {done
-                  ? "Thanks for reaching out. Jwood Technologies will get back to you within 24–48 hours."
-                  : "Drop your name + a quick note. We'll reach back out within 24–48 hours."}
-              </p>
-            </div>
-
-            {/* Body */}
-            <div className="px-7 py-6">
-              {done ? (
-                <div className="flex flex-col items-center gap-4 py-4" data-testid="home-eon-success">
-                  <CheckCircle2 className="h-9 w-9 text-emerald-400" />
-                  <Button
-                    onClick={close}
-                    className="rounded-full bg-white text-black hover:bg-white/90 px-6 h-10"
-                    data-testid="home-eon-done-close"
-                  >
-                    Done
-                  </Button>
+          <div className="home-eon-shell" data-testid="home-eon-modal">
+            <header className="home-eon-head">
+              <div className="flex items-center gap-3">
+                <Orb size={36} />
+                <div className="leading-tight">
+                  <div className="home-eon-title">EON</div>
+                  <div className="home-eon-tag">Jwood Technologies</div>
                 </div>
-              ) : (
-                <form onSubmit={submit} className="space-y-4" data-testid="home-eon-form" noValidate>
-                  <div className="grid grid-cols-2 gap-3">
-                    <FormField label="First name" htmlFor="he-first" required>
-                      <Input
-                        id="he-first"
-                        data-testid="home-eon-first"
-                        className="input-premium h-10 rounded-lg"
-                        value={form.first_name}
-                        onChange={set("first_name")}
-                        placeholder="Jane"
-                        required
-                      />
-                    </FormField>
-                    <FormField label="Last name" htmlFor="he-last" required>
-                      <Input
-                        id="he-last"
-                        data-testid="home-eon-last"
-                        className="input-premium h-10 rounded-lg"
-                        value={form.last_name}
-                        onChange={set("last_name")}
-                        placeholder="Doe"
-                        required
-                      />
-                    </FormField>
-                  </div>
-                  <FormField label="Email" htmlFor="he-email" required>
-                    <Input
-                      id="he-email"
-                      type="email"
-                      data-testid="home-eon-email"
-                      className="input-premium h-10 rounded-lg"
-                      value={form.email}
-                      onChange={set("email")}
-                      placeholder="you@company.com"
-                      required
-                    />
-                  </FormField>
-                  <FormField label="Phone" htmlFor="he-phone">
-                    <Input
-                      id="he-phone"
-                      data-testid="home-eon-phone"
-                      className="input-premium h-10 rounded-lg"
-                      value={form.phone}
-                      onChange={set("phone")}
-                      placeholder="Optional"
-                    />
-                  </FormField>
-                  <FormField label="What can we help with?" htmlFor="he-msg" required>
-                    <Textarea
-                      id="he-msg"
-                      data-testid="home-eon-message"
-                      className="input-premium min-h-[88px] rounded-lg"
-                      value={form.message}
-                      onChange={set("message")}
-                      placeholder="A line or two about your project."
-                      required
-                    />
-                  </FormField>
+              </div>
+              <button
+                type="button"
+                onClick={close}
+                className="home-eon-close"
+                data-testid="home-eon-close"
+                aria-label="Close"
+              >
+                <X size={16} />
+              </button>
+            </header>
 
-                  <Button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full rounded-full bg-white text-black hover:bg-white/90 h-11 mt-2"
-                    data-testid="home-eon-submit"
-                  >
-                    {submitting ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <>
-                        Send to EON
-                        <ArrowRight className="h-4 w-4 ml-1.5" />
-                      </>
-                    )}
-                  </Button>
-                  <p className="text-center text-[11px] text-white/40 mt-1">
-                    Replies in 24–48 hours. No spam.
-                  </p>
-                </form>
+            <div className="home-eon-thread" ref={scrollRef}>
+              {thread.map((m, i) => (
+                <div key={i} className={`home-eon-msg ${m.role === "me" ? "home-eon-msg-me" : "home-eon-msg-eon"}`}>
+                  {m.text}
+                </div>
+              ))}
+              {busy && (
+                <div className="home-eon-msg home-eon-msg-eon home-eon-typing">
+                  <span /><span /><span />
+                </div>
               )}
             </div>
+
+            <form onSubmit={send} className="home-eon-compose" data-testid="home-eon-form">
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={done ? "Conversation complete." : "Type your reply…"}
+                disabled={done || busy}
+                data-testid="home-eon-input"
+                autoFocus
+              />
+              <button
+                type="submit"
+                disabled={!input.trim() || done || busy}
+                className="home-eon-send-btn"
+                data-testid="home-eon-submit"
+                aria-label="Send"
+              >
+                {busy ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+              </button>
+            </form>
           </div>
         </div>
       )}
     </>
   );
 };
-
-const FormField = ({ label, htmlFor, required, children }) => (
-  <div className="space-y-1.5">
-    <Label
-      htmlFor={htmlFor}
-      className="font-mono text-[10.5px] tracking-[0.2em] uppercase text-white/60"
-    >
-      {label}
-      {required && <span className="ml-1 text-white/35">*</span>}
-    </Label>
-    {children}
-  </div>
-);
 
 export default HomeEon;
