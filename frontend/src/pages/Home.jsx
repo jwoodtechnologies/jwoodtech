@@ -397,6 +397,22 @@ const Home = () => {
               >
                 WoodX →
               </a>
+              <a
+                href="https://nxtone.tech"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
+                data-testid="home-nxt1-link"
+              >
+                <span
+                  className="inline-block h-1.5 w-1.5 rounded-full"
+                  style={{
+                    background: "rgba(125, 170, 255, 0.85)",
+                    boxShadow: "0 0 8px rgba(125, 170, 255, 0.7)",
+                  }}
+                />
+                NXT1 →
+              </a>
             </div>
             <div className="flex items-center gap-4 text-[12px] font-mono tracking-[0.18em] text-white/55 uppercase">
               <a
@@ -463,21 +479,6 @@ const Home = () => {
                 Terms
               </a>
             </div>
-          </div>
-          {/* NXT1 strip */}
-          <div className="nxt1-strip">
-            <a
-              href="https://nxtone.tech"
-              target="_blank"
-              rel="noreferrer noopener"
-              className="nxt1-link"
-              data-testid="home-nxt1"
-            >
-              <span className="nxt1-dot" />
-              <span className="nxt1-mark">NXT1</span>
-              <span>nxtone.tech</span>
-              <span className="nxt1-arrow">↗</span>
-            </a>
           </div>
         </div>
       </footer>

@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Unbounded:wght@400;500;600;700;800&display=swap");
+@import "../node_modules/@cometchat/chat-uikit-react/dist/styles/css-variables.css";
 
 @tailwind base;
 @tailwind components;
@@ -790,4 +791,41 @@ iframe[src*="emergent.sh"] {
   pointer-events: none;
 }
 .eon-nxt1-foot .nxt1-link { pointer-events: auto; }
+
+
+/* ============================================================
+   CometChat ↔ WoodX theme bridge
+   Light theme = default; dark theme via [data-theme="dark"] on .wx-root.
+   ============================================================ */
+.cometchat {
+  --cometchat-primary-color: #2563eb;
+  --cometchat-extended-primary-color-500: #60a5fa;
+  --cometchat-background-color-01: #ffffff;
+  --cometchat-background-color-02: #f5f7fb;
+  --cometchat-background-color-03: #eef1f7;
+  --cometchat-neutral-color-300: rgba(10, 14, 23, 0.10);
+  --cometchat-neutral-color-500: rgba(10, 14, 23, 0.38);
+  --cometchat-neutral-color-700: #0a0e17;
+  --cometchat-icon-color-highlight: #2563eb;
+  --cometchat-text-color-highlight: #2563eb;
+  --cometchat-message-seen-color: #2563eb;
+  --cometchat-font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+.wx-root[data-theme="dark"] .cometchat {
+  --cometchat-primary-color: #60a5fa;
+  --cometchat-extended-primary-color-500: #1d4ed8;
+  --cometchat-background-color-01: #06070d;
+  --cometchat-background-color-02: #0c0f18;
+  --cometchat-background-color-03: #10131e;
+  --cometchat-neutral-color-300: rgba(255, 255, 255, 0.10);
+  --cometchat-neutral-color-500: rgba(255, 255, 255, 0.55);
+  --cometchat-neutral-color-700: #f1f4fa;
+  --cometchat-icon-color-highlight: #60a5fa;
+  --cometchat-text-color-highlight: #f1f4fa;
+  --cometchat-message-seen-color: #60a5fa;
+}
+
+.wx-mobile-only { display: none; }
+@media (max-width: 880px) { .wx-mobile-only { display: inline-flex; } }
 

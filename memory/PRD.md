@@ -51,18 +51,33 @@ Branding & UX constraints (user-stated, verbatim where relevant):
 - Installed `jwoodtech-main` codebase (backend + frontend) into `/app`.
 - Added `EMERGENT_LLM_KEY` + `JWT_SECRET` to `backend/.env`.
 - Built out full EON Agent Platform (Dashboard / Agent / Tasks).
-- **Researcher agent now does real web search** (`ddgs` DuckDuckGo) and
-  feeds 6 sources into the LLM so answers cite inline `[1][2]...` with a
-  Sources footer. Sources are stored on the task doc and returned in
-  `_task_out`.
-- **Homepage orb** rewritten as a customer-contact widget. Floating
-  glowing orb (pulse + drift animations) in bottom-right; click opens a
-  modal with First / Last / Email / Phone / Message fields. Posts to
-  `POST /api/eon-app/contact-lead`, stored in `eon_contact_leads`.
-  Promises a 24–48 hour reply.
-- **Removed Wallet + Market/News** from the EON sidebar (user request).
-- **NXT1 footer** added on the homepage and inside the EON app
-  (`https://nxtone.tech`). Glowing blue dot + monospace mark.
+- **Researcher agent now does real web search** (`ddgs`) and feeds 6
+  sources into the LLM → inline `[1][2]` citations + Sources footer.
+- **Homepage orb is a customer-contact form** (`POST /eon-app/contact-lead`,
+  stored in `eon_contact_leads`). Promises a 24–48 hour reply.
+- **Removed Wallet + Market/News from EON sidebar** (user request).
+- **Footer overhauled**: `EON → · WOODX → · ●NXT1 →` sit together as
+  product links on Home; the standalone NXT1 strip was removed.
+- **CometChat integrated for WoodX (`/woodchat`):**
+  - Frontend: lazy-loaded `@cometchat/chat-uikit-react` (web). Premium
+    sidebar (Chats / Groups / Contacts / Wallet (Soon) /
+    Market & News (Soon) / EON (Soon)). Light + Dark mode toggle. WoodX
+    logo treatment. Composed CometChat UI from
+    `CometChatConversations` / `CometChatUsers` / `CometChatGroups` +
+    `CometChatMessageHeader` / `MessageList` / `MessageComposer`.
+  - Backend: new `GET /api/woodchat/comet/config` provisions the
+    CometChat user via REST (`apikey` = WoodX Auth Key) and returns
+    `{uid, app_id, region, auth_key}`. Frontend then calls
+    `CometChatUIKit.login(uid)` — never exposes secret keys
+    that don't belong on the client.
+  - StrictMode race fixed with a `loginOnce` serializer module-side.
+  - Guest mode: WoodX is fully browsable as a guest; sign-in modal pops
+    when the user clicks Sign in or tries to use a gated section. EON
+    Messaging Agent labeled Coming Soon.
+- env: added `COMETCHAT_APP_ID`, `COMETCHAT_REGION`, `COMETCHAT_AUTH_KEY`
+  to backend; `REACT_APP_COMETCHAT_*` mirrors on frontend (kept for
+  future client-only dev fallback, but server-issued config is the
+  primary path).
 
 ## Backlog (not yet built)
 - **P1**: Wallet section (credits, billing, per-agent usage).

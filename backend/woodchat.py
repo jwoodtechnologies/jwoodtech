@@ -10,6 +10,7 @@ import os
 import re
 import secrets
 import uuid
+import logging
 from datetime import datetime, timedelta, timezone
 from typing import List, Literal, Optional
 
@@ -18,6 +19,8 @@ import jwt
 from fastapi import APIRouter, Depends, HTTPException, Request
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from pydantic import BaseModel, EmailStr, Field, field_validator
+
+logger = logging.getLogger("jwood.woodchat")
 
 JWT_ALGO = "HS256"
 ACCESS_TTL_HOURS = 24 * 7  # 1-week token — messaging apps keep users signed in
@@ -192,6 +195,55 @@ def build_woodchat_router(
         return u
 
     # ---- registration / login ----------------------------------------------
+    # CometChat provisioning helper (server-side, uses Auth Key as apikey).
+    async def _comet_provision(uid: str, name: str) -> str:
+        """Idempotently create the CometChat user. Returns the safe uid."""
+        import re
+        safe = re.sub(r"[^a-z0-9_-]", "_", uid.lower())[:80]
+        app_id = os.environ.get("COMETCHAT_APP_ID", "")
+        region = os.environ.get("COMETCHAT_REGION", "us")
+        api_key = os.environ.get("COMETCHAT_AUTH_KEY", "")
+        if not (app_id and api_key):
+            return safe  # nothing to do — caller still gets the uid
+        url = f"https://{app_id}.api-{region}.cometchat.io/v3/users"
+        try:
+            import httpx  # type: ignore
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                resp = await client.post(
+                    url,
+                    headers={
+                        "Content-Type": "application/json",
+                        "apikey": api_key,
+                    },
+                    json={"uid": safe, "name": name[:100] or safe},
+                )
+                if resp.status_code not in (200, 201, 409):
+                    body = (resp.text or "")[:200]
+                    logger.warning(
+                        "CometChat provision failed (%s): %s",
+                        resp.status_code,
+                        body,
+                    )
+        except Exception as exc:  # pragma: no cover
+            logger.warning("CometChat provision exception: %s", exc)
+        return safe
+
+    @r.get("/comet/config")
+    async def comet_config(u=Depends(current_user)):
+        """Provision the CometChat user for the signed-in WoodX user and
+        return the public config the frontend needs to log them in."""
+        display = " ".join(filter(None, [u.get("first_name"), u.get("last_name")])).strip()
+        if not display:
+            display = u.get("username") or u.get("email") or "WoodX user"
+        uid = await _comet_provision(u["id"], display)
+        return {
+            "uid": uid,
+            "display_name": display,
+            "app_id": os.environ.get("COMETCHAT_APP_ID", ""),
+            "region": os.environ.get("COMETCHAT_REGION", "us"),
+            "auth_key": os.environ.get("COMETCHAT_AUTH_KEY", ""),
+        }
+
     @r.post("/auth/register", response_model=AuthOut)
     async def register(body: RegisterIn):
         email = body.email.lower()
