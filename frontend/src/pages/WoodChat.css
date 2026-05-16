@@ -610,6 +610,32 @@
   padding: 22px 0;
 }
 
+/* Typing indicator (matches home-eon style) */
+.wx-eon-typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 12px 16px;
+  align-self: flex-start;
+  background: var(--wx-bg-sub);
+  border: 1px solid var(--wx-line);
+  border-radius: 16px;
+  border-bottom-left-radius: 4px;
+}
+.wx-eon-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--wx-fg-dim);
+  animation: wx-eon-typing 1.2s infinite ease-in-out;
+}
+.wx-eon-typing span:nth-child(2) { animation-delay: 0.15s; }
+.wx-eon-typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes wx-eon-typing {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30%           { opacity: 1;   transform: translateY(-2px); }
+}
+
 /* Animated orb visuals (re-using wc-orb classes from WoodChat heritage) */
 .wx-orb-glow {
   position: absolute;
@@ -666,13 +692,41 @@
   .wx-page-sub { display: none; }
   .wx-chat-shell { grid-template-columns: 1fr; }
   .wx-conv-pane { border-right: none; border-bottom: 1px solid var(--wx-line); max-height: 42vh; }
-  .wx-eon-hero { padding: 18px 18px 16px; }
-  .wx-eon-scroll { padding: 14px 18px 6px; }
-  .wx-eon-compose { padding: 12px 18px 16px; }
+
+  /* Constrain EON chat to a normal chatbot ratio on mobile, not full-bleed */
+  .wx-eon-stage {
+    width: 100%;
+    max-width: 560px;
+    margin: 12px auto 18px;
+    padding: 0;
+    background: var(--wx-bg-elev);
+    border: 1px solid var(--wx-line);
+    border-radius: 18px;
+    overflow: hidden;
+    height: auto;
+    min-height: 0;
+    box-shadow: 0 10px 40px -20px rgba(0, 0, 0, 0.6);
+  }
+  .wx-eon-hero {
+    padding: 16px 18px 14px;
+  }
+  .wx-eon-hero h2 { font-size: 17px; }
+  .wx-eon-hero p { font-size: 12px; }
+  .wx-eon-orb { width: 44px; height: 44px; }
+  .wx-eon-scroll {
+    padding: 14px 18px 6px;
+    max-height: 50vh;
+    min-height: 220px;
+  }
+  .wx-eon-compose {
+    padding: 12px 18px 14px;
+  }
+  .wx-eon-msg { max-width: 88%; font-size: 13.5px; }
+
   .wx-foot {
     padding: 12px 18px;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     text-align: center;
     font-size: 9.5px;
   }

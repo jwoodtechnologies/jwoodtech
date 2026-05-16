@@ -401,9 +401,8 @@ const Home = () => {
                 className="products-band-card"
                 data-testid="home-nxt1-link"
               >
-                <span className="products-band-dot" />
                 <div className="products-band-name">NXT1</div>
-                <div className="products-band-desc">nxtone.tech</div>
+                <div className="products-band-desc">No-code platform to build apps, websites, and MVPs.</div>
                 <span className="products-band-arrow">↗</span>
               </a>
             </div>

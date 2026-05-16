@@ -897,7 +897,7 @@ iframe[src*="emergent.sh"] {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 6px;
   padding: 16px 18px;
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -927,16 +927,34 @@ iframe[src*="emergent.sh"] {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.45);
 }
-.products-band-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: rgba(125, 170, 255, 0.9);
-  box-shadow: 0 0 10px rgba(125, 170, 255, 0.7);
-  margin-bottom: 2px;
-}
 @media (max-width: 720px) {
-  .products-band-grid { grid-template-columns: 1fr; }
+  .products-band-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .products-band-card {
+    padding: 12px 14px;
+    gap: 4px;
+    flex-direction: row;
+    align-items: center;
+  }
+  .products-band-name {
+    font-size: 13.5px;
+    min-width: 56px;
+  }
+  .products-band-desc {
+    font-size: 11.5px;
+    flex: 1;
+  }
+  .products-band-arrow {
+    margin-left: 0;
+    align-self: center;
+    font-size: 11px;
+  }
+  .products-band-label {
+    font-size: 9.5px;
+    margin-bottom: 10px;
+  }
 }
 
 

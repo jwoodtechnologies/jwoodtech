@@ -365,11 +365,26 @@ const Sidebar = ({ view, setView, user, theme, toggleTheme, onSignOut, openAuth,
 // ---------------------------------------------------------------------------
 // EON Agent panel — live AI chat embedded in WoodX
 // ---------------------------------------------------------------------------
+const WX_EON_HISTORY_KEY = "wx_eon_history";
+
 const EonAgentPanel = ({ user, openAuth }) => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(() => {
+    try {
+      const raw = sessionStorage.getItem(WX_EON_HISTORY_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef(null);
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(WX_EON_HISTORY_KEY, JSON.stringify(messages.slice(-40)));
+    } catch { /* ignore */ }
+  }, [messages]);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -400,6 +415,12 @@ const EonAgentPanel = ({ user, openAuth }) => {
     }
   };
 
+  const clearChat = () => {
+    if (!window.confirm("Clear this conversation with EON?")) return;
+    setMessages([]);
+    try { sessionStorage.removeItem(WX_EON_HISTORY_KEY); } catch { /* ignore */ }
+  };
+
   const prompts = [
     "Summarize my last conversation.",
     "Draft a quick reply.",
@@ -416,11 +437,19 @@ const EonAgentPanel = ({ user, openAuth }) => {
         </div>
         <div className="wx-eon-hero-text">
           <h2>EON</h2>
-          <p>
-            Your AI agent inside WoodX — summarize threads, draft replies,
-            plan tasks, research questions.
-          </p>
+          <p>Your AI agent inside WoodX — summarize threads, draft replies, plan tasks, research.</p>
         </div>
+        {messages.length > 0 ? (
+          <button
+            type="button"
+            className="wx-btn wx-btn-ghost"
+            onClick={clearChat}
+            data-testid="wx-eon-clear"
+            style={{ padding: "6px 12px", fontSize: 12 }}
+          >
+            Clear
+          </button>
+        ) : null}
       </div>
 
       <div className="wx-eon-scroll" ref={scrollRef}>
@@ -453,9 +482,8 @@ const EonAgentPanel = ({ user, openAuth }) => {
           ))
         )}
         {busy && (
-          <div className="wx-eon-msg wx-eon-msg-ai" style={{ opacity: 0.7 }}>
-            <Loader2 size={14} className="animate-spin" style={{ display: "inline-block", marginRight: 6 }} />
-            Thinking…
+          <div className="wx-eon-msg wx-eon-msg-ai wx-eon-typing" data-testid="wx-eon-typing">
+            <span /><span /><span />
           </div>
         )}
       </div>
@@ -720,18 +748,10 @@ const WoodChat = () => {
             {renderContent()}
           </div>
           <footer className="wx-foot">
-            <div>© {new Date().getFullYear()} Jwood Technologies</div>
+            <div>© {new Date().getFullYear()} Jwood Technologies · WoodX</div>
             <div className="wx-foot-links">
-              <a href="/" data-testid="wx-foot-home">Home</a>
-              <a href="/eon" data-testid="wx-foot-eon">EON ↗</a>
-              <a
-                href="https://nxtone.tech"
-                target="_blank"
-                rel="noreferrer noopener"
-                data-testid="wx-foot-nxt1"
-              >
-                <span className="wx-nxt-dot" /> NXT1 ↗
-              </a>
+              <a href="/privacy" data-testid="wx-foot-privacy">Privacy</a>
+              <a href="/terms" data-testid="wx-foot-terms">Terms</a>
             </div>
           </footer>
         </section>
