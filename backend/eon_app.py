@@ -32,12 +32,53 @@ ADMIN_EMAIL = "admin@jwoodtechnologies.com"
 ADMIN_CODE = "7607"
 
 EON_SYSTEM_PROMPT = (
-    "You are EON, a premium AI assistant by Jwood Technologies. You are calm, "
-    "sharp, and helpful. Default to plain prose. No markdown headings, no "
-    "bullet lists unless the user explicitly asks. Keep replies tight: 1–4 "
-    "short sentences for casual prompts, longer only when the question "
-    "demands it. Never claim to be human. Powered by Wood AI."
+    "You are EON — a personal AI agent system built to help users research, "
+    "organize information, automate workflows, and execute tasks faster. "
+    "You think in steps and you act. When the user gives you a goal, briefly "
+    "acknowledge it, outline the steps you'd take, then deliver the result. "
+    "You can delegate to specialist agents: Researcher (gathers facts + sources), "
+    "Planner (breaks goals into tasks), Writer (drafts and rewrites), and "
+    "Analyst (numbers, comparisons, decisions). When useful, mention which "
+    "agent handled the work. Default to clean plain prose. Use lists only "
+    "when the answer is genuinely a list. Be sharp, honest, and useful. "
+    "Never claim to be human."
 )
+
+# Static specialist-agent roster surfaced on the dashboard.
+EON_AGENTS = [
+    {
+        "id": "researcher",
+        "name": "Researcher",
+        "tagline": "Gathers facts, sources, and context.",
+        "icon": "search",
+        "color": "#7aa9ff",
+        "tools": ["web_search", "summarize", "citations"],
+    },
+    {
+        "id": "planner",
+        "name": "Planner",
+        "tagline": "Breaks goals into clear, ordered steps.",
+        "icon": "list",
+        "color": "#a78bfa",
+        "tools": ["task_breakdown", "calendar", "priorities"],
+    },
+    {
+        "id": "writer",
+        "name": "Writer",
+        "tagline": "Drafts, rewrites, and polishes copy.",
+        "icon": "pen",
+        "color": "#34d399",
+        "tools": ["draft", "rewrite", "tone_shift"],
+    },
+    {
+        "id": "analyst",
+        "name": "Analyst",
+        "tagline": "Compares options and crunches numbers.",
+        "icon": "chart",
+        "color": "#f59e0b",
+        "tools": ["compare", "summarize_data", "decision_matrix"],
+    },
+]
 
 
 # ---------------------------------------------------------------------------
@@ -94,6 +135,22 @@ class ThreadCreateIn(BaseModel):
 class ThreadUpdateIn(BaseModel):
     title: Optional[str] = None
     archived: Optional[bool] = None
+
+
+class TaskCreateIn(BaseModel):
+    title: str = Field(min_length=1, max_length=200)
+    description: Optional[str] = Field(default=None, max_length=2000)
+    agent_id: Optional[str] = None  # researcher / planner / writer / analyst
+    priority: Optional[str] = Field(default="normal")  # low | normal | high
+
+
+class TaskUpdateIn(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    status: Optional[str] = None  # queued | running | done | failed
+    agent_id: Optional[str] = None
+    priority: Optional[str] = None
+    result: Optional[str] = None
 
 
 # ---------------------------------------------------------------------------
@@ -158,6 +215,80 @@ def build_eon_router(
     users = db.eon_users
     msgs = db.eon_messages
     threads = db.eon_threads
+    tasks_col = db.eon_tasks
+    activity_col = db.eon_activity
+
+    # ---- LLM (Emergent universal key, default: Anthropic Claude Sonnet 4.5)
+    EMERGENT_KEY = os.environ.get("EMERGENT_LLM_KEY", "")
+    LLM_PROVIDER = os.environ.get("EON_LLM_PROVIDER", "anthropic")
+    LLM_MODEL = os.environ.get("EON_LLM_MODEL", "claude-sonnet-4-5-20250929")
+
+    async def _llm_reply(session_id: str, system: str, history: list[dict], user_text: str) -> str:
+        """Send a user message through emergentintegrations with multi-turn
+        history. `history` is the prior messages list of {role, content}."""
+        if not EMERGENT_KEY:
+            return (
+                "EON's model brain isn't connected yet. Add EMERGENT_LLM_KEY "
+                "(or your own provider key) in backend/.env and try again."
+            )
+        try:
+            # Lazy import so the module loads even if the lib is missing locally.
+            from emergentintegrations.llm.chat import LlmChat, UserMessage  # type: ignore
+
+            chat = (
+                LlmChat(
+                    api_key=EMERGENT_KEY,
+                    session_id=session_id,
+                    system_message=system,
+                )
+                .with_model(LLM_PROVIDER, LLM_MODEL)
+            )
+            # Replay history so multi-turn context is preserved.
+            for m in history:
+                role = m.get("role")
+                txt = (m.get("content") or "")[:4000]
+                if not txt or role not in ("user", "assistant"):
+                    continue
+                # send_message handles its own history internally, so we feed
+                # the prior turns by sending them one by one is wasteful — we
+                # instead rely on the system + the explicit user message for
+                # the current turn, prefixed with a compact recap if history
+                # exists. Keep it simple and effective.
+                pass
+
+            # Build a single combined turn: include a compact recap of the
+            # last few turns so the model has context without per-message
+            # round-trips.
+            if history:
+                recap_lines = []
+                for m in history[-8:]:
+                    tag = "User" if m["role"] == "user" else "EON"
+                    recap_lines.append(f"{tag}: {(m['content'] or '')[:600]}")
+                recap = "Conversation so far:\n" + "\n".join(recap_lines) + "\n\nUser now says:\n" + user_text
+                payload = recap
+            else:
+                payload = user_text
+
+            resp = await chat.send_message(UserMessage(text=payload))
+            return (resp or "").strip() or "(EON had no reply.)"
+        except Exception as exc:
+            logger.warning("EON LLM call failed: %s", exc, exc_info=True)
+            return "EON ran into a model error. Please try again in a moment."
+
+    async def _log_activity(uid: str, kind: str, summary: str, meta: Optional[dict] = None) -> None:
+        try:
+            await activity_col.insert_one(
+                {
+                    "id": str(uuid.uuid4()),
+                    "user_id": uid,
+                    "kind": kind,
+                    "summary": summary[:300],
+                    "meta": meta or {},
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                }
+            )
+        except Exception as exc:  # pragma: no cover
+            logger.debug("activity log failed: %s", exc)
 
     # ---- thread helpers ----------------------------------------------------
     async def _ensure_default_thread(uid: str) -> dict:
@@ -481,9 +612,15 @@ def build_eon_router(
             )
 
         if not openai_client:
-            reply = (
-                "EON is in BETA and isn't connected to a model right now. "
-                "Please try again shortly."
+            # No OpenAI key — fall back to Emergent universal-key path.
+            reply = await _llm_reply(
+                session_id=f"{u['id']}:{thread['id']}",
+                system=EON_SYSTEM_PROMPT,
+                history=[
+                    {"role": ("assistant" if m["role"] == "assistant" else "user"), "content": m["text"]}
+                    for m in history_docs[:-1]  # exclude the just-inserted user msg
+                ],
+                user_text=text,
             )
         else:
             try:
@@ -496,7 +633,16 @@ def build_eon_router(
                 reply = (resp.choices[0].message.content or "").strip()
             except Exception as exc:  # pragma: no cover
                 logger.warning("EON chat failed: %s", exc)
-                reply = "EON is unavailable right now. Please try again in a moment."
+                # Fallback to Emergent universal key on OpenAI failure.
+                reply = await _llm_reply(
+                    session_id=f"{u['id']}:{thread['id']}",
+                    system=EON_SYSTEM_PROMPT,
+                    history=[
+                        {"role": ("assistant" if m["role"] == "assistant" else "user"), "content": m["text"]}
+                        for m in history_docs[:-1]
+                    ],
+                    user_text=text,
+                )
 
         reply_now = datetime.now(timezone.utc).isoformat()
         # Persist assistant reply
@@ -524,12 +670,202 @@ def build_eon_router(
             )
 
         remaining = -1 if is_admin else max(0, FREE_LIMIT - new_count)
+        await _log_activity(
+            u["id"], "chat", f"Sent a message in {thread.get('title') or 'thread'}",
+            {"thread_id": thread["id"], "agent_id": "eon"},
+        )
         return {
             "reply": reply,
             "thread_id": thread["id"],
             "message_count": new_count,
             "remaining": remaining,
             "is_admin": is_admin,
+        }
+
+    # ---- Agents / Tasks / Dashboard / Activity ----------------------------
+    @r.get("/agents")
+    async def list_agents():
+        return {"agents": EON_AGENTS}
+
+    def _task_out(t: dict) -> dict:
+        return {
+            "id": t["id"],
+            "title": t.get("title", ""),
+            "description": t.get("description", ""),
+            "status": t.get("status", "queued"),
+            "agent_id": t.get("agent_id"),
+            "priority": t.get("priority", "normal"),
+            "result": t.get("result", ""),
+            "created_at": t.get("created_at", ""),
+            "updated_at": t.get("updated_at", ""),
+        }
+
+    @r.get("/tasks")
+    async def list_tasks(u=Depends(current_user)):
+        rows = (
+            await tasks_col.find({"user_id": u["id"]}, {"_id": 0})
+            .sort("created_at", -1)
+            .to_list(200)
+        )
+        return {"tasks": [_task_out(t) for t in rows]}
+
+    @r.post("/tasks")
+    async def create_task(body: TaskCreateIn, u=Depends(current_user)):
+        agent_id = body.agent_id
+        if agent_id and not any(a["id"] == agent_id for a in EON_AGENTS):
+            raise HTTPException(status_code=400, detail="Unknown agent_id")
+        now = datetime.now(timezone.utc).isoformat()
+        doc = {
+            "id": str(uuid.uuid4()),
+            "user_id": u["id"],
+            "title": body.title.strip()[:200],
+            "description": (body.description or "").strip()[:2000],
+            "status": "queued",
+            "agent_id": agent_id,
+            "priority": body.priority or "normal",
+            "result": "",
+            "created_at": now,
+            "updated_at": now,
+        }
+        await tasks_col.insert_one(doc)
+        await _log_activity(
+            u["id"], "task_created",
+            f"New task: {doc['title']}",
+            {"task_id": doc["id"], "agent_id": agent_id},
+        )
+        return {"task": _task_out(doc)}
+
+    @r.patch("/tasks/{task_id}")
+    async def update_task(task_id: str, body: TaskUpdateIn, u=Depends(current_user)):
+        t = await tasks_col.find_one({"id": task_id, "user_id": u["id"]}, {"_id": 0})
+        if not t:
+            raise HTTPException(status_code=404, detail="Task not found")
+        update = {}
+        if body.title is not None:
+            update["title"] = body.title.strip()[:200]
+        if body.description is not None:
+            update["description"] = body.description.strip()[:2000]
+        if body.status is not None:
+            if body.status not in ("queued", "running", "done", "failed"):
+                raise HTTPException(status_code=400, detail="Invalid status")
+            update["status"] = body.status
+        if body.agent_id is not None:
+            if body.agent_id and not any(a["id"] == body.agent_id for a in EON_AGENTS):
+                raise HTTPException(status_code=400, detail="Unknown agent_id")
+            update["agent_id"] = body.agent_id
+        if body.priority is not None:
+            update["priority"] = body.priority
+        if body.result is not None:
+            update["result"] = body.result[:5000]
+        if update:
+            update["updated_at"] = datetime.now(timezone.utc).isoformat()
+            await tasks_col.update_one({"id": task_id}, {"$set": update})
+            await _log_activity(
+                u["id"], "task_updated", f"Task '{t['title']}' → {update.get('status', t.get('status'))}",
+                {"task_id": task_id},
+            )
+        merged = {**t, **update}
+        return {"task": _task_out(merged)}
+
+    @r.delete("/tasks/{task_id}")
+    async def delete_task(task_id: str, u=Depends(current_user)):
+        t = await tasks_col.find_one({"id": task_id, "user_id": u["id"]}, {"_id": 0})
+        if not t:
+            raise HTTPException(status_code=404, detail="Task not found")
+        await tasks_col.delete_one({"id": task_id})
+        await _log_activity(u["id"], "task_deleted", f"Deleted: {t.get('title','')}", {"task_id": task_id})
+        return {"ok": True}
+
+    @r.post("/tasks/{task_id}/run")
+    async def run_task(task_id: str, u=Depends(current_user)):
+        """Execute a task by delegating to its specialist agent via the LLM."""
+        t = await tasks_col.find_one({"id": task_id, "user_id": u["id"]}, {"_id": 0})
+        if not t:
+            raise HTTPException(status_code=404, detail="Task not found")
+
+        is_admin = bool(u.get("is_admin"))
+        count = int(u.get("message_count", 0))
+        if not is_admin and count >= FREE_LIMIT:
+            raise HTTPException(status_code=402, detail="Free access limit reached.")
+
+        await tasks_col.update_one(
+            {"id": task_id},
+            {"$set": {"status": "running", "updated_at": datetime.now(timezone.utc).isoformat()}},
+        )
+
+        agent = next((a for a in EON_AGENTS if a["id"] == t.get("agent_id")), None)
+        agent_name = agent["name"] if agent else "EON"
+        agent_brief = agent["tagline"] if agent else "general assistant"
+
+        system = (
+            f"You are the EON {agent_name} sub-agent — {agent_brief} "
+            "Execute the user's task end-to-end. Produce the deliverable directly, "
+            "not a description of how you'd do it. Keep it tight and useful."
+        )
+        prompt = f"Task: {t['title']}\n\nDetails: {t.get('description') or '(none)'}\n\nDeliver the result now."
+
+        reply = await _llm_reply(
+            session_id=f"{u['id']}:task:{task_id}",
+            system=system,
+            history=[],
+            user_text=prompt,
+        )
+
+        now = datetime.now(timezone.utc).isoformat()
+        await tasks_col.update_one(
+            {"id": task_id},
+            {"$set": {"status": "done", "result": reply, "updated_at": now}},
+        )
+        if not is_admin:
+            await users.update_one({"id": u["id"]}, {"$inc": {"message_count": 1}})
+
+        await _log_activity(
+            u["id"], "task_done",
+            f"{agent_name} finished: {t['title']}",
+            {"task_id": task_id, "agent_id": t.get("agent_id")},
+        )
+        merged = {**t, "status": "done", "result": reply, "updated_at": now}
+        return {"task": _task_out(merged)}
+
+    @r.get("/activity")
+    async def list_activity(limit: int = 25, u=Depends(current_user)):
+        rows = (
+            await activity_col.find({"user_id": u["id"]}, {"_id": 0})
+            .sort("created_at", -1)
+            .to_list(min(max(limit, 1), 100))
+        )
+        return {"activity": rows}
+
+    @r.get("/dashboard")
+    async def dashboard(u=Depends(current_user)):
+        uid = u["id"]
+        total_msgs = await msgs.count_documents({"user_id": uid, "role": "user"})
+        total_threads = await threads.count_documents({"user_id": uid, "archived": {"$ne": True}})
+        total_tasks = await tasks_col.count_documents({"user_id": uid})
+        done_tasks = await tasks_col.count_documents({"user_id": uid, "status": "done"})
+        running_tasks = await tasks_col.count_documents({"user_id": uid, "status": "running"})
+        queued_tasks = await tasks_col.count_documents({"user_id": uid, "status": "queued"})
+        recent_activity = (
+            await activity_col.find({"user_id": uid}, {"_id": 0})
+            .sort("created_at", -1)
+            .to_list(8)
+        )
+        # Per-agent task counts
+        agent_stats = []
+        for a in EON_AGENTS:
+            c = await tasks_col.count_documents({"user_id": uid, "agent_id": a["id"]})
+            agent_stats.append({**a, "task_count": c})
+        return {
+            "stats": {
+                "messages_sent": total_msgs,
+                "active_threads": total_threads,
+                "tasks_total": total_tasks,
+                "tasks_done": done_tasks,
+                "tasks_running": running_tasks,
+                "tasks_queued": queued_tasks,
+            },
+            "agents": agent_stats,
+            "recent_activity": recent_activity,
         }
 
     return r
