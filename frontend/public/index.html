@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+        <meta name="theme-color" content="#000000" />
+        <meta
+            name="description"
+            content="Jwood Technologies — A technology firm building AI-native products, bespoke software, apps, and websites."
+        />
+        <meta property="og:title" content="Jwood Technologies" />
+        <meta
+            property="og:description"
+            content="A technology firm building AI-native products, bespoke software, apps, and websites."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="%PUBLIC_URL%/favicon-192.png" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Jwood Technologies" />
+        <meta
+            name="twitter:description"
+            content="A technology firm building AI-native products, bespoke software, apps, and websites."
+        />
+
+        <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="%PUBLIC_URL%/favicon-192.png" />
+        <link rel="icon" type="image/x-icon" href="%PUBLIC_URL%/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap"
+            rel="stylesheet"
+        />
+
+        <title>Jwood Technologies</title>
+        <script>
+            window.addEventListener(
+                "error",
+                function (e) {
+                    if (
+                        e.error instanceof DOMException &&
+                        e.error.name === "DataCloneError" &&
+                        e.message &&
+                        e.message.includes("PerformanceServerTiming")
+                    ) {
+                        e.stopImmediatePropagation();
+                        e.preventDefault();
+                    }
+                },
+                true
+            );
+        </script>
+    </head>
+    <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root"></div>
+    </body>
+</html>

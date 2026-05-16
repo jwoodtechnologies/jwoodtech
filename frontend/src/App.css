@@ -1,0 +1,42 @@
+.App {
+  min-height: 100vh;
+  background: #03040b;
+  color: #f8f9fa;
+}
+
+/* Vineyard snippet highlight — matched query terms render with <mark> from
+   the backend `_highlight_snippet` helper. Style it to feel premium and
+   blend with the dark glass UI. */
+.vineyard-snippet mark {
+  background: rgba(245, 200, 80, 0.22);
+  color: #ffe8a8;
+  padding: 0 2px;
+  border-radius: 3px;
+}
+
+/* ===========================================================================
+   iOS Safari auto-zoom prevention.
+   iOS zooms the viewport whenever a focused input has computed font-size <
+   16px. We force >= 16px on all editable elements site-wide so the chat box
+   stays stable when typing. Visual sizing (when designs use smaller text)
+   is preserved on desktop via the media-query block.
+   =========================================================================== */
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  font-size: 16px;
+}
+
+/* On viewports >= 768px (desktop/tablet wide), restore the design's intended
+   sizes — components that explicitly set their own text-size with Tailwind
+   classes will continue to override this (Tailwind's text-* classes win
+   thanks to specificity). */
+@media (min-width: 768px) {
+  input,
+  textarea,
+  select,
+  [contenteditable="true"] {
+    font-size: inherit;
+  }
+}

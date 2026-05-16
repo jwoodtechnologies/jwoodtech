@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /vineyard
+Disallow: /vineyard/
+Disallow: /vineyard-admin
+Disallow: /vineyard-admin/
