@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { apiClient } from "@/lib/api";
 
 // ---------------------------------------------------------------------------
-// Animated starfield (canvas) — premium drifting stars for the modal
+// Subtle starfield (canvas) — used as the chat-box backdrop only
 // ---------------------------------------------------------------------------
 const Starfield = () => {
   const ref = useRef(null);
@@ -19,17 +19,17 @@ const Starfield = () => {
     const resize = () => {
       c.width = c.clientWidth * dpr;
       c.height = c.clientHeight * dpr;
-      const count = Math.min(Math.floor((c.width * c.height) / 4500), 600);
+      const count = Math.min(Math.floor((c.width * c.height) / 6000), 280);
       stars = new Array(count).fill(0).map(() => {
-        const z = Math.random() < 0.6 ? 0.3 : Math.random() < 0.9 ? 0.6 : 1.0;
+        const z = Math.random() < 0.65 ? 0.3 : Math.random() < 0.95 ? 0.55 : 1.0;
         return {
           x: Math.random() * c.width,
           y: Math.random() * c.height,
           z,
-          vx: 0.015 * z * dpr,
-          vy: -0.008 * z * dpr,
+          vx: 0.01 * z * dpr,
+          vy: -0.006 * z * dpr,
           tw: Math.random() * Math.PI * 2,
-          tf: 0.5 + Math.random() * 1.4,
+          tf: 0.5 + Math.random() * 1.2,
         };
       });
     };
@@ -37,17 +37,19 @@ const Starfield = () => {
     window.addEventListener("resize", resize);
 
     const tick = () => {
-      ctx.fillStyle = "rgb(2,2,6)";
+      ctx.fillStyle = "rgba(6,7,14,1)";
       ctx.fillRect(0, 0, c.width, c.height);
-      const t = Date.now() / 22000;
-      const gx = c.width * (0.5 + Math.sin(t) * 0.2);
-      const gy = c.height * (0.45 + Math.cos(t * 0.9) * 0.12);
-      const g = ctx.createRadialGradient(gx, gy, 0, gx, gy, Math.max(c.width, c.height) * 0.65);
-      g.addColorStop(0, "rgba(80,120,220,0.14)");
-      g.addColorStop(0.5, "rgba(30,40,90,0.04)");
+      // Soft nebula glow
+      const t = Date.now() / 24000;
+      const gx = c.width * (0.5 + Math.sin(t) * 0.18);
+      const gy = c.height * (0.5 + Math.cos(t * 0.9) * 0.14);
+      const g = ctx.createRadialGradient(gx, gy, 0, gx, gy, Math.max(c.width, c.height) * 0.6);
+      g.addColorStop(0, "rgba(80,110,210,0.18)");
+      g.addColorStop(0.5, "rgba(30,40,90,0.05)");
       g.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, c.width, c.height);
+
       const now = Date.now() / 1000;
       for (const s of stars) {
         s.x += s.vx;
@@ -56,11 +58,11 @@ const Starfield = () => {
         if (s.x > c.width) s.x -= c.width;
         if (s.y < 0) s.y += c.height;
         if (s.y > c.height) s.y -= c.height;
-        const alpha = (0.28 + Math.sin(now * s.tf + s.tw) * 0.38) * s.z;
+        const alpha = (0.32 + Math.sin(now * s.tf + s.tw) * 0.36) * s.z;
         ctx.globalAlpha = Math.max(0.05, Math.min(1, alpha));
-        const r = s.z * 1.25 * dpr;
+        const r = s.z * 1.1 * dpr;
         if (s.z > 0.7) {
-          ctx.fillStyle = "rgba(220,230,255,0.55)";
+          ctx.fillStyle = "rgba(220,230,255,0.45)";
           ctx.beginPath();
           ctx.arc(s.x, s.y, r * 1.9, 0, Math.PI * 2);
           ctx.fill();
@@ -79,13 +81,13 @@ const Starfield = () => {
       window.removeEventListener("resize", resize);
     };
   }, []);
-  return <canvas ref={ref} className="home-eon-canvas" aria-hidden="true" />;
+  return <canvas ref={ref} className="home-eon-canvas-bg" aria-hidden="true" />;
 };
 
 // ---------------------------------------------------------------------------
-// Orb visuals (reuse wc-orb classes from existing CSS)
+// Orb visuals (reuse wc-orb classes)
 // ---------------------------------------------------------------------------
-const Orb = ({ size = 64 }) => (
+const Orb = ({ size = 56 }) => (
   <div className="relative shrink-0 home-orb" style={{ width: size, height: size }} aria-hidden="true">
     <div className="wc-orb wc-orb-a absolute inset-0 rounded-full" />
     <div className="wc-orb wc-orb-b absolute inset-0 rounded-full" />
@@ -96,23 +98,26 @@ const Orb = ({ size = 64 }) => (
 );
 
 // ---------------------------------------------------------------------------
-// Conversational chatbot — step-by-step lead capture
+// Conversational chatbot — stepped lead capture with realistic delays
 // ---------------------------------------------------------------------------
+const wait = (ms) => new Promise((res) => setTimeout(res, ms));
+
 const STEPS = [
-  { id: "first_name", greet: "Hey, this is EON — how can I help you today?\nWhat's your first name?",
-    accept: (v, ctx) => `Nice to meet you, ${v}. What's your last name?` },
-  { id: "last_name", greet: "",
-    accept: (v, ctx) => `Thanks, ${ctx.first_name} ${v}. What's the best email to reach you at?` },
-  { id: "email", greet: "",
-    accept: () => "Got it. So — anything we can build for you, or do you have a question about one of our products?",
-    validate: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || "Hmm, that email doesn't look right — try again." },
-  { id: "message", greet: "",
-    accept: () => "Got it — Jwood Technologies will get back to you within 24–48 hours. Thanks for reaching out." },
+  { id: "first_name",
+    intro: "Hey — I'm EON. How can I help you today?\n\nWhat's your first name?",
+    next: (v, ctx) => `Nice to meet you, ${v}. What's your last name?` },
+  { id: "last_name",
+    next: (v, ctx) => `Thanks, ${ctx.first_name} ${v}. What's the best email to reach you at?` },
+  { id: "email",
+    validate: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || "Hmm — that email doesn't look quite right. Mind trying again?",
+    next: () => "Got it. Anything we can build for you, or do you have a question about one of our products?" },
+  { id: "message",
+    next: () => "Got it — Jwood Technologies will get back to you within 24–48 hours.\n\nThanks for reaching out." },
 ];
 
 const HomeEon = () => {
   const [open, setOpen] = useState(false);
-  const [thread, setThread] = useState([]);  // [{role:'eon'|'me', text}]
+  const [thread, setThread] = useState([]);
   const [step, setStep] = useState(0);
   const [input, setInput] = useState("");
   const [data, setData] = useState({});
@@ -134,20 +139,28 @@ const HomeEon = () => {
     setBusy(false);
   }, []);
 
-  // Open → seed greeting
+  // Open → typing-then-greet (feels like a real bot connecting)
   useEffect(() => {
-    if (open && thread.length === 0) {
-      setThread([{ role: "eon", text: STEPS[0].greet }]);
-    }
+    if (!open || thread.length > 0) return;
+    let cancelled = false;
+    (async () => {
+      setBusy(true);
+      await wait(700);
+      if (cancelled) return;
+      setThread([{ role: "eon", text: STEPS[0].intro }]);
+      setBusy(false);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [open, thread.length]);
 
   const close = () => {
     setOpen(false);
-    setTimeout(reset, 240);
+    setTimeout(reset, 220);
   };
 
   const submitFinal = async (collected) => {
-    setBusy(true);
     try {
       await apiClient.post("/eon-app/contact-lead", {
         first_name: collected.first_name,
@@ -159,32 +172,46 @@ const HomeEon = () => {
     } catch (err) {
       const msg = err?.response?.data?.detail || "Couldn't send right now. Try again in a moment.";
       toast.error(msg);
-      setThread((t) => [...t, { role: "eon", text: "Hm, something went wrong sending that. Mind retrying?" }]);
-    } finally {
-      setBusy(false);
+      setThread((t) => [...t, { role: "eon", text: "Hm — something went wrong sending that. Mind retrying?" }]);
     }
   };
 
-  const send = (e) => {
+  const send = async (e) => {
     e?.preventDefault();
     const text = input.trim();
     if (!text || busy || done) return;
     const current = STEPS[step];
+
+    // Append user message immediately
+    setThread((t) => [...t, { role: "me", text }]);
+    setInput("");
+    setBusy(true);
+
+    // Validation path — still uses typing delay so it feels human
     if (current.validate) {
       const v = current.validate(text);
       if (v !== true) {
-        setThread((t) => [...t, { role: "me", text }, { role: "eon", text: v }]);
-        setInput("");
+        await wait(500 + Math.random() * 400);
+        setThread((t) => [...t, { role: "eon", text: v }]);
+        setBusy(false);
         return;
       }
     }
+
+    // Compute next bot reply with a realistic delay
     const nextData = { ...data, [current.id]: text };
     setData(nextData);
-    const reply = current.accept(text, nextData);
-    setThread((t) => [...t, { role: "me", text }, { role: "eon", text: reply }]);
-    setInput("");
+    const reply = current.next(text, nextData);
+
+    // Bot "typing" delay — scales with reply length but kept tight
+    const delay = 700 + Math.min(1400, reply.length * 22) + Math.random() * 400;
+    await wait(delay);
+    setThread((t) => [...t, { role: "eon", text: reply }]);
+    setBusy(false);
+
     const nextStep = step + 1;
     if (nextStep >= STEPS.length) {
+      // Submit lead after a tiny pause
       submitFinal(nextData);
     } else {
       setStep(nextStep);
@@ -193,11 +220,11 @@ const HomeEon = () => {
 
   return (
     <>
-      {/* Floating launcher orb */}
+      {/* Floating launcher orb (single, no extra halos) */}
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-40 home-eon-launcher"
+        className="fixed bottom-6 right-6 md:bottom-7 md:right-7 z-40 home-eon-launcher"
         data-testid="home-eon-launcher"
         aria-label="Open EON"
       >
@@ -205,69 +232,81 @@ const HomeEon = () => {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center" data-testid="home-eon-dialog">
-          <Starfield />
+        <>
+          {/* Click-outside backdrop (transparent, just for dismissal) */}
           <button
             type="button"
-            className="absolute inset-0 bg-black/40"
+            className="fixed inset-0 z-[55] bg-transparent"
             onClick={close}
-            aria-label="Close"
-            style={{ background: "transparent" }}
+            aria-label="Close EON"
           />
-          <div className="home-eon-shell" data-testid="home-eon-modal">
-            <header className="home-eon-head">
-              <div className="flex items-center gap-3">
-                <Orb size={36} />
-                <div className="leading-tight">
-                  <div className="home-eon-title">EON</div>
-                  <div className="home-eon-tag">Jwood Technologies</div>
+          <div
+            className="home-eon-widget"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Chat with EON"
+            data-testid="home-eon-modal"
+          >
+            <Starfield />
+            <div className="home-eon-widget-inner">
+              <header className="home-eon-head">
+                <div className="flex items-center gap-2.5">
+                  <Orb size={32} />
+                  <div className="leading-tight">
+                    <div className="home-eon-title">EON</div>
+                    <div className="home-eon-tag">Jwood Technologies</div>
+                  </div>
                 </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="home-eon-online" aria-hidden="true" />
+                  <span className="home-eon-online-label">Online</span>
+                  <button
+                    type="button"
+                    onClick={close}
+                    className="home-eon-close"
+                    data-testid="home-eon-close"
+                    aria-label="Close"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              </header>
+
+              <div className="home-eon-thread" ref={scrollRef}>
+                {thread.map((m, i) => (
+                  <div key={i} className={`home-eon-msg ${m.role === "me" ? "home-eon-msg-me" : "home-eon-msg-eon"}`}>
+                    {m.text}
+                  </div>
+                ))}
+                {busy && (
+                  <div className="home-eon-msg home-eon-msg-eon home-eon-typing" data-testid="home-eon-typing">
+                    <span /><span /><span />
+                  </div>
+                )}
               </div>
-              <button
-                type="button"
-                onClick={close}
-                className="home-eon-close"
-                data-testid="home-eon-close"
-                aria-label="Close"
-              >
-                <X size={16} />
-              </button>
-            </header>
 
-            <div className="home-eon-thread" ref={scrollRef}>
-              {thread.map((m, i) => (
-                <div key={i} className={`home-eon-msg ${m.role === "me" ? "home-eon-msg-me" : "home-eon-msg-eon"}`}>
-                  {m.text}
-                </div>
-              ))}
-              {busy && (
-                <div className="home-eon-msg home-eon-msg-eon home-eon-typing">
-                  <span /><span /><span />
-                </div>
-              )}
+              <form onSubmit={send} className="home-eon-compose" data-testid="home-eon-form">
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder={done ? "Conversation complete." : busy ? "EON is typing…" : "Type your reply…"}
+                  disabled={done || busy}
+                  data-testid="home-eon-input"
+                  autoFocus
+                />
+                <button
+                  type="submit"
+                  disabled={!input.trim() || done || busy}
+                  className="home-eon-send-btn"
+                  data-testid="home-eon-submit"
+                  aria-label="Send"
+                >
+                  {busy ? <Loader2 size={15} className="animate-spin" /> : <Send size={14} />}
+                </button>
+              </form>
             </div>
-
-            <form onSubmit={send} className="home-eon-compose" data-testid="home-eon-form">
-              <input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder={done ? "Conversation complete." : "Type your reply…"}
-                disabled={done || busy}
-                data-testid="home-eon-input"
-                autoFocus
-              />
-              <button
-                type="submit"
-                disabled={!input.trim() || done || busy}
-                className="home-eon-send-btn"
-                data-testid="home-eon-submit"
-                aria-label="Send"
-              >
-                {busy ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
-              </button>
-            </form>
           </div>
-        </div>
+        </>
       )}
     </>
   );

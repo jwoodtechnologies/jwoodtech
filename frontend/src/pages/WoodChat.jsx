@@ -148,9 +148,11 @@ const AuthModal = ({ onAuthed, onClose, intent }) => {
         <button
           type="button"
           className="wx-google-btn"
-          onClick={() =>
-            toast.message("Google sign-in is coming soon — use email for now.")
-          }
+          onClick={() => {
+            // REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
+            const url = `${process.env.REACT_APP_BACKEND_URL}/api/auth/google/login?app=woodchat&next=/woodchat`;
+            window.location.href = url;
+          }}
           data-testid="wx-google-btn"
         >
           <GoogleSVG />
@@ -541,8 +543,23 @@ const WoodChat = () => {
     localStorage.setItem(WX_VIEW_KEY, view);
   }, [view]);
 
-  // Resume session on load
+  // Resume session on load + capture Google-OAuth token hash
   useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash.includes("token=")) {
+      try {
+        const hash = window.location.hash.replace(/^#/, "");
+        const params = new URLSearchParams(hash);
+        const incoming = params.get("token");
+        const err = params.get("auth_error");
+        if (incoming) {
+          localStorage.setItem(WX_TOKEN_KEY, incoming);
+        }
+        if (err) {
+          toast.error(decodeURIComponent(err).replace(/\+/g, " "));
+        }
+        window.history.replaceState(null, "", window.location.pathname + window.location.search);
+      } catch { /* ignore */ }
+    }
     const t = localStorage.getItem(WX_TOKEN_KEY);
     if (!t) {
       setBooting(false);

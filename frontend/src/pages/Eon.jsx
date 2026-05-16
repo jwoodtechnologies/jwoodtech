@@ -305,9 +305,11 @@ const AuthGate = ({ pendingPrompt, onAuthed, onClose }) => {
         <button
           type="button"
           className="eon-google-btn"
-          onClick={() =>
-            toast.message("Google sign-in is coming soon — use email for now.")
-          }
+          onClick={() => {
+            // REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
+            const url = `${process.env.REACT_APP_BACKEND_URL}/api/auth/google/login?app=eon&next=/eon`;
+            window.location.href = url;
+          }}
           data-testid="eon-google-btn"
         >
           <GoogleSVG />
@@ -1115,6 +1117,23 @@ const Eon = () => {
 
   // Resume existing session on mount
   useEffect(() => {
+    // Capture Google-OAuth callback token from URL hash, if present.
+    if (typeof window !== "undefined" && window.location.hash.includes("token=")) {
+      try {
+        const hash = window.location.hash.replace(/^#/, "");
+        const params = new URLSearchParams(hash);
+        const incoming = params.get("token");
+        const err = params.get("auth_error");
+        if (incoming) {
+          localStorage.setItem(TOKEN_KEY, incoming);
+        }
+        if (err) {
+          toast.error(decodeURIComponent(err).replace(/\+/g, " "));
+        }
+        // Clean the hash so refresh doesn't re-trigger
+        window.history.replaceState(null, "", window.location.pathname + window.location.search);
+      } catch { /* ignore */ }
+    }
     const t = localStorage.getItem(TOKEN_KEY);
     if (!t) return;
     eonClient
