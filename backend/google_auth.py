@@ -175,31 +175,31 @@ def build_google_auth_router(db) -> APIRouter:
         full_name = profile.get("name") or email.split("@")[0]
         picture = profile.get("picture") or ""
 
-        # 3. Upsert into the target collection.
-        if app_tag == "eon":
-            collection = eon_users
-        else:
-            collection = wc_users
+        # 3. Upsert into BOTH collections so the same JWT works on EON + WoodX.
+        # Shared user-id pattern: one canonical id per email across apps.
+        existing_eon = await eon_users.find_one({"email": email}, {"_id": 0})
+        existing_wc = await wc_users.find_one({"email": email}, {"_id": 0})
+        # Reuse an existing id if either side already knows this user;
+        # prefer the app the user is currently signing into.
+        primary = (existing_eon if app_tag == "eon" else existing_wc) or existing_eon or existing_wc
+        user_id = (primary or {}).get("id") or str(uuid.uuid4())
+        now = _now_iso()
 
-        existing = await collection.find_one({"email": email}, {"_id": 0})
-        if existing:
-            user_id = existing["id"]
-            update = {
-                "last_login_at": _now_iso(),
+        # --- EON record ---
+        if existing_eon:
+            eon_update = {
+                "last_login_at": now,
                 "google_sub": google_sub,
-                "picture": picture or existing.get("picture", ""),
+                "picture": picture or existing_eon.get("picture", ""),
                 "auth_provider": "google",
             }
-            if not existing.get("first_name") and given_name:
-                update["first_name"] = given_name
-            if not existing.get("last_name") and family_name:
-                update["last_name"] = family_name
-            if not existing.get("name") and full_name:
-                update["name"] = full_name
-            await collection.update_one({"id": user_id}, {"$set": update})
+            if not existing_eon.get("first_name") and given_name:
+                eon_update["first_name"] = given_name
+            if not existing_eon.get("last_name") and family_name:
+                eon_update["last_name"] = family_name
+            await eon_users.update_one({"id": existing_eon["id"]}, {"$set": eon_update})
         else:
-            user_id = str(uuid.uuid4())
-            new_user = {
+            await eon_users.insert_one({
                 "id": user_id,
                 "email": email,
                 "first_name": given_name,
@@ -210,21 +210,44 @@ def build_google_auth_router(db) -> APIRouter:
                 "auth_provider": "google",
                 "is_admin": False,
                 "message_count": 0,
-                "created_at": _now_iso(),
-                "last_login_at": _now_iso(),
+                "created_at": now,
+                "last_login_at": now,
+            })
+
+        # --- WoodX record ---
+        if existing_wc:
+            wc_update = {
+                "last_login_at": now,
+                "google_sub": google_sub,
+                "picture": picture or existing_wc.get("picture", ""),
+                "auth_provider": "google",
             }
-            # WoodX stores username separately
-            if app_tag == "woodchat":
-                # Derive a handle from the email; ensure unique
-                base = email.split("@")[0][:20].lower().replace(".", "_")
-                handle = base
-                suffix = 0
-                while await collection.find_one({"username": handle}):
-                    suffix += 1
-                    handle = f"{base}{suffix}"
-                new_user["username"] = handle
-                new_user["display_name"] = full_name
-            await collection.insert_one(new_user)
+            if not existing_wc.get("first_name") and given_name:
+                wc_update["first_name"] = given_name
+            if not existing_wc.get("last_name") and family_name:
+                wc_update["last_name"] = family_name
+            await wc_users.update_one({"id": existing_wc["id"]}, {"$set": wc_update})
+        else:
+            # Derive a unique username for WoodX
+            base_handle = email.split("@")[0][:20].lower().replace(".", "_")
+            handle = base_handle
+            suffix = 0
+            while await wc_users.find_one({"username": handle}):
+                suffix += 1
+                handle = f"{base_handle}{suffix}"
+            await wc_users.insert_one({
+                "id": user_id,
+                "email": email,
+                "username": handle,
+                "first_name": given_name,
+                "last_name": family_name,
+                "display_name": full_name,
+                "picture": picture,
+                "google_sub": google_sub,
+                "auth_provider": "google",
+                "created_at": now,
+                "last_login_at": now,
+            })
 
         # 4. Mint JWT compatible with existing eon/woodchat JWT auth
         token = _mint_jwt(user_id, email)
