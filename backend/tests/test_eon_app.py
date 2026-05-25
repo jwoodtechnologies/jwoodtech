@@ -4,7 +4,7 @@ import time
 import pytest
 import requests
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://bubble-repo.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://jwoodtechnologies-com.onrender.com").rstrip("/")
 API = f"{BASE_URL}/api/eon-app"
 
 TS = int(time.time())

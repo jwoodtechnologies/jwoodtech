@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: jwoodtechnologies-com
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: BACKEND_URL
+        value: https://jwoodtechnologies-com.onrender.com
+      - key: FRONTEND_URL
+        value: https://jwoodtechnologies.com
+      - key: GOOGLE_REDIRECT_URI
+        value: https://jwoodtechnologies-com.onrender.com/api/auth/google/callback
+      - key: CORS_ORIGINS
+        value: https://jwoodtechnologies.com
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: MONGO_URL
+        sync: false
+      - key: DB_NAME
+        sync: false

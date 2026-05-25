@@ -5,7 +5,7 @@ import uuid
 import pytest
 import requests
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://jwood-premium.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://jwoodtechnologies-com.onrender.com").rstrip("/")
 API = f"{BASE_URL}/api"
 
 # Small, fast public URL to crawl

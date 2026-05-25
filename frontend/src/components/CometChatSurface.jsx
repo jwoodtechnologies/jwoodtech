@@ -11,6 +11,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader2, AlertCircle } from "lucide-react";
+import { BACKEND_URL } from "../lib/config";
 
 const WC_TOKEN_KEY = "wc_token";
 
@@ -80,7 +81,7 @@ const CometChatSurface = ({ view = "chats" }) => {
       try {
         // 1) Fetch CometChat config + provision user server-side.
         const t = localStorage.getItem(WC_TOKEN_KEY);
-        const base = `${process.env.REACT_APP_BACKEND_URL}/api/woodchat`;
+        const base = `${BACKEND_URL}/api/woodchat`;
         const { data: cfg } = await axios.get(`${base}/comet/config`, {
           headers: t ? { Authorization: `Bearer ${t}` } : {},
         });

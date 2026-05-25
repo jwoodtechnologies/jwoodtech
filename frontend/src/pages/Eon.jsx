@@ -27,9 +27,10 @@ import {
 import { toast } from "sonner";
 import axios from "axios";
 import "./Eon.css";
+import { BACKEND_URL, googleLoginUrl } from "../lib/config";
 
 // ---------------------------------------------------------------------------
-const API = `${process.env.REACT_APP_BACKEND_URL}/api/eon-app`;
+const API = `${BACKEND_URL}/api/eon-app`;
 const TOKEN_KEY = "eon_token";
 const PENDING_PROMPT_KEY = "eon_pending_prompt";
 const ACTIVE_VIEW_KEY = "eon_active_view";
@@ -306,9 +307,7 @@ const AuthGate = ({ pendingPrompt, onAuthed, onClose }) => {
           type="button"
           className="eon-google-btn"
           onClick={() => {
-            // REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
-            const url = `${process.env.REACT_APP_BACKEND_URL}/api/auth/google/login?app=eon&next=/eon`;
-            window.location.href = url;
+            window.location.href = googleLoginUrl({ app: "eon", next: "/eon" });
           }}
           data-testid="eon-google-btn"
         >

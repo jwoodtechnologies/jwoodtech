@@ -36,6 +36,9 @@ GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo"
 
 JWT_SECRET = os.environ.get("JWT_SECRET", "")
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "").rstrip("/")
+BACKEND_URL = os.environ.get("BACKEND_URL", "").rstrip("/")
+GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI", "").rstrip("/")
 JWT_ALGO = "HS256"
 ACCESS_TTL_HOURS = 24 * 14  # 14 days
 
@@ -68,16 +71,30 @@ def _mint_jwt(user_id: str, email: str) -> str:
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGO)
 
 
-def _redirect_uri(request: Request) -> str:
-    """Compute the callback URL dynamically from the incoming request so it
-    works for BOTH preview and production without hardcoding."""
-    # Prefer X-Forwarded-Proto/Host so we honour the public URL, not the
-    # internal container host.
-    proto = request.headers.get("x-forwarded-proto", request.url.scheme)
-    host = request.headers.get("x-forwarded-host") or request.headers.get("host", "")
-    if not host:
-        host = request.url.netloc
-    return f"{proto}://{host}/api/auth/google/callback"
+def _redirect_uri() -> str:
+    """Return the canonical Google callback configured for this deployment."""
+    if GOOGLE_REDIRECT_URI:
+        return GOOGLE_REDIRECT_URI
+    if BACKEND_URL:
+        return f"{BACKEND_URL}/api/auth/google/callback"
+    raise HTTPException(500, "BACKEND_URL or GOOGLE_REDIRECT_URI not configured")
+
+
+def _configured_redirect_uri() -> str:
+    if GOOGLE_REDIRECT_URI:
+        return GOOGLE_REDIRECT_URI
+    if BACKEND_URL:
+        return f"{BACKEND_URL}/api/auth/google/callback"
+    return ""
+
+
+def _frontend_url(path: str = "") -> str:
+    if not FRONTEND_URL:
+        raise HTTPException(500, "FRONTEND_URL not configured")
+    if not path:
+        return FRONTEND_URL
+    normalized = path if path.startswith("/") else f"/{path}"
+    return f"{FRONTEND_URL}{normalized}"
 
 
 def build_google_auth_router(db) -> APIRouter:
@@ -89,7 +106,16 @@ def build_google_auth_router(db) -> APIRouter:
     @router.get("/config")
     async def config():
         """Tells the frontend whether Google Sign-In is available."""
-        return {"enabled": bool(GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET)}
+        return {
+            "enabled": bool(
+                GOOGLE_CLIENT_ID
+                and GOOGLE_CLIENT_SECRET
+                and FRONTEND_URL
+                and (GOOGLE_REDIRECT_URI or BACKEND_URL)
+            ),
+            "redirect_uri": _configured_redirect_uri(),
+            "frontend_url": FRONTEND_URL,
+        }
 
     @router.get("/login")
     async def login(
@@ -108,7 +134,7 @@ def build_google_auth_router(db) -> APIRouter:
         }
         params = {
             "client_id": GOOGLE_CLIENT_ID,
-            "redirect_uri": _redirect_uri(request),
+            "redirect_uri": _redirect_uri(),
             "response_type": "code",
             "scope": "openid email profile",
             "access_type": "online",
@@ -146,7 +172,7 @@ def build_google_auth_router(db) -> APIRouter:
                         "code": code,
                         "client_id": GOOGLE_CLIENT_ID,
                         "client_secret": GOOGLE_CLIENT_SECRET,
-                        "redirect_uri": _redirect_uri(request),
+                        "redirect_uri": _redirect_uri(),
                         "grant_type": "authorization_code",
                     },
                 )
@@ -254,14 +280,11 @@ def build_google_auth_router(db) -> APIRouter:
 
         # 5. Redirect back to the right app with token in hash (so URL does
         # not leak into server logs).
-        proto = request.headers.get("x-forwarded-proto", request.url.scheme)
-        host = request.headers.get("x-forwarded-host") or request.headers.get("host", "")
-        base = f"{proto}://{host}"
         landing = "/eon" if app_tag == "eon" else "/woodchat"
         if entry.get("next"):
             landing = entry["next"]
         return RedirectResponse(
-            url=f"{base}{landing}#token={token}&email={email}",
+            url=f"{_frontend_url(landing)}#token={token}&email={email}",
             status_code=302,
         )
 
@@ -269,9 +292,12 @@ def build_google_auth_router(db) -> APIRouter:
 
 
 def _error_redirect(request: Request, msg: str) -> RedirectResponse:
-    proto = request.headers.get("x-forwarded-proto", request.url.scheme)
-    host = request.headers.get("x-forwarded-host") or request.headers.get("host", "")
-    base = f"{proto}://{host}"
+    try:
+        base = _frontend_url()
+    except HTTPException:
+        proto = request.headers.get("x-forwarded-proto", request.url.scheme)
+        host = request.headers.get("x-forwarded-host") or request.headers.get("host", "")
+        base = f"{proto}://{host}"
     return RedirectResponse(
         url=f"{base}/eon#auth_error={msg.replace(' ', '+')}",
         status_code=302,

@@ -35,8 +35,9 @@ import {
 import { toast } from "sonner";
 import axios from "axios";
 import "./WoodChat.css";
+import { BACKEND_URL, googleLoginUrl } from "../lib/config";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api/woodchat`;
+const API = `${BACKEND_URL}/api/woodchat`;
 const WX_TOKEN_KEY = "wc_token";
 const WX_THEME_KEY = "wx_theme";
 const WX_VIEW_KEY = "wx_view";
@@ -149,9 +150,10 @@ const AuthModal = ({ onAuthed, onClose, intent }) => {
           type="button"
           className="wx-google-btn"
           onClick={() => {
-            // REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
-            const url = `${process.env.REACT_APP_BACKEND_URL}/api/auth/google/login?app=woodchat&next=/woodchat`;
-            window.location.href = url;
+            window.location.href = googleLoginUrl({
+              app: "woodchat",
+              next: "/woodchat",
+            });
           }}
           data-testid="wx-google-btn"
         >
