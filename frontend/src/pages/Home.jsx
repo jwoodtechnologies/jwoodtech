@@ -16,7 +16,7 @@ import {
 import JwoodLogo from "@/components/JwoodLogo";
 import { Reveal } from "@/components/Reveal";
 import HomeEon from "@/components/HomeEon";
-import MotionBackdrop from "@/components/MotionBackdrop";
+import VideoBackground from "@/components/VideoBackground";
 import { apiClient } from "@/lib/api";
 
 const PROJECT_TYPES = [
@@ -148,8 +148,8 @@ const Home = () => {
   return (
     <div className="relative overflow-x-hidden text-white" data-testid="home-page">
 
-      {/* Full-page motion video backdrop — fixed, sits behind entire site */}
-      <MotionBackdrop />
+      {/* Full-page video backdrop — fixed, sits behind entire site */}
+      <VideoBackground />
 
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section
@@ -176,7 +176,7 @@ const Home = () => {
           style={{ zIndex: 2 }}
           data-testid="home-header"
         >
-          <JwoodLogo onClick={handleLogoTap} className="h-[26px] w-auto" />
+          <JwoodLogo onClick={handleLogoTap} className="h-[22px] md:h-[26px] w-auto" />
 
           <a
             href="#inquiry"
@@ -199,7 +199,7 @@ const Home = () => {
 
         {/* Hero content */}
         <div
-          className="relative flex-1 flex items-center justify-center px-6 py-16"
+          className="relative flex-1 flex items-start md:items-center justify-center px-6 pt-10 pb-6 md:py-16"
           style={{ zIndex: 2 }}
         >
           <div className="text-center w-full max-w-4xl mx-auto">
