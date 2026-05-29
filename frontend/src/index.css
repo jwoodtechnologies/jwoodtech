@@ -902,20 +902,36 @@ iframe[src*="emergent.sh"] {
 .home-eon-send-btn:hover:not(:disabled) { transform: translateY(-1px); }
 .home-eon-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* Mobile: slide up from bottom, rounded top, almost full-height */
+/* Mobile: polished bottom sheet — constrained height, inset from edges */
 @media (max-width: 640px) {
   .home-eon-widget {
-    right: 0;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: min(86vh, calc(100vh - 24px));
-    border-radius: 20px 20px 0 0;
+    right: 12px;
+    left: 12px;
+    bottom: 88px;           /* sits above the launcher button */
+    width: auto;
+    max-height: min(72vh, 520px);
+    height: auto;
+    border-radius: 20px;
     animation: home-eon-slide 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   @keyframes home-eon-slide {
-    from { transform: translateY(100%); opacity: 0.6; }
-    to   { transform: translateY(0);    opacity: 1; }
+    from { transform: translateY(16px) scale(0.98); opacity: 0; }
+    to   { transform: translateY(0)    scale(1);    opacity: 1; }
+  }
+  /* Ensure the inner grid also respects the constrained height */
+  .home-eon-widget .home-eon-widget-inner {
+    max-height: min(72vh, 520px);
+    height: 100%;
+  }
+  .home-eon-widget .home-eon-thread {
+    min-height: 120px;
+  }
+  .home-eon-widget .home-eon-msg {
+    font-size: 14px;
+    padding: 10px 13px;
+  }
+  .home-eon-widget .home-eon-compose input {
+    font-size: 16px; /* prevent iOS auto-zoom on focus */
   }
 }
 

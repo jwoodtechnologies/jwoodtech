@@ -300,7 +300,11 @@ const Home = () => {
               href={p.href}
               target={p.external ? "_blank" : undefined}
               rel={p.external ? "noreferrer noopener" : undefined}
-              className="group relative rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-md p-6 md:p-8 flex flex-col gap-4 hover:bg-white/[0.06] hover:border-white/[0.14] transition-all duration-300"
+              className="group relative rounded-2xl p-6 md:p-8 flex flex-col gap-4 transition-all duration-300 liquid-glass hover:bg-white/[0.04]"
+              style={{
+                background: "rgba(255,255,255,0.06)",
+                boxShadow: "inset 0 1px 1px rgba(255,255,255,0.12), 0 8px 32px -8px rgba(0,0,0,0.5)",
+              }}
               data-testid={`product-${p.name.toLowerCase()}`}
             >
               {/* Name + arrow */}
@@ -356,7 +360,11 @@ const Home = () => {
           {/* Right form */}
           <Reveal
             delay={120}
-            className="rounded-2xl p-6 md:p-8 border border-white/[0.08] bg-white/[0.03] backdrop-blur-2xl"
+            className="rounded-2xl p-6 md:p-8 backdrop-blur-2xl liquid-glass"
+            style={{
+              background: "rgba(255,255,255,0.05)",
+              boxShadow: "inset 0 1px 1px rgba(255,255,255,0.12), 0 20px 60px -20px rgba(0,0,0,0.6)",
+            }}
             data-testid="inquiry-card"
           >
             {done ? (
