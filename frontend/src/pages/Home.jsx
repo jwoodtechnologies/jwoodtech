@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, ArrowUpRight, CheckCircle2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -13,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import VideoBackground from "@/components/VideoBackground";
 import JwoodLogo from "@/components/JwoodLogo";
 import { Reveal } from "@/components/Reveal";
 import HomeEon from "@/components/HomeEon";
@@ -54,13 +53,139 @@ const initial = {
   timeline: "",
 };
 
+const MARQUEE_ITEMS = [
+  { label: "Websites", letter: "W" },
+  { label: "AI Chatbots", letter: "A" },
+  { label: "Automation", letter: "Au" },
+  { label: "Campaign Tech", letter: "C" },
+  { label: "Business Systems", letter: "B" },
+  { label: "Custom Apps", letter: "Ca" },
+];
+
+const NAV_LINKS = [
+  { label: "EON", href: "/eon" },
+  { label: "WoodX", href: "/woodchat" },
+  { label: "NXT1", href: "https://nxtone.tech", external: true },
+];
+
+const VIDEO_SRC =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_065045_c44942da-53c6-4804-b734-f9e07fc22e08.mp4";
+
+function HeroVideo() {
+  const videoRef = useRef(null);
+  const rafRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    let cancelled = false;
+
+    function fadeIn() {
+      if (cancelled) return;
+      const start = performance.now();
+      const duration = 500;
+      function tick(now) {
+        if (cancelled) return;
+        const t = Math.min((now - start) / duration, 1);
+        video.style.opacity = t;
+        if (t < 1) rafRef.current = requestAnimationFrame(tick);
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    }
+
+    function fadeOut(onDone) {
+      if (cancelled) return;
+      const start = performance.now();
+      const duration = 500;
+      function tick(now) {
+        if (cancelled) return;
+        const t = Math.min((now - start) / duration, 1);
+        video.style.opacity = 1 - t;
+        if (t < 1) {
+          rafRef.current = requestAnimationFrame(tick);
+        } else {
+          onDone();
+        }
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    }
+
+    function handleTimeUpdate() {
+      if (!video.duration) return;
+      const remaining = video.duration - video.currentTime;
+      if (remaining <= 0.5 && video.style.opacity > 0) {
+        video.removeEventListener("timeupdate", handleTimeUpdate);
+        fadeOut(() => {});
+      }
+    }
+
+    function handleEnded() {
+      video.style.opacity = 0;
+      setTimeout(() => {
+        if (cancelled) return;
+        video.currentTime = 0;
+        video.play().catch(() => {});
+        video.addEventListener("timeupdate", handleTimeUpdate);
+        fadeIn();
+      }, 100);
+    }
+
+    video.style.opacity = 0;
+    video.play().catch(() => {});
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    video.addEventListener("ended", handleEnded);
+    fadeIn();
+
+    return () => {
+      cancelled = true;
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      video.removeEventListener("timeupdate", handleTimeUpdate);
+      video.removeEventListener("ended", handleEnded);
+    };
+  }, []);
+
+  return (
+    <div className="absolute inset-0 w-full h-full overflow-hidden">
+      <video
+        ref={videoRef}
+        src={VIDEO_SRC}
+        className="bg-video absolute inset-0 w-full h-full object-cover"
+        muted
+        playsInline
+        loop={false}
+        style={{ opacity: 0 }}
+      />
+    </div>
+  );
+}
+
+function MarqueeTrack() {
+  const doubled = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
+  return (
+    <div className="overflow-hidden">
+      <div className="hero-marquee-track flex gap-16 items-center">
+        {doubled.map((item, i) => (
+          <div key={i} className="flex items-center gap-3 shrink-0">
+            <div className="liquid-glass w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-semibold text-white/80">
+              {item.letter[0]}
+            </div>
+            <span className="text-base font-semibold text-white/90 whitespace-nowrap">
+              {item.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const Home = () => {
   const [form, setForm] = useState(initial);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const navigate = useNavigate();
 
-  // Hidden 3-tap on logo → /vineyard
   const tapsRef = useRef({ count: 0, last: 0 });
   const handleLogoTap = () => {
     const now = Date.now();
@@ -104,67 +229,146 @@ const Home = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden text-white" data-testid="home-page">
-      <VideoBackground />
+    <div className="relative overflow-x-hidden text-white" data-testid="home-page">
 
-      {/* Top bar — logo only, no nav links */}
-      <header
-        className="relative z-10 px-6 md:px-12 pt-8 md:pt-10 flex items-center justify-between"
-        data-testid="home-header"
-      >
-        <div className="fade-up">
-          <JwoodLogo onClick={handleLogoTap} />
-        </div>
-      </header>
-
-      {/* Hero */}
+      {/* ── HERO SECTION ─────────────────────────────────────────── */}
       <section
-        className="relative z-10 px-6 md:px-12 pt-24 md:pt-40 pb-20 max-w-6xl mx-auto"
+        className="hero-section relative min-h-screen flex flex-col"
         data-testid="hero"
+        style={{ background: "hsl(260 87% 3%)" }}
       >
-        <h1
-          className="fade-up delay-2 mt-2 font-light tracking-tighter leading-[0.95] text-white text-5xl sm:text-6xl md:text-7xl lg:text-[88px]"
-          data-testid="hero-headline"
-        >
-          Intelligence,
-          <br />
-          <span className="italic font-extralight text-white/85">redefined.</span>
-        </h1>
-        <p
-          className="fade-up delay-3 mt-8 max-w-xl text-white/70 text-base md:text-lg leading-relaxed"
-          data-testid="hero-sub"
-        >
-          A technology firm building AI-native products, bespoke software, apps,
-          and websites.
-        </p>
+        {/* Full-screen video backdrop */}
+        <HeroVideo />
 
+        {/* Blurred overlay shape behind content */}
         <div
-          className="fade-up delay-4 mt-10 flex flex-wrap items-center gap-4"
-          data-testid="hero-actions"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[984px] h-[527px] opacity-90 bg-gray-950 pointer-events-none"
+          style={{ filter: "blur(82px)", zIndex: 1 }}
+        />
+
+        {/* Navbar */}
+        <nav
+          className="relative w-full py-5 px-8 flex flex-row items-center justify-between"
+          style={{ zIndex: 10 }}
+          data-testid="home-header"
         >
+          {/* Logo */}
+          <div>
+            <JwoodLogo onClick={handleLogoTap} />
+          </div>
+
+          {/* Center nav links */}
+          <div className="hidden md:flex items-center gap-8">
+            {NAV_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noreferrer noopener" : undefined}
+                className="text-sm font-medium text-white/70 hover:text-white transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+
+          {/* Right CTA */}
           <a
             href="#inquiry"
-            className="group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-white/90"
-            data-testid="hero-cta-share"
+            className="rounded-full border border-white/20 bg-white/[0.06] backdrop-blur-md px-4 py-2 text-sm font-medium text-white/90 hover:bg-white/10 transition-colors"
+            data-testid="hero-cta-nav"
           >
-            Share a project
-            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            Get Started
           </a>
-          <a
-            href="mailto:info@jwoodtechnologies.com"
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.04] backdrop-blur-md px-6 py-3 text-sm font-medium text-white/90 transition-colors hover:bg-white/10"
-            data-testid="hero-cta-email"
-          >
-            <Mail className="h-4 w-4" />
-            info@jwoodtechnologies.com
-          </a>
+        </nav>
+
+        {/* Divider */}
+        <div
+          className="relative w-full h-px mt-[3px]"
+          style={{
+            zIndex: 10,
+            background:
+              "linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent)",
+          }}
+        />
+
+        {/* Hero content */}
+        <div
+          className="relative flex-1 flex items-center justify-center px-6"
+          style={{ zIndex: 10 }}
+        >
+          <div className="text-center max-w-5xl mx-auto">
+            <h1
+              className="font-normal leading-[1.02] tracking-[-0.024em]"
+              style={{
+                fontFamily: '"General Sans", system-ui, sans-serif',
+                fontSize: "clamp(3rem, 12vw, 180px)",
+              }}
+              data-testid="hero-headline"
+            >
+              Build{" "}
+              <span
+                style={{
+                  backgroundImage:
+                    "linear-gradient(to left, #6366f1, #a855f7, #fcd34d)",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  color: "transparent",
+                }}
+              >
+                Smarter
+              </span>
+            </h1>
+
+            <p
+              className="text-lg leading-8 max-w-md mx-auto mt-[9px]"
+              style={{
+                color: "hsl(40 6% 82%)",
+                opacity: 0.8,
+              }}
+              data-testid="hero-sub"
+            >
+              AI-powered websites, automations, and digital systems built for
+              businesses, campaigns, and creators.
+            </p>
+
+            <a
+              href="#inquiry"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.06] backdrop-blur-md text-white/90 font-medium hover:bg-white/10 transition-colors mt-[25px]"
+              style={{ padding: "24px 29px" }}
+              data-testid="hero-cta-share"
+            >
+              Schedule a Consult
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+
+        {/* Logo / Service Marquee */}
+        <div className="relative pb-10" style={{ zIndex: 10 }}>
+          <div className="max-w-5xl mx-auto px-8 flex flex-col sm:flex-row items-start sm:items-center gap-12">
+            {/* Static label */}
+            <div className="text-sm text-white/50 leading-snug shrink-0">
+              Trusted technology for
+              <br />
+              modern organizations
+            </div>
+
+            {/* Scrolling marquee */}
+            <div className="flex-1 overflow-hidden">
+              <MarqueeTrack />
+            </div>
+          </div>
         </div>
       </section>
+
+      {/* ── BELOW-FOLD CONTENT ───────────────────────────────────── */}
 
       {/* Capability strip */}
       <Reveal
         as="section"
-        className="relative z-10 px-6 md:px-12 pb-20 max-w-6xl mx-auto"
+        className="relative z-10 px-6 md:px-12 pb-20 pt-20 max-w-6xl mx-auto"
         data-testid="capabilities"
       >
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md">
@@ -227,7 +431,9 @@ const Home = () => {
                 data-testid="inquiry-success"
               >
                 <CheckCircle2 className="h-10 w-10 text-emerald-400" />
-                <h3 className="text-2xl font-light text-white">Inquiry received.</h3>
+                <h3 className="text-2xl font-light text-white">
+                  Inquiry received.
+                </h3>
                 <Button
                   variant="outline"
                   className="mt-2 border-white/15 bg-transparent text-white hover:bg-white/5"
@@ -320,7 +526,10 @@ const Home = () => {
                     </Select>
                   </Field>
                   <Field label="Timeline" required>
-                    <Select value={form.timeline} onValueChange={set("timeline")}>
+                    <Select
+                      value={form.timeline}
+                      onValueChange={set("timeline")}
+                    >
                       <SelectTrigger
                         className="input-premium h-11 rounded-lg"
                         data-testid="form-timeline"
@@ -380,7 +589,6 @@ const Home = () => {
         data-testid="home-footer"
       >
         <div className="hairline pt-8 space-y-5">
-          {/* Products of Jwood Technologies */}
           <div className="products-band">
             <div className="products-band-label">Products of Jwood Technologies</div>
             <div className="products-band-grid">
@@ -408,7 +616,6 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Legal row + socials */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-[11px] font-mono tracking-[0.18em] text-white/40 uppercase mt-8">
             <div>© {new Date().getFullYear()} Jwood Technologies</div>
             <div className="flex items-center gap-4">
@@ -467,7 +674,7 @@ const Home = () => {
         </div>
       </footer>
 
-      {/* Floating EON chatbot */}
+      {/* Floating EON chatbot — must remain active, visible, and functional */}
       <HomeEon />
     </div>
   );

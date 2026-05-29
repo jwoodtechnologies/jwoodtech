@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Unbounded:wght@400;500;600;700;800&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap");
 @import "../node_modules/@cometchat/chat-uikit-react/dist/styles/css-variables.css";
 
 @tailwind base;
@@ -1040,4 +1041,57 @@ iframe[src*="emergent.sh"] {
 
 .wx-mobile-only { display: none; }
 @media (max-width: 880px) { .wx-mobile-only { display: inline-flex; } }
+
+/* ── Hero Section ──────────────────────────────────────────────────── */
+.hero-section {
+  color: hsl(40 6% 95%);
+}
+
+/* Liquid glass utility */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.45) 0%,
+    rgba(255,255,255,0.15) 20%,
+    rgba(255,255,255,0) 40%,
+    rgba(255,255,255,0) 60%,
+    rgba(255,255,255,0.15) 80%,
+    rgba(255,255,255,0.45) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Marquee animation */
+@keyframes hero-marquee {
+  from { transform: translateX(0%); }
+  to   { transform: translateX(-50%); }
+}
+.hero-marquee-track {
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+  animation: hero-marquee 20s linear infinite;
+  width: max-content;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-marquee-track { animation: none; }
+}
 
