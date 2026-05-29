@@ -16,7 +16,7 @@ import {
 import JwoodLogo from "@/components/JwoodLogo";
 import { Reveal } from "@/components/Reveal";
 import HomeEon from "@/components/HomeEon";
-import StarfieldBackground from "@/components/StarfieldBackground";
+import MotionBackdrop from "@/components/MotionBackdrop";
 import { apiClient } from "@/lib/api";
 
 const PROJECT_TYPES = [
@@ -57,16 +57,34 @@ const initial = {
 const MARQUEE_ITEMS = [
   { label: "Websites",         letter: "W" },
   { label: "AI Chatbots",      letter: "A" },
-  { label: "Automation",       letter: "Au" },
+  { label: "Automation",       letter: "U" },
   { label: "Campaign Tech",    letter: "C" },
   { label: "Business Systems", letter: "B" },
-  { label: "Custom Apps",      letter: "Ca" },
+  { label: "Custom Apps",      letter: "X" },
 ];
 
-const NAV_LINKS = [
-  { label: "EON",   href: "/eon" },
-  { label: "WoodX", href: "/woodchat" },
-  { label: "NXT1",  href: "https://nxtone.tech", external: true },
+const PRODUCTS = [
+  {
+    name: "EON",
+    desc: "Personal AI agent system",
+    detail: "Intelligent assistant that learns, executes tasks, and manages your digital work.",
+    href: "/eon",
+    external: false,
+  },
+  {
+    name: "WoodX",
+    desc: "Encrypted messaging platform",
+    detail: "End-to-end encrypted group and direct messaging built for teams and communities.",
+    href: "/woodchat",
+    external: false,
+  },
+  {
+    name: "NXT1",
+    desc: "No-code platform",
+    detail: "Build apps, websites, and MVPs without writing a single line of code.",
+    href: "https://nxtone.tech",
+    external: true,
+  },
 ];
 
 function MarqueeTrack() {
@@ -77,7 +95,7 @@ function MarqueeTrack() {
         {doubled.map((item, i) => (
           <div key={i} className="flex items-center gap-3 shrink-0">
             <div className="liquid-glass w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-semibold text-white/80">
-              {item.letter[0]}
+              {item.letter}
             </div>
             <span className="text-sm font-semibold text-white/80 whitespace-nowrap">
               {item.label}
@@ -130,56 +148,40 @@ const Home = () => {
   return (
     <div className="relative overflow-x-hidden text-white" data-testid="home-page">
 
-      {/* Full-page starfield — fixed, sits behind everything */}
-      <StarfieldBackground />
+      {/* Full-page motion video backdrop — fixed, sits behind entire site */}
+      <MotionBackdrop />
 
-      {/* ── HERO ────────────────────────────────────────────────────── */}
+      {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section
         className="relative min-h-screen flex flex-col"
         style={{ zIndex: 1 }}
         data-testid="hero"
       >
-        {/* Soft blur shape behind hero text */}
+        {/* Blurred shape — depth behind hero text only */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
           style={{
             width: "min(984px, 95vw)",
-            height: "min(527px, 60vw)",
+            height: "min(527px, 65vw)",
             background: "hsl(260 87% 3%)",
-            opacity: 0.75,
-            filter: "blur(72px)",
+            opacity: 0.7,
+            filter: "blur(80px)",
             zIndex: 0,
           }}
         />
 
-        {/* Navbar */}
+        {/* Navbar — logo left, CTA right only */}
         <nav
           className="relative w-full flex items-center justify-between py-5 px-6 md:px-8"
           style={{ zIndex: 2 }}
           data-testid="home-header"
         >
-          {/* Logo — slightly smaller */}
           <JwoodLogo onClick={handleLogoTap} className="h-[26px] w-auto" />
 
-          {/* Center nav — desktop only */}
-          <div className="hidden md:flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                target={link.external ? "_blank" : undefined}
-                rel={link.external ? "noreferrer noopener" : undefined}
-                className="text-sm font-medium text-white/60 hover:text-white transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-
-          {/* Right CTA */}
           <a
             href="#inquiry"
             className="rounded-full border border-white/20 bg-white/[0.06] backdrop-blur-md px-4 py-2 text-sm font-medium text-white/90 hover:bg-white/10 transition-colors"
+            data-testid="hero-cta-nav"
           >
             Get Started
           </a>
@@ -187,10 +189,9 @@ const Home = () => {
 
         {/* Divider */}
         <div
-          className="w-full h-px"
+          className="relative w-full h-px"
           style={{
             zIndex: 2,
-            position: "relative",
             background: "linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent)",
           }}
         />
@@ -201,13 +202,6 @@ const Home = () => {
           style={{ zIndex: 2 }}
         >
           <div className="text-center w-full max-w-4xl mx-auto">
-
-            {/* Overline */}
-            <p className="font-mono text-[11px] tracking-[0.3em] text-white/45 uppercase mb-6">
-              JW Technologies
-            </p>
-
-            {/* Headline */}
             <h1
               className="font-normal leading-[1.02] tracking-[-0.024em]"
               style={{
@@ -231,7 +225,6 @@ const Home = () => {
               </span>
             </h1>
 
-            {/* Subtitle */}
             <p
               className="text-base md:text-lg leading-7 max-w-md mx-auto mt-4"
               style={{ color: "hsl(40 6% 82%)", opacity: 0.75 }}
@@ -241,7 +234,6 @@ const Home = () => {
               businesses, campaigns, and creators.
             </p>
 
-            {/* CTA row */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
               <a
                 href="#inquiry"
@@ -265,11 +257,11 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Service marquee — pinned to hero bottom */}
+        {/* Service marquee */}
         <div className="relative pb-8 md:pb-10" style={{ zIndex: 2 }}>
           <div className="max-w-5xl mx-auto px-6 md:px-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-10">
-              <p className="text-xs text-white/40 leading-snug shrink-0 hidden sm:block">
+              <p className="text-xs text-white/35 leading-snug shrink-0 hidden sm:block">
                 Trusted technology for
                 <br />
                 modern organizations
@@ -282,10 +274,57 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ── INQUIRY FORM ────────────────────────────────────────────── */}
+      {/* ── PRODUCTS ─────────────────────────────────────────────────── */}
+      <Reveal
+        as="section"
+        className="relative px-6 md:px-12 py-20 md:py-28 max-w-6xl mx-auto"
+        style={{ zIndex: 1 }}
+        data-testid="products-section"
+      >
+        <p className="font-mono text-[11px] tracking-[0.3em] text-white/40 uppercase mb-4">
+          · Products of JW Technologies
+        </p>
+        <h2
+          className="text-2xl md:text-4xl font-light tracking-tight text-white mb-10 md:mb-14"
+          style={{ fontFamily: '"General Sans", system-ui, sans-serif' }}
+        >
+          Built in-house.
+          <br />
+          <span className="text-white/50">Deployed in the wild.</span>
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5">
+          {PRODUCTS.map((p) => (
+            <a
+              key={p.name}
+              href={p.href}
+              target={p.external ? "_blank" : undefined}
+              rel={p.external ? "noreferrer noopener" : undefined}
+              className="group relative rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-md p-6 md:p-8 flex flex-col gap-4 hover:bg-white/[0.06] hover:border-white/[0.14] transition-all duration-300"
+              data-testid={`product-${p.name.toLowerCase()}`}
+            >
+              {/* Name + arrow */}
+              <div className="flex items-start justify-between gap-2">
+                <span className="text-xl font-semibold text-white tracking-tight">
+                  {p.name}
+                </span>
+                <ArrowUpRight className="h-4 w-4 text-white/30 group-hover:text-white/70 transition-colors shrink-0 mt-1" />
+              </div>
+
+              {/* Short desc */}
+              <p className="text-sm text-white/55 font-medium">{p.desc}</p>
+
+              {/* Detail */}
+              <p className="text-sm text-white/35 leading-relaxed mt-auto">{p.detail}</p>
+            </a>
+          ))}
+        </div>
+      </Reveal>
+
+      {/* ── INQUIRY FORM ─────────────────────────────────────────────── */}
       <section
         id="inquiry"
-        className="relative px-6 md:px-12 py-20 md:py-28 max-w-6xl mx-auto"
+        className="relative px-6 md:px-12 pb-20 md:pb-28 max-w-6xl mx-auto"
         style={{ zIndex: 1 }}
         data-testid="inquiry-section"
       >
@@ -293,54 +332,24 @@ const Home = () => {
 
           {/* Left copy */}
           <Reveal>
-            <p className="font-mono text-[11px] tracking-[0.3em] text-white/45 uppercase">
+            <p className="font-mono text-[11px] tracking-[0.3em] text-white/40 uppercase">
               · Start a project
             </p>
             <h2 className="mt-4 text-3xl md:text-4xl font-light tracking-tight text-white leading-tight">
               Let's build something.
             </h2>
-            <p className="mt-4 text-sm text-white/55 leading-relaxed max-w-xs">
-              Share the details and we'll reach out within one business day to
-              discuss your project.
+            <p className="mt-4 text-sm text-white/50 leading-relaxed max-w-xs">
+              Share the details and we'll reach out within one business day.
             </p>
-            <div className="mt-8 flex items-center gap-3 text-sm text-white/60">
-              <Mail className="h-4 w-4 text-white/70 shrink-0" />
+            <div className="mt-8 flex items-center gap-3 text-sm">
+              <Mail className="h-4 w-4 text-white/50 shrink-0" />
               <a
                 href="mailto:info@jwoodtechnologies.com"
-                className="text-white/80 hover:text-white underline-offset-4 hover:underline transition-colors"
+                className="text-white/70 hover:text-white underline-offset-4 hover:underline transition-colors"
                 data-testid="contact-email-link"
               >
                 info@jwoodtechnologies.com
               </a>
-            </div>
-
-            {/* Product links — compact, non-repetitive */}
-            <div className="mt-10 pt-10 border-t border-white/[0.07] space-y-2">
-              <p className="font-mono text-[10px] tracking-[0.25em] text-white/35 uppercase mb-4">
-                Products
-              </p>
-              {[
-                { name: "EON", desc: "Personal AI agent", href: "/eon" },
-                { name: "WoodX", desc: "Encrypted messaging", href: "/woodchat" },
-                { name: "NXT1", desc: "No-code builder", href: "https://nxtone.tech", external: true },
-              ].map((p) => (
-                <a
-                  key={p.name}
-                  href={p.href}
-                  target={p.external ? "_blank" : undefined}
-                  rel={p.external ? "noreferrer noopener" : undefined}
-                  className="flex items-center justify-between group py-2 text-sm"
-                  data-testid={`home-${p.name.toLowerCase()}-link`}
-                >
-                  <span className="text-white/70 group-hover:text-white transition-colors font-medium">
-                    {p.name}
-                  </span>
-                  <span className="text-white/35 text-xs group-hover:text-white/60 transition-colors flex items-center gap-1">
-                    {p.desc}
-                    <ArrowUpRight className="h-3 w-3" />
-                  </span>
-                </a>
-              ))}
             </div>
           </Reveal>
 
@@ -354,7 +363,7 @@ const Home = () => {
               <div className="flex flex-col items-start gap-4 py-10" data-testid="inquiry-success">
                 <CheckCircle2 className="h-9 w-9 text-emerald-400" />
                 <h3 className="text-xl font-light text-white">Inquiry received.</h3>
-                <p className="text-sm text-white/55">We'll be in touch shortly.</p>
+                <p className="text-sm text-white/50">We'll be in touch shortly.</p>
                 <Button
                   variant="outline"
                   className="mt-2 border-white/15 bg-transparent text-white/80 hover:bg-white/5 hover:text-white rounded-full"
@@ -434,7 +443,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ── FOOTER ──────────────────────────────────────────────────── */}
+      {/* ── FOOTER ───────────────────────────────────────────────────── */}
       <footer
         className="relative px-6 md:px-12 pb-10 max-w-6xl mx-auto"
         style={{ zIndex: 1 }}
@@ -444,39 +453,33 @@ const Home = () => {
           className="pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
           style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
         >
-          <div className="text-[11px] font-mono tracking-[0.18em] text-white/35 uppercase">
+          <div className="text-[11px] font-mono tracking-[0.18em] text-white/30 uppercase">
             © {new Date().getFullYear()} Jwood Technologies
           </div>
-          <div className="flex items-center gap-4 text-[11px] font-mono tracking-[0.18em] text-white/35 uppercase">
-            <a href="/privacy" className="hover:text-white/70 transition-colors" data-testid="home-privacy">Privacy</a>
-            <a href="/terms"   className="hover:text-white/70 transition-colors" data-testid="home-terms">Terms</a>
-
-            {/* Instagram */}
+          <div className="flex items-center gap-4 text-[11px] font-mono tracking-[0.18em] text-white/30 uppercase">
+            <a href="/privacy" className="hover:text-white/60 transition-colors" data-testid="home-privacy">Privacy</a>
+            <a href="/terms"   className="hover:text-white/60 transition-colors" data-testid="home-terms">Terms</a>
             <a
               href="https://www.instagram.com/jwoodtechnologies"
-              target="_blank"
-              rel="noreferrer noopener"
+              target="_blank" rel="noreferrer noopener"
               aria-label="Instagram"
               className="group inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/10 hover:border-white/25 hover:bg-white/5 transition-colors"
               data-testid="home-instagram"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-3 w-3 text-white/55 group-hover:text-white transition-colors">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-3 w-3 text-white/50 group-hover:text-white transition-colors">
                 <rect x="3" y="3" width="18" height="18" rx="5" />
                 <circle cx="12" cy="12" r="4" />
                 <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" />
               </svg>
             </a>
-
-            {/* LinkedIn */}
             <a
               href="https://www.linkedin.com/company/jwoodnxt/"
-              target="_blank"
-              rel="noreferrer noopener"
+              target="_blank" rel="noreferrer noopener"
               aria-label="LinkedIn"
               className="group inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/10 hover:border-white/25 hover:bg-white/5 transition-colors"
               data-testid="home-linkedin"
             >
-              <svg viewBox="0 0 24 24" fill="currentColor" className="h-[11px] w-[11px] text-white/55 group-hover:text-white transition-colors">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="h-[11px] w-[11px] text-white/50 group-hover:text-white transition-colors">
                 <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8h4.56v14H.22V8zm7.42 0h4.37v1.92h.06c.61-1.15 2.1-2.36 4.32-2.36 4.63 0 5.48 3.05 5.48 7.02V22h-4.56v-6.1c0-1.46-.03-3.34-2.04-3.34-2.04 0-2.36 1.59-2.36 3.23V22H7.64V8z" />
               </svg>
             </a>
@@ -484,7 +487,7 @@ const Home = () => {
         </div>
       </footer>
 
-      {/* Floating EON chatbot — must remain active, visible, and functional */}
+      {/* Floating EON chatbot — active, visible, functional */}
       <HomeEon />
     </div>
   );
@@ -492,8 +495,8 @@ const Home = () => {
 
 const Field = ({ label, required, htmlFor, children }) => (
   <div className="space-y-2">
-    <Label htmlFor={htmlFor} className="font-mono text-[10px] tracking-[0.22em] uppercase text-white/50">
-      {label}{required && <span className="ml-1 text-white/30">*</span>}
+    <Label htmlFor={htmlFor} className="font-mono text-[10px] tracking-[0.22em] uppercase text-white/45">
+      {label}{required && <span className="ml-1 text-white/25">*</span>}
     </Label>
     {children}
   </div>
