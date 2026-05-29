@@ -180,7 +180,8 @@ const Home = () => {
 
           <a
             href="#inquiry"
-            className="rounded-full border border-white/20 bg-white/[0.06] backdrop-blur-md px-4 py-2 text-sm font-medium text-white/90 hover:bg-white/10 transition-colors"
+            className="hero-glass-btn inline-flex items-center rounded-full text-white/90 text-sm font-medium transition-all"
+            style={{ padding: "9px 18px" }}
             data-testid="hero-cta-nav"
           >
             Get Started
@@ -203,14 +204,15 @@ const Home = () => {
         >
           <div className="text-center w-full max-w-4xl mx-auto">
             <h1
-              className="font-normal leading-[1.02] tracking-[-0.024em]"
+              className="font-normal leading-[1.05] tracking-[-0.024em]"
               style={{
                 fontFamily: '"General Sans", system-ui, sans-serif',
-                fontSize: "clamp(2.8rem, 10vw, 140px)",
+                fontSize: "clamp(2.4rem, 9vw, 140px)",
               }}
               data-testid="hero-headline"
             >
-              Intelligence,{" "}
+              <em style={{ fontStyle: "italic", fontWeight: 300 }}>Intelligence,</em>
+              <br />
               <span
                 style={{
                   backgroundImage: "linear-gradient(to left, #6366f1, #a855f7, #fcd34d)",
@@ -226,19 +228,19 @@ const Home = () => {
             </h1>
 
             <p
-              className="text-base md:text-lg leading-7 max-w-md mx-auto mt-4"
-              style={{ color: "hsl(40 6% 82%)", opacity: 0.75 }}
+              className="text-sm md:text-base leading-6 md:leading-7 max-w-xs md:max-w-md mx-auto mt-4 px-2 md:px-0"
+              style={{ color: "hsl(40 6% 82%)", opacity: 0.65 }}
               data-testid="hero-sub"
             >
               AI-powered websites, automations, and digital systems built for
               businesses, campaigns, and creators.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
+            <div className="flex flex-row flex-wrap items-center justify-center gap-2 md:gap-3 mt-7 md:mt-8">
               <a
                 href="#inquiry"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.07] backdrop-blur-md text-white/90 text-sm font-medium hover:bg-white/12 transition-colors"
-                style={{ padding: "14px 26px" }}
+                className="hero-glass-btn inline-flex items-center gap-2 rounded-full text-white/95 text-sm font-medium transition-all"
+                style={{ padding: "12px 22px" }}
                 data-testid="hero-cta-share"
               >
                 Share a Project
@@ -246,12 +248,13 @@ const Home = () => {
               </a>
               <a
                 href="mailto:info@jwoodtechnologies.com"
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-transparent text-white/55 text-sm font-medium hover:text-white/80 hover:border-white/20 transition-colors"
-                style={{ padding: "14px 22px" }}
+                className="hero-glass-btn hero-glass-btn--dim inline-flex items-center gap-2 rounded-full text-white/60 text-sm font-medium transition-all"
+                style={{ padding: "12px 20px" }}
                 data-testid="hero-cta-email"
               >
                 <Mail className="h-4 w-4" />
-                info@jwoodtechnologies.com
+                <span className="hidden sm:inline">info@jwoodtechnologies.com</span>
+                <span className="sm:hidden">Email us</span>
               </a>
             </div>
           </div>
@@ -281,16 +284,11 @@ const Home = () => {
         style={{ zIndex: 1 }}
         data-testid="products-section"
       >
-        <p className="font-mono text-[11px] tracking-[0.3em] text-white/40 uppercase mb-4">
-          · Products of JW Technologies
-        </p>
         <h2
-          className="text-2xl md:text-4xl font-light tracking-tight text-white mb-10 md:mb-14"
+          className="text-2xl md:text-3xl font-light tracking-tight text-white mb-10 md:mb-14"
           style={{ fontFamily: '"General Sans", system-ui, sans-serif' }}
         >
-          Built in-house.
-          <br />
-          <span className="text-white/50">Deployed in the wild.</span>
+          Our Products
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5">
