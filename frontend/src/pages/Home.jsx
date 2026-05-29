@@ -199,7 +199,7 @@ const Home = () => {
 
         {/* Hero content */}
         <div
-          className="relative flex-1 flex items-start md:items-center justify-center px-6 pt-10 pb-6 md:py-16"
+          className="relative flex-1 flex items-center justify-center px-6 py-10"
           style={{ zIndex: 2 }}
         >
           <div className="text-center w-full max-w-4xl mx-auto">
@@ -207,7 +207,7 @@ const Home = () => {
               className="font-normal leading-[1.05] tracking-[-0.024em]"
               style={{
                 fontFamily: '"General Sans", system-ui, sans-serif',
-                fontSize: "clamp(2.4rem, 9vw, 140px)",
+                fontSize: "clamp(3.2rem, 11vw, 140px)",
               }}
               data-testid="hero-headline"
             >
@@ -228,8 +228,8 @@ const Home = () => {
             </h1>
 
             <p
-              className="text-sm md:text-base leading-6 md:leading-7 max-w-xs md:max-w-md mx-auto mt-4 px-2 md:px-0"
-              style={{ color: "hsl(40 6% 82%)", opacity: 0.65 }}
+              className="text-sm leading-6 max-w-[260px] sm:max-w-sm md:max-w-md mx-auto mt-5"
+              style={{ color: "hsl(40 6% 82%)", opacity: 0.6 }}
               data-testid="hero-sub"
             >
               AI-powered websites, automations, and digital systems built for
