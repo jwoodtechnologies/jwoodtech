@@ -23,7 +23,7 @@ export const API_URL = `${BACKEND_URL}/api`;
 // older Render URL value). This guarantees production auth never
 // silently routes to a wrong / dead backend.
 // ---------------------------------------------------------------------------
-export const PRODUCTION_BACKEND_URL = "https://jwoodtech.vercel.app";
+export const PRODUCTION_BACKEND_URL = "https://jwoodtechnologies-com.onrender.com";
 const PRODUCTION_HOSTS = new Set(["jwoodtechnologies.com", "www.jwoodtechnologies.com"]);
 
 function currentHost() {
