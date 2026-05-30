@@ -35,7 +35,7 @@ import {
 import { toast } from "sonner";
 import axios from "axios";
 import "./WoodChat.css";
-import { BACKEND_URL, googleLoginUrl } from "../lib/config";
+import { BACKEND_URL } from "../lib/config";
 
 const API = `${BACKEND_URL}/api/woodchat`;
 const WX_TOKEN_KEY = "wc_token";
@@ -91,6 +91,8 @@ const AuthModal = ({ onAuthed, onClose, intent }) => {
     password: "",
   });
   const [busy, setBusy] = useState(false);
+  const [forgotMode, setForgotMode] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const submit = async (e) => {
@@ -145,23 +147,6 @@ const AuthModal = ({ onAuthed, onClose, intent }) => {
                 : "Encrypted messaging, end-to-end private.")}
           </div>
         </div>
-
-        <button
-          type="button"
-          className="wx-google-btn"
-          onClick={() => {
-            window.location.href = googleLoginUrl({
-              app: "woodchat",
-              next: "/woodchat",
-            });
-          }}
-          data-testid="wx-google-btn"
-        >
-          <GoogleSVG />
-          Continue with Google
-        </button>
-
-        <div className="wx-or-divider">or</div>
 
         <div className="wx-tab-row">
           <button
@@ -250,6 +235,64 @@ const AuthModal = ({ onAuthed, onClose, intent }) => {
               </>
             )}
           </button>
+
+          {mode === "login" && (
+            <div style={{ marginTop: 10, display: "flex", justifyContent: "flex-end" }}>
+              <button
+                type="button"
+                onClick={() => setForgotMode(true)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#7aa9ff",
+                  fontSize: 13,
+                  cursor: "pointer",
+                  padding: 0,
+                }}
+              >
+                Forgot password?
+              </button>
+            </div>
+          )}
+
+          {forgotMode && (
+            <div style={{ marginTop: 12 }}>
+              <h4 style={{ margin: "0 0 8px", fontSize: 14, color: "#ccc" }}>Reset password</h4>
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setBusy(true);
+                  try {
+                    await wcClient.post("/auth/forgot", { email: forgotEmail });
+                    toast.success("If an account exists, a reset link has been sent.");
+                    setForgotMode(false);
+                  } catch (err) {
+                    toast.error(err.response?.data?.detail || "Could not send reset email.");
+                  } finally {
+                    setBusy(false);
+                  }
+                }}
+              >
+                <input
+                  className="wx-input"
+                  type="email"
+                  placeholder="Your email"
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  required
+                />
+                <button
+                  type="submit"
+                  className="wx-btn wx-btn-solid"
+                  disabled={busy}
+                  style={{ marginTop: 8, width: "100%", justifyContent: "center" }}
+                >
+                  {busy ? "Sending..." : "Send reset link"}
+                </button>
+              </form>
+            </div>
+          )}
+
           <p
             style={{
               fontSize: 11,

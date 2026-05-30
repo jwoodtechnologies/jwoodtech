@@ -99,6 +99,16 @@ class LoginIn(BaseModel):
     password: str
 
 
+class ResetIn(BaseModel):
+    email: EmailStr
+
+
+class ResetConfirmIn(BaseModel):
+    email: EmailStr
+    token: str
+    new_password: str = Field(min_length=6, max_length=200)
+
+
 class UserOut(BaseModel):
     id: str
     first_name: str
@@ -232,6 +242,7 @@ def build_eon_router(
     EMERGENT_KEY = os.environ.get("EMERGENT_LLM_KEY", "")
     LLM_PROVIDER = os.environ.get("EON_LLM_PROVIDER", "anthropic")
     LLM_MODEL = os.environ.get("EON_LLM_MODEL", "claude-sonnet-4-5-20250929")
+    FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://jwoodtechnologies.com").rstrip("/")
 
     async def _llm_reply(session_id: str, system: str, history: list[dict], user_text: str) -> str:
         """Send a user message through emergentintegrations with multi-turn
@@ -440,6 +451,61 @@ def build_eon_router(
             u["is_admin"] = True
 
         return {"token": _create_token(u["id"], email), "user": _user_out(u)}
+
+    @r.post("/auth/reset-password")
+    async def reset_password(body: ResetIn):
+        """Send password reset email. Always returns success to prevent email enumeration."""
+        email = body.email.lower().strip()
+        u = await users.find_one({"email": email})
+        if u:
+            import secrets as _secrets
+            token = _secrets.token_urlsafe(32)
+            from datetime import timedelta
+            await users.update_one(
+                {"email": email},
+                {"$set": {
+                    "reset_token": token,
+                    "reset_expires": (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat(),
+                }},
+            )
+            # Generate reset link — user clicks and sets new password
+            reset_link = f"{FRONTEND_URL}/eon#reset={token}&email={email}"
+            try:
+                import resend as _resend
+                if os.environ.get("RESEND_API_KEY"):
+                    await asyncio.to_thread(
+                        _resend.Emails.send,
+                        {
+                            "from": os.environ.get("SENDER_EMAIL", "EON <onboarding@resend.dev>"),
+                            "to": [email],
+                            "subject": "EON — Reset your password",
+                            "html": f"<p>Click to reset your EON password:</p><p><a href='{reset_link}'>{reset_link}</a></p><p>Link expires in 1 hour.</p>",
+                        },
+                    )
+            except Exception:
+                pass  # Don't leak whether email exists
+        return {"ok": True, "message": "If an account exists, a reset link has been sent."}
+
+    @r.post("/auth/reset-password/confirm")
+    async def reset_password_confirm(body: ResetConfirmIn):
+        """Confirm password reset with token and new password."""
+        email = body.email.lower().strip()
+        u = await users.find_one({"email": email})
+        if not u or u.get("reset_token") != body.token:
+            raise HTTPException(400, detail="Invalid or expired token")
+        from datetime import timedelta
+        expires = u.get("reset_expires", "")
+        if expires:
+            try:
+                if datetime.fromisoformat(expires) < datetime.now(timezone.utc):
+                    raise HTTPException(400, detail="Reset link expired")
+            except ValueError:
+                pass
+        await users.update_one(
+            {"email": email},
+            {"$set": {"password_hash": _hash(body.new_password), "reset_token": "", "reset_expires": ""}},
+        )
+        return {"ok": True, "message": "Password updated. Please sign in."}
 
     @r.get("/me", response_model=UserOut)
     async def me(u=Depends(current_user)):

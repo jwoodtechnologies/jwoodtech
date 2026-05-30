@@ -27,7 +27,7 @@ import {
 import { toast } from "sonner";
 import axios from "axios";
 import "./Eon.css";
-import { BACKEND_URL, googleLoginUrl } from "../lib/config";
+import { BACKEND_URL } from "../lib/config";
 
 // ---------------------------------------------------------------------------
 const API = `${BACKEND_URL}/api/eon-app`;
@@ -247,6 +247,8 @@ const AuthGate = ({ pendingPrompt, onAuthed, onClose }) => {
     access_code: "",
   });
   const [busy, setBusy] = useState(false);
+  const [forgotMode, setForgotMode] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const submit = async (e) => {
@@ -302,20 +304,6 @@ const AuthGate = ({ pendingPrompt, onAuthed, onClose }) => {
               : "Sign in to continue with EON."}
           </div>
         </div>
-
-        <button
-          type="button"
-          className="eon-google-btn"
-          onClick={() => {
-            window.location.href = googleLoginUrl({ app: "eon", next: "/eon" });
-          }}
-          data-testid="eon-google-btn"
-        >
-          <GoogleSVG />
-          Continue with Google
-        </button>
-
-        <div className="eon-or-divider">or</div>
 
         <div className="eon-tab-row">
           <button
@@ -410,6 +398,63 @@ const AuthGate = ({ pendingPrompt, onAuthed, onClose }) => {
             )}
           </button>
         </form>
+
+        {mode === "signin" && (
+          <div style={{ marginTop: 10, display: "flex", justifyContent: "flex-end" }}>
+            <button
+              type="button"
+              onClick={() => setForgotMode(true)}
+              style={{
+                background: "none",
+                border: "none",
+                color: "#7aa9ff",
+                fontSize: 13,
+                cursor: "pointer",
+                padding: 0,
+              }}
+            >
+              Forgot password?
+            </button>
+          </div>
+        )}
+
+        {forgotMode && (
+          <div style={{ marginTop: 12 }}>
+            <h4 style={{ margin: "0 0 8px", fontSize: 14, color: "#ccc" }}>Reset password</h4>
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setBusy(true);
+                try {
+                  await eonClient.post("/auth/reset-password", { email: forgotEmail });
+                  toast.success("Check your email for reset instructions.");
+                  setForgotMode(false);
+                } catch (err) {
+                  toast.error(err.response?.data?.detail || "Could not send reset email.");
+                } finally {
+                  setBusy(false);
+                }
+              }}
+            >
+              <input
+                className="eon-input"
+                type="email"
+                placeholder="Your email"
+                value={forgotEmail}
+                onChange={(e) => setForgotEmail(e.target.value)}
+                required
+              />
+              <button
+                type="submit"
+                className="eon-btn-primary"
+                disabled={busy}
+                style={{ marginTop: 8 }}
+              >
+                {busy ? "Sending..." : "Send reset link"}
+              </button>
+            </form>
+          </div>
+        )}
 
         {pendingPrompt ? (
           <div className="eon-modal-prompt-note" data-testid="eon-pending-note">
