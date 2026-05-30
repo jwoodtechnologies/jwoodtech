@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: jwoodtechnologies-com
+    name: jwoodtech
     runtime: python
     rootDir: backend
     plan: starter
@@ -11,11 +11,11 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.9
       - key: BACKEND_URL
-        value: https://jwoodtechnologies-com.onrender.com
+        value: https://jwoodtech.onrender.com
       - key: FRONTEND_URL
         value: https://jwoodtechnologies.com
       - key: GOOGLE_REDIRECT_URI
-        value: https://jwoodtechnologies-com.onrender.com/api/auth/google/callback
+        value: https://jwoodtech.onrender.com/api/auth/google/callback
       - key: CORS_ORIGINS
         value: https://jwoodtechnologies.com
       - key: GOOGLE_CLIENT_ID
