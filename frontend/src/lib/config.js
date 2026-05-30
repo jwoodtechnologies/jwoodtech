@@ -18,12 +18,12 @@ export const API_URL = `${BACKEND_URL}/api`;
 //   - the callback lands back on the canonical frontend
 //
 // If the frontend is being served from jwoodtechnologies.com we hard-pin the
-// OAuth base to https://jwoodtechnologies-com.onrender.com—even if
+// OAuth base to https://jwoodtech.vercel.app—even if
 // REACT_APP_BACKEND_URL was built pointing at a different backend (e.g. an
-// older lystar.onrender.com value). This guarantees production auth never
+// older Render URL value). This guarantees production auth never
 // silently routes to a wrong / dead backend.
 // ---------------------------------------------------------------------------
-export const PRODUCTION_BACKEND_URL = "https://jwoodtechnologies-com.onrender.com";
+export const PRODUCTION_BACKEND_URL = "https://jwoodtech.vercel.app";
 const PRODUCTION_HOSTS = new Set(["jwoodtechnologies.com", "www.jwoodtechnologies.com"]);
 
 function currentHost() {
