@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Jwood Technologies</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08080a;
+      --nav: #0a0a0d;
+      --surface: #0f0f13;
+      --border: rgba(255,255,255,0.07);
+      --text: #f0f0f2;
+      --muted: #888896;
+      --faint: #3a3a46;
+      --accent: #00c8f0;
+      --nav-h: 72px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; font: inherit; }
+    h1,h2,h3 { font-family: 'Cormorant Garant', Georgia, serif; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      background: var(--nav);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 clamp(24px, 5vw, 64px);
+    }
+    .nav-inner {
+      width: 100%; max-width: 1400px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo img { height: 22px; width: auto; filter: brightness(0) invert(1); }
+    .nav-links { display: flex; align-items: center; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted); transition: color .2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-contact {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      border: 1px solid rgba(0,200,240,0.3); padding: 8px 22px;
+      border-radius: 2px; transition: background .2s, color .2s;
+    }
+    .nav-contact:hover { background: var(--accent); color: #000; }
+    .mobile-nav {
+      display: none; position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+      z-index: 200; width: calc(100vw - 32px); max-width: 420px; height: 52px;
+      background: rgba(10,10,14,0.92); backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 100px;
+      padding: 0 8px 0 16px; align-items: center; justify-content: space-between;
+    }
+    .mobile-nav-logo img { height: 18px; width: auto; filter: brightness(0) invert(1); }
+    .mobile-hamburger {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 4px;
+    }
+    .mobile-hamburger span { display: block; width: 16px; height: 1.5px; background: var(--text); border-radius: 2px; transition: all .25s; }
+    .mobile-hamburger.active span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .mobile-hamburger.active span:nth-child(2) { opacity: 0; }
+    .mobile-hamburger.active span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+    .mobile-dropdown {
+      display: none; position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+      z-index: 199; width: calc(100vw - 32px); max-width: 420px;
+      background: rgba(10,10,14,0.97); backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden;
+      animation: drop-in .22s cubic-bezier(.22,1,.36,1) both;
+    }
+    .mobile-dropdown.open { display: block; }
+    @keyframes drop-in {
+      from { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.97); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+    }
+    .mobile-dropdown a {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 24px; font-size: 1rem; font-weight: 500; color: var(--muted);
+      border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s, background .2s;
+    }
+    .mobile-dropdown a:last-child { border-bottom: none; }
+    .mobile-dropdown a:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+
+    /* ── PAGE ── */
+    .page-wrap { padding-top: var(--nav-h); }
+
+    /* ── HERO STRIP ── */
+    .page-hero {
+      padding: 100px clamp(24px, 5vw, 64px) 80px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -80px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,200,240,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-hero-inner { max-width: 1400px; margin: 0 auto; }
+    .page-label {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
+    }
+    .page-h1 {
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      font-weight: 700; letter-spacing: -0.02em; line-height: 0.95;
+    }
+    .page-h1 em { font-style: italic; }
+
+    /* ── CONTENT SECTIONS ── */
+    .content { max-width: 1400px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 64px); }
+
+    /* ── FOUNDER ── */
+    .founder-grid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 80px;
+      align-items: start;
+      padding: 80px 0 100px;
+      border-bottom: 1px solid var(--border);
+    }
+    .founder-img-wrap {
+      position: relative;
+    }
+    .founder-img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: top center;
+      filter: grayscale(100%) contrast(1.08);
+      display: block;
+    }
+    .founder-img-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--faint);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .founder-img-caption {
+      margin-top: 16px;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+    .founder-right { padding-top: 12px; }
+    .founder-name {
+      font-family: 'Cormorant Garant', Georgia, serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .founder-title {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 40px;
+    }
+    .founder-pull {
+      font-family: 'Cormorant Garant', Georgia, serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 600;
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--text);
+      border-left: 2px solid var(--accent);
+      padding-left: 24px;
+      margin-bottom: 36px;
+    }
+    .founder-body p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: rgba(240,240,242,0.65);
+      line-height: 1.85;
+      max-width: 560px;
+      margin-bottom: 20px;
+    }
+
+    /* ── MISSION ── */
+    .mission-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 80px 0;
+    }
+    .mission-cell {
+      background: var(--bg);
+      padding: 48px 44px;
+      transition: background .25s;
+    }
+    .mission-cell:hover { background: var(--surface); }
+    .mission-num {
+      font-family: 'Cormorant Garant', Georgia, serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: rgba(0,200,240,0.15);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .mission-title {
+      font-family: 'Cormorant Garant', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .mission-body {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ── STATS ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 0 0 100px;
+    }
+    .stat-cell {
+      background: var(--bg);
+      padding: 48px 36px;
+      transition: background .25s;
+    }
+    .stat-cell:hover { background: var(--surface); }
+    .stat-n {
+      font-family: 'Cormorant Garant', Georgia, serif;
+      font-size: 4rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .stat-n sup { font-size: 0.45em; vertical-align: super; color: var(--accent); }
+    .stat-label-text {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #000;
+      padding: 48px clamp(24px, 5vw, 64px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-inner {
+      max-width: 1400px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+    }
+    .footer-logo img { height: 18px; filter: brightness(0) invert(1); opacity: 0.4; }
+    .footer-links { display: flex; gap: 28px; list-style: none; }
+    .footer-links a { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.25); transition: color .2s; }
+    .footer-links a:hover { color: rgba(255,255,255,0.6); }
+    .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.18); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.up { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { display: none; }
+      .mobile-nav { display: flex; }
+      .page-wrap { padding-top: 80px; }
+      .founder-grid { grid-template-columns: 1fr; gap: 40px; }
+      .founder-img-wrap { max-width: 320px; }
+      .mission-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .page-hero { padding: 72px 24px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- DESKTOP NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/assets/jwod-logo.png" alt="Jwood Technologies"></a>
+    <ul class="nav-links">
+      <li><a href="/about" class="active">About</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/careers">Careers</a></li>
+      <li><a href="/terms">Legal</a></li>
+    </ul>
+    <a href="/contact" class="nav-contact">Contact</a>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="/" class="mobile-nav-logo"><img src="/assets/jwod-logo.png" alt="Jwood Technologies"></a>
+  <button class="mobile-hamburger" id="mobileHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+<div class="mobile-dropdown" id="mobileDropdown">
+  <a href="/">Home <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/services">Services <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/careers">Careers <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/contact">Contact <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/terms">Legal <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+</div>
+
+<div class="page-wrap">
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-label">About</div>
+      <h1 class="page-h1">Built different.<br><em>On purpose.</em></h1>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- FOUNDER -->
+    <div class="founder-grid">
+      <div class="reveal">
+        <div class="founder-img-wrap">
+          <img
+            class="founder-img"
+            src="/assets/jacob-wood.jpg"
+            alt="Jacob J. Wood — Founder & CEO"
+            onerror="this.outerHTML='<div class=\'founder-img-placeholder\'>Photo</div>'"
+          >
+        </div>
+        <div class="founder-img-caption">Jacob J. Wood — Founder &amp; CEO</div>
+      </div>
+      <div class="founder-right reveal">
+        <div class="founder-name">Jacob J. Wood</div>
+        <div class="founder-title">Founder &amp; Chief Executive Officer</div>
+        <p class="founder-pull">"The most powerful technology is the kind that disappears into the work — that simply makes the impossible routine."</p>
+        <div class="founder-body">
+          <p>Jacob founded Jwood Technologies with one conviction: that intelligent technology should be within reach for every ambitious business, not just the few with enterprise budgets and internal engineering armies.</p>
+          <p>With a background spanning software engineering, business strategy, and AI systems design, Jacob built Jwood to close that gap — delivering the kind of bespoke digital infrastructure that reshapes how organizations operate at their core.</p>
+          <p>Every engagement is treated as a long-term partnership. We don't ship and disappear. We build systems designed to compound — tools that become more valuable the longer they run, and teams that become more capable the longer we work together.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MISSION -->
+    <div class="mission-grid reveal">
+      <div class="mission-cell">
+        <div class="mission-num">01</div>
+        <div class="mission-title">Intelligence First</div>
+        <p class="mission-body">Every product we build starts with the question: where can intelligence make this measurably better? We don't add AI as a feature. We design around it from the ground up.</p>
+      </div>
+      <div class="mission-cell">
+        <div class="mission-num">02</div>
+        <div class="mission-title">Built to Last</div>
+        <p class="mission-body">We engineer for longevity. Clean architecture, documented systems, and infrastructure that scales — so our clients don't find themselves rebuilding everything two years later.</p>
+      </div>
+      <div class="mission-cell">
+        <div class="mission-num">03</div>
+        <div class="mission-title">Radical Clarity</div>
+        <p class="mission-body">No jargon. No runaround. We communicate plainly, deliver on commitments, and hold ourselves to outcomes — not hours billed or slides presented.</p>
+      </div>
+      <div class="mission-cell">
+        <div class="mission-num">04</div>
+        <div class="mission-title">Partnership Over Projects</div>
+        <p class="mission-body">Our best relationships don't end at launch. We embed in our clients' operations, iterate with them, and grow as their needs evolve. Your success is the metric we optimize for.</p>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row reveal">
+      <div class="stat-cell">
+        <div class="stat-n">10<sup>+</sup></div>
+        <div class="stat-label-text">AI systems deployed</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n">3<sup>×</sup></div>
+        <div class="stat-label-text">Average efficiency gain</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n">24/7</div>
+        <div class="stat-label-text">Uptime SLA</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-n">100<sup>%</sup></div>
+        <div class="stat-label-text">Client retention</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="/" class="footer-logo"><img src="/assets/jwod-logo.png" alt="Jwood Technologies"></a>
+    <ul class="footer-links">
+      <li><a href="/about">About</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/careers">Careers</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/terms">Legal</a></li>
+    </ul>
+    <span class="footer-copy">© 2025 Jwood Technologies, LLC</span>
+  </div>
+</footer>
+
+<script>
+  const ham = document.getElementById('mobileHamburger');
+  const drop = document.getElementById('mobileDropdown');
+  ham.addEventListener('click', () => { ham.classList.toggle('active'); drop.classList.toggle('open'); });
+  document.addEventListener('click', e => {
+    if (!ham.contains(e.target) && !drop.contains(e.target)) { ham.classList.remove('active'); drop.classList.remove('open'); }
+  });
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('up'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

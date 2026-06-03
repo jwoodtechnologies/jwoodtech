@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service — Jwood Technologies</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #08080a; --nav: #0a0a0d; --surface: #0f0f13; --border: rgba(255,255,255,0.07); --text: #f0f0f2; --muted: #888896; --faint: #3a3a46; --accent: #00c8f0; --nav-h: 72px; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; font: inherit; }
+    h1,h2,h3 { font-family: 'Cormorant Garant', Georgia, serif; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: var(--nav-h); background: var(--nav); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 clamp(24px, 5vw, 64px); }
+    .nav-inner { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo img { height: 22px; width: auto; filter: brightness(0) invert(1); }
+    .nav-links { display: flex; align-items: center; gap: 40px; list-style: none; }
+    .nav-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-contact { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(0,200,240,0.3); padding: 8px 22px; border-radius: 2px; transition: background .2s, color .2s; }
+    .nav-contact:hover { background: var(--accent); color: #000; }
+    .mobile-nav { display: none; position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 200; width: calc(100vw - 32px); max-width: 420px; height: 52px; background: rgba(10,10,14,0.92); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 100px; padding: 0 8px 0 16px; align-items: center; justify-content: space-between; }
+    .mobile-nav-logo img { height: 18px; width: auto; filter: brightness(0) invert(1); }
+    .mobile-hamburger { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; }
+    .mobile-hamburger span { display: block; width: 16px; height: 1.5px; background: var(--text); border-radius: 2px; transition: all .25s; }
+    .mobile-hamburger.active span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .mobile-hamburger.active span:nth-child(2) { opacity: 0; }
+    .mobile-hamburger.active span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+    .mobile-dropdown { display: none; position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 199; width: calc(100vw - 32px); max-width: 420px; background: rgba(10,10,14,0.97); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; animation: drop-in .22s cubic-bezier(.22,1,.36,1) both; }
+    .mobile-dropdown.open { display: block; }
+    @keyframes drop-in { from { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.97); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
+    .mobile-dropdown a { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; font-size: 1rem; font-weight: 500; color: var(--muted); border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s, background .2s; }
+    .mobile-dropdown a:last-child { border-bottom: none; }
+    .mobile-dropdown a:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+    .page-wrap { padding-top: var(--nav-h); }
+    .page-hero { padding: 100px clamp(24px, 5vw, 64px) 80px; border-bottom: 1px solid var(--border); }
+    .page-hero-inner { max-width: 1400px; margin: 0 auto; }
+    .page-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+    .page-h1 { font-family: 'Cormorant Garant', Georgia, serif; font-size: clamp(3rem, 7vw, 6.5rem); font-weight: 700; letter-spacing: -0.02em; line-height: 0.95; }
+    .page-h1 em { font-style: italic; }
+    .content { max-width: 1400px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 64px); }
+
+    .tos-wrap { display: grid; grid-template-columns: 220px 1fr; gap: 80px; padding: 80px 0 100px; align-items: start; }
+    .tos-toc { position: sticky; top: calc(var(--nav-h) + 32px); }
+    .toc-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); margin-bottom: 16px; }
+    .toc-links { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+    .toc-links a { display: block; font-size: 0.8rem; font-weight: 400; color: var(--faint); padding: 6px 0; border-left: 2px solid transparent; padding-left: 12px; transition: color .2s, border-color .2s; }
+    .toc-links a:hover { color: var(--text); border-color: var(--accent); }
+    .tos-doc { max-width: 720px; }
+    .tos-section { margin-bottom: 56px; }
+    .tos-section:first-child { margin-top: 0; }
+    .tos-section-num { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .tos-section h2 { font-family: 'Cormorant Garant', Georgia, serif; font-size: 1.7rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 16px; }
+    .tos-section p { font-size: 0.88rem; font-weight: 300; color: var(--muted); line-height: 1.9; margin-bottom: 14px; }
+    .tos-section ul { padding-left: 20px; margin: 12px 0; }
+    .tos-section li { font-size: 0.88rem; font-weight: 300; color: var(--muted); line-height: 1.8; margin-bottom: 8px; }
+    .tos-meta { margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--faint); }
+
+    footer { background: #000; padding: 48px clamp(24px, 5vw, 64px); border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .footer-logo img { height: 18px; filter: brightness(0) invert(1); opacity: 0.4; }
+    .footer-links { display: flex; gap: 28px; list-style: none; }
+    .footer-links a { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.25); transition: color .2s; }
+    .footer-links a:hover { color: rgba(255,255,255,0.6); }
+    .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.18); }
+    @media (max-width: 900px) {
+      nav { display: none; }
+      .mobile-nav { display: flex; }
+      .page-wrap { padding-top: 80px; }
+      .tos-wrap { grid-template-columns: 1fr; gap: 40px; }
+      .tos-toc { display: none; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/assets/jwod-logo.png" alt="Jwood Technologies"></a>
+    <ul class="nav-links">
+      <li><a href="/about">About</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/careers">Careers</a></li>
+      <li><a href="/terms" class="active">Legal</a></li>
+    </ul>
+    <a href="/contact" class="nav-contact">Contact</a>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="/" class="mobile-nav-logo"><img src="/assets/jwod-logo.png" alt="Jwood Technologies"></a>
+  <button class="mobile-hamburger" id="mobileHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+<div class="mobile-dropdown" id="mobileDropdown">
+  <a href="/">Home <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/about">About <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/services">Services <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/careers">Careers <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/contact">Contact <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+</div>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-label">Legal</div>
+      <h1 class="page-h1">Terms of<br><em>Service.</em></h1>
+    </div>
+  </div>
+  <div class="content">
+    <div class="tos-wrap">
+      <div class="tos-toc">
+        <div class="toc-label">Contents</div>
+        <ul class="toc-links">
+          <li><a href="#services">1. Services</a></li>
+          <li><a href="#accounts">2. Accounts</a></li>
+          <li><a href="#use">3. Acceptable Use</a></li>
+          <li><a href="#ip">4. Intellectual Property</a></li>
+          <li><a href="#privacy">5. Privacy</a></li>
+          <li><a href="#liability">6. Liability</a></li>
+          <li><a href="#governing">7. Governing Law</a></li>
+          <li><a href="#changes">8. Changes</a></li>
+        </ul>
+      </div>
+      <div class="tos-doc">
+        <div class="tos-section">
+          <p>By accessing or using any Jwood Technologies platform, product, or service, you agree to be bound by these Terms of Service. If you do not agree to these terms, do not use our services.</p>
+        </div>
+        <div class="tos-section" id="services">
+          <div class="tos-section-num">Section 01</div>
+          <h2>Services</h2>
+          <p>Jwood Technologies provides AI-powered software platforms, digital consulting, and related technical services to business clients. We reserve the right to modify, suspend, or discontinue any service at our discretion with reasonable notice where practicable.</p>
+          <p>Our services are intended for business use. You represent that you are accessing our services on behalf of an organization or as an individual professional, and that you have the authority to bind that organization to these terms.</p>
+        </div>
+        <div class="tos-section" id="accounts">
+          <div class="tos-section-num">Section 02</div>
+          <h2>Accounts &amp; Access</h2>
+          <p>You are solely responsible for maintaining the confidentiality of your account credentials and for all activity that occurs under your account. You agree to notify us immediately of any unauthorized access or suspected breach at hello@jwoodtechnologies.com.</p>
+          <p>We reserve the right to suspend or terminate accounts that violate these terms, engage in fraudulent activity, or create risk for Jwood Technologies or other users, without prior notice.</p>
+        </div>
+        <div class="tos-section" id="use">
+          <div class="tos-section-num">Section 03</div>
+          <h2>Acceptable Use</h2>
+          <p>You agree to use our services only for lawful purposes and in a manner consistent with all applicable laws and regulations. You expressly agree not to:</p>
+          <ul>
+            <li>Violate any applicable federal, state, local, or international law or regulation</li>
+            <li>Transmit any material that is defamatory, obscene, fraudulent, or harmful</li>
+            <li>Introduce malicious code or interfere with the security or integrity of our systems</li>
+            <li>Attempt to gain unauthorized access to any portion of our services or related systems</li>
+            <li>Harvest or collect data about other users without their express consent</li>
+            <li>Use our services in any manner that could disable, overburden, or impair our infrastructure</li>
+            <li>Reverse engineer, decompile, or disassemble any component of our software</li>
+          </ul>
+        </div>
+        <div class="tos-section" id="ip">
+          <div class="tos-section-num">Section 04</div>
+          <h2>Intellectual Property</h2>
+          <p>All Jwood Technologies products, platforms, source code, designs, trademarks, and brand assets are the exclusive intellectual property of Jwood Technologies, LLC. Nothing in these terms grants you any license to use our intellectual property except as expressly and narrowly stated herein.</p>
+          <p>Content and data you submit to our platforms remains your property. You grant Jwood Technologies a limited, non-exclusive license to process, store, and display your content solely as necessary to provide the services you have engaged us for.</p>
+        </div>
+        <div class="tos-section" id="privacy">
+          <div class="tos-section-num">Section 05</div>
+          <h2>Privacy</h2>
+          <p>Your use of our services is governed by our Privacy Policy, the terms of which are incorporated herein by reference. We collect only the data necessary to provide and improve our services. We do not sell your personal information to third parties, and we do not use your data to train AI models without your express consent.</p>
+        </div>
+        <div class="tos-section" id="liability">
+          <div class="tos-section-num">Section 06</div>
+          <h2>Limitation of Liability</h2>
+          <p>To the maximum extent permitted by applicable law, Jwood Technologies, LLC shall not be liable for any indirect, incidental, special, consequential, or punitive damages — including loss of profits, data, goodwill, or business interruption — arising from or related to your use of or inability to use our services.</p>
+          <p>Our total aggregate liability arising from or related to these terms or our services shall not exceed the greater of (i) the amounts paid by you to Jwood Technologies in the twelve months preceding the claim, or (ii) one hundred US dollars ($100).</p>
+        </div>
+        <div class="tos-section" id="governing">
+          <div class="tos-section-num">Section 07</div>
+          <h2>Governing Law</h2>
+          <p>These Terms of Service and any dispute arising from them shall be governed by and construed in accordance with the laws of the United States, without regard to conflict of law provisions.</p>
+          <p>Any legal action or proceeding relating to these terms shall be brought exclusively in the federal or state courts of the United States. You consent to the personal jurisdiction of such courts.</p>
+        </div>
+        <div class="tos-section" id="changes">
+          <div class="tos-section-num">Section 08</div>
+          <h2>Changes to Terms</h2>
+          <p>We reserve the right to modify these Terms of Service at any time. We will notify you of material changes by posting the updated terms on this page and, where appropriate, by email. Your continued use of our services following the posting of revised terms constitutes your acceptance of those terms.</p>
+          <p>If you have questions about these terms, contact us at <a href="mailto:legal@jwoodtechnologies.com" style="color:var(--accent);">legal@jwoodtechnologies.com</a>.</p>
+        </div>
+        <div class="tos-meta">Last updated: June 2025 &nbsp;·&nbsp; Jwood Technologies, LLC</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <a href="/" class="footer-logo"><img src="/assets/jwod-logo.png" alt="Jwood Technologies"></a>
+    <ul class="footer-links">
+      <li><a href="/about">About</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/careers">Careers</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/terms">Legal</a></li>
+    </ul>
+    <span class="footer-copy">© 2025 Jwood Technologies, LLC</span>
+  </div>
+</footer>
+
+<script>
+  const ham = document.getElementById('mobileHamburger');
+  const drop = document.getElementById('mobileDropdown');
+  ham.addEventListener('click', () => { ham.classList.toggle('active'); drop.classList.toggle('open'); });
+  document.addEventListener('click', e => { if (!ham.contains(e.target) && !drop.contains(e.target)) { ham.classList.remove('active'); drop.classList.remove('open'); } });
+</script>
+</body>
+</html>

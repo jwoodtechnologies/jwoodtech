@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services — Jwood Technologies</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08080a; --nav: #0a0a0d; --surface: #0f0f13;
+      --border: rgba(255,255,255,0.07); --text: #f0f0f2;
+      --muted: #888896; --faint: #3a3a46; --accent: #00c8f0; --nav-h: 72px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-weight: 400; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; font: inherit; }
+    h1,h2,h3 { font-family: 'Cormorant Garant', Georgia, serif; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: var(--nav-h); background: var(--nav); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 clamp(24px, 5vw, 64px); }
+    .nav-inner { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo img { height: 22px; width: auto; filter: brightness(0) invert(1); }
+    .nav-links { display: flex; align-items: center; gap: 40px; list-style: none; }
+    .nav-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-contact { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(0,200,240,0.3); padding: 8px 22px; border-radius: 2px; transition: background .2s, color .2s; }
+    .nav-contact:hover { background: var(--accent); color: #000; }
+    .mobile-nav { display: none; position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 200; width: calc(100vw - 32px); max-width: 420px; height: 52px; background: rgba(10,10,14,0.92); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 100px; padding: 0 8px 0 16px; align-items: center; justify-content: space-between; }
+    .mobile-nav-logo img { height: 18px; width: auto; filter: brightness(0) invert(1); }
+    .mobile-hamburger { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; }
+    .mobile-hamburger span { display: block; width: 16px; height: 1.5px; background: var(--text); border-radius: 2px; transition: all .25s; }
+    .mobile-hamburger.active span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .mobile-hamburger.active span:nth-child(2) { opacity: 0; }
+    .mobile-hamburger.active span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+    .mobile-dropdown { display: none; position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 199; width: calc(100vw - 32px); max-width: 420px; background: rgba(10,10,14,0.97); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; animation: drop-in .22s cubic-bezier(.22,1,.36,1) both; }
+    .mobile-dropdown.open { display: block; }
+    @keyframes drop-in { from { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.97); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
+    .mobile-dropdown a { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; font-size: 1rem; font-weight: 500; color: var(--muted); border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s, background .2s; }
+    .mobile-dropdown a:last-child { border-bottom: none; }
+    .mobile-dropdown a:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+
+    .page-wrap { padding-top: var(--nav-h); }
+    .page-hero { padding: 100px clamp(24px, 5vw, 64px) 80px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; top: -120px; right: -80px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,200,240,0.06) 0%, transparent 70%); pointer-events: none; }
+    .page-hero-inner { max-width: 1400px; margin: 0 auto; }
+    .page-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+    .page-h1 { font-family: 'Cormorant Garant', Georgia, serif; font-size: clamp(3rem, 7vw, 6.5rem); font-weight: 700; letter-spacing: -0.02em; line-height: 0.95; }
+    .page-h1 em { font-style: italic; }
+    .page-sub { font-size: 0.95rem; font-weight: 300; color: var(--muted); line-height: 1.8; max-width: 540px; margin-top: 28px; }
+
+    .content { max-width: 1400px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 64px); }
+
+    /* SERVICE LIST */
+    .service-list { padding: 80px 0; }
+    .service-item {
+      display: grid;
+      grid-template-columns: 80px 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+      padding: 56px 0;
+      border-bottom: 1px solid var(--border);
+      transition: background .2s;
+    }
+    .service-item:first-child { border-top: 1px solid var(--border); }
+    .service-num {
+      font-family: 'Cormorant Garant', Georgia, serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--faint);
+      padding-top: 6px;
+      letter-spacing: 0.05em;
+    }
+    .service-name {
+      font-family: 'Cormorant Garant', Georgia, serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .service-name em { font-style: italic; color: var(--accent); }
+    .service-detail { padding-top: 6px; }
+    .service-body {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 24px;
+    }
+    .service-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .service-tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--faint);
+      border: 1px solid var(--faint);
+      padding: 5px 12px;
+      border-radius: 2px;
+    }
+
+    /* PROCESS */
+    .process-section { padding: 80px 0 100px; }
+    .section-title-sm {
+      font-family: 'Cormorant Garant', Georgia, serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 56px;
+    }
+    .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .process-cell { background: var(--bg); padding: 44px 36px; transition: background .25s; }
+    .process-cell:hover { background: var(--surface); }
+    .process-step { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+    .process-cell-title { font-family: 'Cormorant Garant', Georgia, serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }
+    .process-cell-body { font-size: 0.85rem; font-weight: 300; color: var(--muted); line-height: 1.8; }
+
+    /* CTA */
+    .cta-block { margin: 0 0 100px; border: 1px solid var(--border); padding: 64px; text-align: center; }
+    .cta-title { font-family: 'Cormorant Garant', Georgia, serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; margin-bottom: 16px; }
+    .cta-body { font-size: 0.9rem; color: var(--muted); margin-bottom: 32px; }
+    .btn-accent { display: inline-block; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 14px 36px; background: var(--accent); color: #000; transition: opacity .2s; }
+    .btn-accent:hover { opacity: 0.85; }
+
+    footer { background: #000; padding: 48px clamp(24px, 5vw, 64px); border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .footer-logo img { height: 18px; filter: brightness(0) invert(1); opacity: 0.4; }
+    .footer-links { display: flex; gap: 28px; list-style: none; }
+    .footer-links a { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.25); transition: color .2s; }
+    .footer-links a:hover { color: rgba(255,255,255,0.6); }
+    .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.18); }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.up { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      nav { display: none; }
+      .mobile-nav { display: flex; }
+      .page-wrap { padding-top: 80px; }
+      .service-item { grid-template-columns: 48px 1fr; }
+      .service-detail { grid-column: 2; }
+      .process-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .service-item { grid-template-columns: 1fr; gap: 16px; }
+      .process-grid { grid-template-columns: 1fr; }
+      .cta-block { padding: 48px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/assets/jwod-logo.png" alt="Jwood Technologies"></a>
+    <ul class="nav-links">
+      <li><a href="/about">About</a></li>
+      <li><a href="/services" class="active">Services</a></li>
+      <li><a href="/careers">Careers</a></li>
+      <li><a href="/terms">Legal</a></li>
+    </ul>
+    <a href="/contact" class="nav-contact">Contact</a>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="/" class="mobile-nav-logo"><img src="/assets/jwod-logo.png" alt="Jwood Technologies"></a>
+  <button class="mobile-hamburger" id="mobileHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+<div class="mobile-dropdown" id="mobileDropdown">
+  <a href="/">Home <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/about">About <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/careers">Careers <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/contact">Contact <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/terms">Legal <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+</div>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-label">Services</div>
+      <h1 class="page-h1">What we<br><em>build.</em></h1>
+      <p class="page-sub">End-to-end digital systems — from intelligent automation to consumer-facing platforms — engineered to outperform, outlast, and compound over time.</p>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="service-list">
+      <div class="service-item reveal">
+        <div class="service-num">01</div>
+        <div class="service-name">Conversational AI<br>&amp; <em>Automation</em></div>
+        <div class="service-detail">
+          <p class="service-body">We design and deploy AI agents that handle complex workflows — customer support, lead qualification, internal operations — with human-level nuance and 24/7 availability. Our systems are trained on your business context, not generic data, and integrate cleanly with the tools your team already uses.</p>
+          <div class="service-tags">
+            <span class="service-tag">AI Agents</span>
+            <span class="service-tag">LLM Integration</span>
+            <span class="service-tag">Workflow Automation</span>
+            <span class="service-tag">NLP</span>
+          </div>
+        </div>
+      </div>
+      <div class="service-item reveal">
+        <div class="service-num">02</div>
+        <div class="service-name">Digital Platform<br><em>Development</em></div>
+        <div class="service-detail">
+          <p class="service-body">Full-stack applications built for scale and longevity. Web, mobile, API-first architecture — designed to grow with your business rather than become a ceiling. We ship fast, document thoroughly, and build in the infrastructure for your team to take ownership.</p>
+          <div class="service-tags">
+            <span class="service-tag">Web Apps</span>
+            <span class="service-tag">Mobile</span>
+            <span class="service-tag">API Design</span>
+            <span class="service-tag">SaaS</span>
+          </div>
+        </div>
+      </div>
+      <div class="service-item reveal">
+        <div class="service-num">03</div>
+        <div class="service-name">Data &amp; <em>Analytics</em></div>
+        <div class="service-detail">
+          <p class="service-body">Raw data is noise. We turn it into signal — custom dashboards, predictive models, real-time reporting pipelines, and decision-support tools that give your leadership team visibility they've never had before.</p>
+          <div class="service-tags">
+            <span class="service-tag">Dashboards</span>
+            <span class="service-tag">Predictive Models</span>
+            <span class="service-tag">Data Pipelines</span>
+            <span class="service-tag">BI</span>
+          </div>
+        </div>
+      </div>
+      <div class="service-item reveal">
+        <div class="service-num">04</div>
+        <div class="service-name">Brand &amp; <em>Creative Systems</em></div>
+        <div class="service-detail">
+          <p class="service-body">A brand is a system, not a logo. We build the full creative infrastructure — identity, design language, component libraries, and brand guidelines — that scales as your company does, staying consistent without becoming rigid.</p>
+          <div class="service-tags">
+            <span class="service-tag">Identity Design</span>
+            <span class="service-tag">Design Systems</span>
+            <span class="service-tag">UI/UX</span>
+          </div>
+        </div>
+      </div>
+      <div class="service-item reveal">
+        <div class="service-num">05</div>
+        <div class="service-name">Infrastructure<br>&amp; <em>Security</em></div>
+        <div class="service-detail">
+          <p class="service-body">Cloud architecture, CI/CD pipelines, and security hardening for systems that cannot afford downtime or data exposure. We build the operational backbone that lets your product team focus on product — not firefighting.</p>
+          <div class="service-tags">
+            <span class="service-tag">Cloud Architecture</span>
+            <span class="service-tag">DevOps</span>
+            <span class="service-tag">Security Audits</span>
+            <span class="service-tag">Compliance</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROCESS -->
+    <div class="process-section reveal">
+      <div class="section-title-sm">How we work.</div>
+      <div class="process-grid">
+        <div class="process-cell">
+          <div class="process-step">Step 01</div>
+          <div class="process-cell-title">Discovery</div>
+          <p class="process-cell-body">We start by understanding your business deeply — objectives, constraints, existing systems, and the outcomes that actually matter. No templates.</p>
+        </div>
+        <div class="process-cell">
+          <div class="process-step">Step 02</div>
+          <div class="process-cell-title">Architecture</div>
+          <p class="process-cell-body">We design the technical and product blueprint before a line of code is written. Every decision is documented and reviewed with you before execution begins.</p>
+        </div>
+        <div class="process-cell">
+          <div class="process-step">Step 03</div>
+          <div class="process-cell-title">Build</div>
+          <p class="process-cell-body">Iterative delivery with weekly check-ins. You see progress, provide feedback, and stay in control throughout. No black boxes.</p>
+        </div>
+        <div class="process-cell">
+          <div class="process-step">Step 04</div>
+          <div class="process-cell-title">Launch &amp; Grow</div>
+          <p class="process-cell-body">Deployment, onboarding, and ongoing optimization. We treat launch as the beginning of the engagement, not the end.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-block reveal">
+      <div class="cta-title">Ready to build something serious?</div>
+      <p class="cta-body">Tell us about your project and we'll respond within 24 hours.</p>
+      <a href="/contact" class="btn-accent">Start the Conversation</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <a href="/" class="footer-logo"><img src="/assets/jwod-logo.png" alt="Jwood Technologies"></a>
+    <ul class="footer-links">
+      <li><a href="/about">About</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/careers">Careers</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/terms">Legal</a></li>
+    </ul>
+    <span class="footer-copy">© 2025 Jwood Technologies, LLC</span>
+  </div>
+</footer>
+
+<script>
+  const ham = document.getElementById('mobileHamburger');
+  const drop = document.getElementById('mobileDropdown');
+  ham.addEventListener('click', () => { ham.classList.toggle('active'); drop.classList.toggle('open'); });
+  document.addEventListener('click', e => { if (!ham.contains(e.target) && !drop.contains(e.target)) { ham.classList.remove('active'); drop.classList.remove('open'); } });
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('up'), i * 80); obs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

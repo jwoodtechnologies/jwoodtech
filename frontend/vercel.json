@@ -7,7 +7,12 @@
     { "src": "^/manifest.json", "dest": "/manifest.json" },
     { "src": "^/robots.txt", "dest": "/robots.txt" },
     { "src": "^/$", "dest": "/jwoodtech.html" },
-    { "src": "^/(eon|woodchat|vineyard|privacy|terms|research|woodchat-admin|vineyard-admin)(.*)", "dest": "/index.html" },
+    { "src": "^/about$", "dest": "/about.html" },
+    { "src": "^/services$", "dest": "/services.html" },
+    { "src": "^/careers$", "dest": "/careers.html" },
+    { "src": "^/contact$", "dest": "/contact.html" },
+    { "src": "^/terms$", "dest": "/terms.html" },
+    { "src": "^/(woodchat|vineyard|privacy|research|woodchat-admin|vineyard-admin)(.*)", "dest": "/index.html" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }

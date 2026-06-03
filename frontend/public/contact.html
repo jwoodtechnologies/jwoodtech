@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Jwood Technologies</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #08080a; --nav: #0a0a0d; --surface: #0f0f13; --border: rgba(255,255,255,0.07); --text: #f0f0f2; --muted: #888896; --faint: #3a3a46; --accent: #00c8f0; --nav-h: 72px; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; font: inherit; }
+    h1,h2,h3 { font-family: 'Cormorant Garant', Georgia, serif; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: var(--nav-h); background: var(--nav); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 clamp(24px, 5vw, 64px); }
+    .nav-inner { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo img { height: 22px; width: auto; filter: brightness(0) invert(1); }
+    .nav-links { display: flex; align-items: center; gap: 40px; list-style: none; }
+    .nav-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-contact { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(0,200,240,0.3); padding: 8px 22px; border-radius: 2px; transition: background .2s, color .2s; }
+    .nav-contact:hover { background: var(--accent); color: #000; }
+    .mobile-nav { display: none; position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 200; width: calc(100vw - 32px); max-width: 420px; height: 52px; background: rgba(10,10,14,0.92); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 100px; padding: 0 8px 0 16px; align-items: center; justify-content: space-between; }
+    .mobile-nav-logo img { height: 18px; width: auto; filter: brightness(0) invert(1); }
+    .mobile-hamburger { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; }
+    .mobile-hamburger span { display: block; width: 16px; height: 1.5px; background: var(--text); border-radius: 2px; transition: all .25s; }
+    .mobile-hamburger.active span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .mobile-hamburger.active span:nth-child(2) { opacity: 0; }
+    .mobile-hamburger.active span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+    .mobile-dropdown { display: none; position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 199; width: calc(100vw - 32px); max-width: 420px; background: rgba(10,10,14,0.97); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; animation: drop-in .22s cubic-bezier(.22,1,.36,1) both; }
+    .mobile-dropdown.open { display: block; }
+    @keyframes drop-in { from { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.97); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
+    .mobile-dropdown a { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; font-size: 1rem; font-weight: 500; color: var(--muted); border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s, background .2s; }
+    .mobile-dropdown a:last-child { border-bottom: none; }
+    .mobile-dropdown a:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+    .page-wrap { padding-top: var(--nav-h); }
+    .page-hero { padding: 100px clamp(24px, 5vw, 64px) 80px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; top: -120px; right: -80px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,200,240,0.06) 0%, transparent 70%); pointer-events: none; }
+    .page-hero-inner { max-width: 1400px; margin: 0 auto; }
+    .page-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+    .page-h1 { font-family: 'Cormorant Garant', Georgia, serif; font-size: clamp(3rem, 7vw, 6.5rem); font-weight: 700; letter-spacing: -0.02em; line-height: 0.95; }
+    .page-h1 em { font-style: italic; }
+    .content { max-width: 1400px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 64px); }
+
+    .contact-grid { display: grid; grid-template-columns: 360px 1fr; gap: 100px; padding: 80px 0 100px; align-items: start; }
+    .contact-info-title { font-family: 'Cormorant Garant', Georgia, serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 32px; }
+    .info-item { display: flex; gap: 16px; margin-bottom: 32px; align-items: flex-start; }
+    .info-icon { width: 36px; height: 36px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .info-icon svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 1.5; }
+    .info-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: 4px; }
+    .info-val { font-size: 0.9rem; font-weight: 300; color: var(--text); }
+    .info-val a { color: var(--accent); }
+    .contact-note { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); font-size: 0.82rem; font-weight: 300; color: var(--muted); line-height: 1.8; }
+
+    .form-panel { }
+    .form-title { font-family: 'Cormorant Garant', Georgia, serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 32px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-field { margin-bottom: 20px; }
+    .form-field label { display: block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
+    .form-field input, .form-field textarea, .form-field select {
+      width: 100%; background: var(--surface); border: 1px solid var(--border);
+      padding: 13px 16px; color: var(--text); font-family: 'Inter', sans-serif;
+      font-size: 0.88rem; font-weight: 300; outline: none; transition: border-color .2s; -webkit-appearance: none;
+    }
+    .form-field input:focus, .form-field textarea:focus, .form-field select:focus { border-color: rgba(0,200,240,0.4); }
+    .form-field textarea { resize: vertical; min-height: 130px; }
+    .form-submit { width: 100%; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 15px; background: var(--accent); color: #000; transition: opacity .2s; margin-top: 4px; }
+    .form-submit:hover { opacity: 0.85; }
+    .form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+    .form-success { display: none; margin-top: 16px; padding: 16px; border: 1px solid rgba(0,200,240,0.2); background: rgba(0,200,240,0.05); font-size: 0.85rem; color: var(--accent); }
+
+    footer { background: #000; padding: 48px clamp(24px, 5vw, 64px); border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .footer-logo img { height: 18px; filter: brightness(0) invert(1); opacity: 0.4; }
+    .footer-links { display: flex; gap: 28px; list-style: none; }
+    .footer-links a { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.25); transition: color .2s; }
+    .footer-links a:hover { color: rgba(255,255,255,0.6); }
+    .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.18); }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.up { opacity: 1; transform: none; }
+    @media (max-width: 900px) {
+      nav { display: none; }
+      .mobile-nav { display: flex; }
+      .page-wrap { padding-top: 80px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/assets/jwod-logo.png" alt="Jwood Technologies"></a>
+    <ul class="nav-links">
+      <li><a href="/about">About</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/careers">Careers</a></li>
+      <li><a href="/terms">Legal</a></li>
+    </ul>
+    <a href="/contact" class="nav-contact active" style="color:#000;background:var(--accent);">Contact</a>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="/" class="mobile-nav-logo"><img src="/assets/jwod-logo.png" alt="Jwood Technologies"></a>
+  <button class="mobile-hamburger" id="mobileHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+<div class="mobile-dropdown" id="mobileDropdown">
+  <a href="/">Home <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/about">About <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/services">Services <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/careers">Careers <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/terms">Legal <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+</div>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-label">Contact</div>
+      <h1 class="page-h1">Let's build<br><em>something.</em></h1>
+    </div>
+  </div>
+  <div class="content">
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="contact-info-title">Get in touch.</div>
+        <div class="info-item">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="info-label">Email</div>
+            <div class="info-val"><a href="mailto:hello@jwoodtechnologies.com">hello@jwoodtechnologies.com</a></div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="info-label">Location</div>
+            <div class="info-val">United States — Remote-first</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="info-label">Response Time</div>
+            <div class="info-val">Within 24 hours</div>
+          </div>
+        </div>
+        <p class="contact-note">We work with a small number of clients at a time, which means every engagement gets our full attention. If the timing and fit are right, we'll know quickly.</p>
+      </div>
+      <div class="form-panel reveal">
+        <div class="form-title">Tell us about your project.</div>
+        <form id="contactForm">
+          <div class="form-row">
+            <div class="form-field">
+              <label>First Name</label>
+              <input type="text" name="firstName" placeholder="Jacob" required>
+            </div>
+            <div class="form-field">
+              <label>Last Name</label>
+              <input type="text" name="lastName" placeholder="Wood" required>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="you@company.com" required>
+          </div>
+          <div class="form-field">
+            <label>Company</label>
+            <input type="text" name="company" placeholder="Your company name">
+          </div>
+          <div class="form-field">
+            <label>Area of Interest</label>
+            <select name="service">
+              <option value="">Select...</option>
+              <option>Conversational AI &amp; Automation</option>
+              <option>Digital Platform Development</option>
+              <option>Data &amp; Analytics</option>
+              <option>Brand &amp; Creative Systems</option>
+              <option>Infrastructure &amp; Security</option>
+              <option>Other / Not sure yet</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Project Details</label>
+            <textarea name="message" placeholder="Describe your goals, timeline, and anything else we should know..."></textarea>
+          </div>
+          <button type="submit" class="form-submit" id="submitBtn">Send Message</button>
+          <div class="form-success" id="formSuccess">Your message has been received. We'll be in touch within 24 hours.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <a href="/" class="footer-logo"><img src="/assets/jwod-logo.png" alt="Jwood Technologies"></a>
+    <ul class="footer-links">
+      <li><a href="/about">About</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/careers">Careers</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/terms">Legal</a></li>
+    </ul>
+    <span class="footer-copy">© 2025 Jwood Technologies, LLC</span>
+  </div>
+</footer>
+
+<script>
+  const ham = document.getElementById('mobileHamburger');
+  const drop = document.getElementById('mobileDropdown');
+  ham.addEventListener('click', () => { ham.classList.toggle('active'); drop.classList.toggle('open'); });
+  document.addEventListener('click', e => { if (!ham.contains(e.target) && !drop.contains(e.target)) { ham.classList.remove('active'); drop.classList.remove('open'); } });
+  const obs = new IntersectionObserver(entries => { entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('up'), i * 80); obs.unobserve(e.target); } }); }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  document.getElementById('contactForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    const data = Object.fromEntries(new FormData(e.target));
+    try {
+      await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      document.getElementById('formSuccess').style.display = 'block';
+      e.target.reset();
+      btn.textContent = 'Sent';
+    } catch {
+      btn.textContent = 'Send Message';
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

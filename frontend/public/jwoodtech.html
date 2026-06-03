@@ -3,147 +3,183 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="JWood Technologies — Intelligence Redefined. AI-powered platforms and digital systems built for the future.">
-  <title>JWood Technologies</title>
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,600,700,800,900&f[]=general-sans@300,400,500,600,700&display=swap" rel="stylesheet">
+  <meta name="description" content="Jwood Technologies — Intelligence Redefined. AI-powered platforms and digital systems built for the future.">
+  <title>Jwood Technologies</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* ===== TOKENS ===== */
     :root {
-      --bg:       #08080a;
-      --nav-bg:   #0d0d0f;
-      --surface:  #111114;
-      --surface2: #18181c;
-      --border:   rgba(255,255,255,0.07);
-      --text:     #f0f0f2;
-      --muted:    #8a8a96;
-      --faint:    #44444e;
-      --accent:   #00c8f0;
-      --accent2:  #008fb0;
-      --footer:   #000000;
-      --nav-h:    68px;
-      --r:        6px;
-      --rl:       14px;
+      --bg: #08080a;
+      --nav: #0a0a0d;
+      --text: #f0f0f2;
+      --muted: #888896;
+      --faint: #3a3a46;
+      --accent: #00c8f0;
+      --nav-h: 72px;
     }
-
-    /* ===== RESET ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'General Sans', sans-serif;
-      font-weight: 400;
-      line-height: 1.6;
+      font-family: 'Inter', sans-serif;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
-    img { display: block; max-width: 100%; }
     a { color: inherit; text-decoration: none; }
     button { cursor: pointer; border: none; background: none; font: inherit; }
-    h1, h2, h3, h4 { font-family: 'Cabinet Grotesk', sans-serif; font-weight: 800; line-height: 1.1; }
 
-    /* ===== NAV ===== */
+    /* ── DESKTOP NAV ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
       height: var(--nav-h);
-      background: var(--nav-bg);
-      border-bottom: 1px solid var(--border);
+      background: var(--nav);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
       display: flex;
       align-items: center;
-      padding: 0 clamp(20px, 5vw, 60px);
+      padding: 0 clamp(24px, 5vw, 64px);
     }
     .nav-inner {
       width: 100%;
-      max-width: 1280px;
+      max-width: 1400px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-family: 'Cabinet Grotesk', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
+    .nav-logo img {
+      height: 22px;
+      width: auto;
+      display: block;
+      filter: brightness(0) invert(1);
     }
-    .nav-logo img { height: 28px; width: auto; }
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 36px;
+      gap: 40px;
       list-style: none;
     }
     .nav-links a {
-      font-size: 0.875rem;
+      font-size: 0.8rem;
       font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       color: var(--muted);
       transition: color .2s;
-      letter-spacing: 0.01em;
     }
     .nav-links a:hover { color: var(--text); }
-    .nav-cta {
-      font-size: 0.82rem;
+    .nav-contact {
+      font-size: 0.78rem;
       font-weight: 600;
-      padding: 9px 20px;
-      border-radius: var(--r);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(0,200,240,0.3);
+      padding: 8px 22px;
+      border-radius: 2px;
+      transition: background .2s, color .2s;
+    }
+    .nav-contact:hover {
       background: var(--accent);
       color: #000;
-      letter-spacing: 0.02em;
-      transition: opacity .2s;
     }
-    .nav-cta:hover { opacity: 0.85; }
-    .nav-hamburger {
+
+    /* ── MOBILE NAV PILL ── */
+    .mobile-nav {
       display: none;
-      flex-direction: column;
-      gap: 5px;
-      padding: 4px;
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      width: calc(100vw - 32px);
+      max-width: 420px;
+      height: 52px;
+      background: rgba(10,10,14,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px;
+      padding: 0 8px 0 16px;
+      align-items: center;
+      justify-content: space-between;
     }
-    .nav-hamburger span {
+    .mobile-nav-logo img {
+      height: 18px;
+      width: auto;
       display: block;
-      width: 22px;
-      height: 2px;
+      filter: brightness(0) invert(1);
+    }
+    .mobile-hamburger {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .mobile-hamburger span {
+      display: block;
+      width: 16px;
+      height: 1.5px;
       background: var(--text);
       border-radius: 2px;
       transition: all .25s;
     }
-    .mobile-menu {
+    .mobile-hamburger.active span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .mobile-hamburger.active span:nth-child(2) { opacity: 0; }
+    .mobile-hamburger.active span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+    .mobile-dropdown {
       display: none;
       position: fixed;
-      top: var(--nav-h);
-      left: 0; right: 0;
-      background: var(--nav-bg);
-      border-bottom: 1px solid var(--border);
-      padding: 20px clamp(20px, 5vw, 60px);
-      z-index: 99;
-      flex-direction: column;
-      gap: 0;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 199;
+      width: calc(100vw - 32px);
+      max-width: 420px;
+      background: rgba(10,10,14,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      animation: drop-in .22s cubic-bezier(.22,1,.36,1) both;
     }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a {
-      display: block;
-      padding: 14px 0;
+    .mobile-dropdown.open { display: block; }
+    @keyframes drop-in {
+      from { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.97); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+    }
+    .mobile-dropdown a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
       font-size: 1rem;
       font-weight: 500;
       color: var(--muted);
-      border-bottom: 1px solid var(--border);
-      transition: color .2s;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: color .2s, background .2s;
     }
-    .mobile-menu a:last-child { border-bottom: none; }
-    .mobile-menu a:hover { color: var(--text); }
-    .mobile-cta-wrap { padding-top: 16px; }
-    .mobile-cta-wrap .nav-cta { display: inline-block; }
+    .mobile-dropdown a:last-child { border-bottom: none; }
+    .mobile-dropdown a:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+    .mobile-dropdown a svg { opacity: 0.3; transition: opacity .2s; }
+    .mobile-dropdown a:hover svg { opacity: 0.7; }
 
-    /* ===== HERO ===== */
+    /* ── HERO ── */
     .hero {
       position: relative;
       height: 100dvh;
       min-height: 600px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow: hidden;
@@ -153,1248 +189,232 @@
       inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
-      object-position: center;
-      opacity: 0.55;
+      opacity: 0.6;
     }
     .hero-overlay {
       position: absolute;
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(8,8,10,0.45) 0%,
-        rgba(8,8,10,0.15) 50%,
-        rgba(8,8,10,0.85) 100%
+        rgba(8,8,10,0.5) 0%,
+        rgba(8,8,10,0.05) 45%,
+        rgba(8,8,10,0.75) 80%,
+        rgba(0,0,0,0.97) 100%
       );
     }
     .hero-content {
       position: relative;
       z-index: 2;
       text-align: center;
-      padding: 0 clamp(20px, 6vw, 80px);
-      max-width: 900px;
+      padding: 0 clamp(24px, 6vw, 100px);
+      max-width: 1000px;
     }
-    .hero-label {
-      display: inline-block;
+    .hero-eyebrow {
       font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
+      font-weight: 500;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 24px;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fade-up .8s .2s forwards;
     }
     .hero-h1 {
-      font-size: clamp(3.2rem, 10vw, 8rem);
-      font-weight: 900;
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-      margin-bottom: 24px;
+      font-family: 'Cormorant Garant', Georgia, serif;
+      font-size: clamp(4rem, 12vw, 10rem);
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fade-up .9s .35s forwards;
     }
     .hero-h1 em {
       font-style: italic;
-      background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      display: block;
     }
     .hero-sub {
-      font-size: clamp(0.95rem, 2.2vw, 1.2rem);
-      color: rgba(240,240,242,0.65);
-      max-width: 500px;
-      margin: 0 auto 40px;
-      line-height: 1.7;
-      font-weight: 400;
+      font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+      font-weight: 300;
+      color: rgba(240,240,242,0.55);
+      letter-spacing: 0.04em;
+      line-height: 1.8;
+      max-width: 460px;
+      margin: 0 auto 44px;
+      opacity: 0;
+      animation: fade-up .8s .5s forwards;
     }
-    .hero-btns {
+    .hero-actions {
       display: flex;
-      gap: 14px;
+      gap: 16px;
       justify-content: center;
       flex-wrap: wrap;
+      opacity: 0;
+      animation: fade-up .8s .65s forwards;
     }
-    .btn-primary {
-      font-family: 'Cabinet Grotesk', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 700;
-      padding: 14px 32px;
-      border-radius: var(--r);
-      background: var(--accent);
-      color: #000;
-      letter-spacing: 0.02em;
-      transition: opacity .2s, transform .2s;
-    }
-    .btn-primary:hover { opacity: 0.87; transform: translateY(-1px); }
-    .btn-ghost {
-      font-family: 'Cabinet Grotesk', sans-serif;
-      font-size: 0.9rem;
+    .btn-line {
+      font-size: 0.78rem;
       font-weight: 600;
-      padding: 13px 32px;
-      border-radius: var(--r);
-      border: 1px solid rgba(255,255,255,0.18);
-      color: var(--text);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      background: rgba(255,255,255,0.05);
-      transition: border-color .2s, background .2s, transform .2s;
-    }
-    .btn-ghost:hover {
-      border-color: rgba(255,255,255,0.35);
-      background: rgba(255,255,255,0.09);
-      transform: translateY(-1px);
-    }
-    .hero-scroll {
-      position: absolute;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      color: var(--muted);
-      font-size: 0.72rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      animation: bounce 2.5s ease-in-out infinite;
+      padding: 13px 32px;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--text);
+      backdrop-filter: blur(10px);
+      transition: border-color .2s, background .2s;
     }
-    .hero-scroll svg { opacity: 0.5; }
-    @keyframes bounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(6px); }
-    }
-
-    /* ===== SECTION SHARED ===== */
-    section { padding: 100px clamp(20px, 5vw, 60px); }
-    .section-inner { max-width: 1280px; margin: 0 auto; }
-    .section-label {
-      display: inline-block;
-      font-size: 0.7rem;
+    .btn-line:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.05); }
+    .btn-accent {
+      font-size: 0.78rem;
       font-weight: 600;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
-    }
-    .section-title {
-      font-size: clamp(2rem, 4.5vw, 3.4rem);
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      margin-bottom: 20px;
-      line-height: 1.05;
-    }
-    .section-body {
-      font-size: 1rem;
-      color: var(--muted);
-      line-height: 1.75;
-      max-width: 620px;
-    }
-
-    /* ===== ABOUT ===== */
-    #about { background: var(--surface); }
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-    .about-img-wrap {
-      position: relative;
-    }
-    .about-img {
-      width: 100%;
-      aspect-ratio: 4/5;
-      object-fit: cover;
-      object-position: top;
-      border-radius: var(--rl);
-      filter: grayscale(100%) contrast(1.05);
-    }
-    .about-img-accent {
-      position: absolute;
-      bottom: -20px;
-      right: -20px;
-      width: 120px;
-      height: 120px;
+      padding: 13px 32px;
       background: var(--accent);
-      border-radius: var(--rl);
-      opacity: 0.12;
-      z-index: -1;
-    }
-    .about-pull {
-      font-family: 'Cabinet Grotesk', sans-serif;
-      font-size: clamp(1.2rem, 2.5vw, 1.65rem);
-      font-weight: 700;
-      line-height: 1.35;
-      letter-spacing: -0.02em;
-      margin-bottom: 28px;
-      color: var(--text);
-    }
-    .about-pull em {
-      font-style: italic;
-      color: var(--accent);
-    }
-    .about-stats {
-      display: flex;
-      gap: 40px;
-      margin-top: 40px;
-      padding-top: 32px;
-      border-top: 1px solid var(--border);
-    }
-    .stat-num {
-      font-family: 'Cabinet Grotesk', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      color: var(--text);
-    }
-    .stat-num span { color: var(--accent); }
-    .stat-label {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    /* ===== SERVICES ===== */
-    #services { background: var(--bg); }
-    .bento {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: auto;
-      gap: 16px;
-      margin-top: 56px;
-    }
-    .bento-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--rl);
-      padding: 36px;
-      transition: border-color .25s;
-    }
-    .bento-card:hover { border-color: rgba(0,200,240,0.2); }
-    .bento-card--featured {
-      grid-column: span 7;
-      background: linear-gradient(135deg, var(--surface) 0%, rgba(0,200,240,0.05) 100%);
-      padding: 48px;
-    }
-    .bento-card--sm { grid-column: span 5; }
-    .bento-card--third { grid-column: span 4; }
-    .bento-card--stealth {
-      grid-column: span 12;
-      background: transparent;
-      border-style: dashed;
-      border-color: var(--faint);
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      padding: 28px 36px;
-    }
-    .bento-card--stealth:hover { border-color: rgba(0,200,240,0.3); }
-    .bento-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      background: rgba(0,200,240,0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      flex-shrink: 0;
-    }
-    .bento-icon svg { width: 22px; height: 22px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
-    .bento-title {
-      font-family: 'Cabinet Grotesk', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-    }
-    .bento-card--featured .bento-title { font-size: 1.75rem; }
-    .bento-body {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-    .bento-stealth-text .bento-title { margin-bottom: 6px; font-size: 1.1rem; }
-    .bento-stealth-text .bento-body { font-size: 0.85rem; }
-
-    /* ===== CAREERS ===== */
-    #careers { background: var(--surface); }
-    .careers-empty {
-      margin-top: 56px;
-      border: 1px dashed var(--faint);
-      border-radius: var(--rl);
-      padding: 80px 40px;
-      text-align: center;
-      max-width: 600px;
-    }
-    .careers-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 14px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px;
-    }
-    .careers-icon svg { width: 28px; height: 28px; stroke: var(--muted); fill: none; stroke-width: 1.5; }
-    .careers-empty-title {
-      font-family: 'Cabinet Grotesk', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-    .careers-empty-body { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
-    .careers-notify {
-      margin-top: 24px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--accent);
+      color: #000;
       transition: opacity .2s;
     }
-    .careers-notify:hover { opacity: 0.7; }
+    .btn-accent:hover { opacity: 0.85; }
 
-    /* ===== CONTACT ===== */
-    #contact { background: var(--bg); }
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.4fr;
-      gap: 80px;
-      align-items: start;
-      margin-top: 56px;
-    }
-    .contact-info-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      margin-bottom: 28px;
-    }
-    .contact-info-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      background: rgba(0,200,240,0.08);
+    /* ── HERO BOTTOM BAR ── */
+    .hero-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 3;
+      background: #000;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 0 clamp(24px, 5vw, 64px);
+      height: 60px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 2px;
+      justify-content: space-between;
+      gap: 16px;
+      opacity: 0;
+      animation: fade-in .8s 1s forwards;
     }
-    .contact-info-icon svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
-    .contact-info-label {
-      font-size: 0.75rem;
-      font-weight: 600;
+    .hero-bar-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .hero-bar-links a {
+      font-size: 0.72rem;
+      font-weight: 500;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-    .contact-info-val {
-      font-size: 0.95rem;
-      color: var(--text);
-    }
-    .form-field { margin-bottom: 18px; }
-    .form-field label {
-      display: block;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-    .form-field input,
-    .form-field textarea,
-    .form-field select {
-      width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 12px 16px;
-      color: var(--text);
-      font-family: 'General Sans', sans-serif;
-      font-size: 0.92rem;
-      outline: none;
-      transition: border-color .2s;
-      -webkit-appearance: none;
-    }
-    .form-field input:focus,
-    .form-field textarea:focus,
-    .form-field select:focus {
-      border-color: var(--accent);
-    }
-    .form-field textarea { resize: vertical; min-height: 120px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .form-submit {
-      width: 100%;
-      font-family: 'Cabinet Grotesk', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      padding: 14px;
-      background: var(--accent);
-      color: #000;
-      border-radius: var(--r);
-      transition: opacity .2s;
-      margin-top: 4px;
-    }
-    .form-submit:hover { opacity: 0.85; }
-    .form-success {
-      display: none;
-      padding: 16px;
-      background: rgba(0,200,240,0.08);
-      border: 1px solid rgba(0,200,240,0.2);
-      border-radius: var(--r);
-      font-size: 0.9rem;
-      color: var(--accent);
-      margin-top: 16px;
-    }
-
-    /* ===== TOS ===== */
-    #terms { background: var(--surface); }
-    .tos-content {
-      max-width: 760px;
-      margin-top: 48px;
-    }
-    .tos-content h3 {
-      font-family: 'Cabinet Grotesk', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin: 32px 0 10px;
-    }
-    .tos-content p, .tos-content li {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.75;
-    }
-    .tos-content ul { padding-left: 20px; margin-top: 8px; }
-    .tos-content li { margin-bottom: 6px; }
-    .tos-updated {
-      font-size: 0.8rem;
-      color: var(--faint);
-      margin-top: 40px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
-    }
-
-    /* ===== FOOTER ===== */
-    footer {
-      background: var(--footer);
-      padding: 56px clamp(20px, 5vw, 60px) 32px;
-    }
-    .footer-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-    .footer-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 40px;
-      padding-bottom: 48px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .footer-brand { max-width: 280px; }
-    .footer-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .footer-logo img { height: 26px; width: auto; }
-    .footer-logo-name {
-      font-family: 'Cabinet Grotesk', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-    }
-    .footer-tagline {
-      font-size: 0.82rem;
-      color: var(--faint);
-      line-height: 1.6;
-    }
-    .footer-links { display: flex; gap: 60px; }
-    .footer-col-title {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .footer-col a {
-      font-size: 0.85rem;
-      color: var(--faint);
+      color: rgba(255,255,255,0.35);
       transition: color .2s;
     }
-    .footer-col a:hover { color: var(--text); }
-    .footer-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 28px;
-      gap: 20px;
-      flex-wrap: wrap;
+    .hero-bar-links a:hover { color: rgba(255,255,255,0.8); }
+    .hero-bar-copy {
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.2);
+      white-space: nowrap;
     }
-    .footer-copy {
-      font-size: 0.78rem;
-      color: var(--faint);
-    }
-    .footer-socials { display: flex; gap: 16px; }
-    .footer-socials a {
-      width: 34px; height: 34px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.07);
-      color: var(--faint);
-      transition: border-color .2s, color .2s;
-    }
-    .footer-socials a:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
-    .footer-socials svg { width: 16px; height: 16px; fill: currentColor; }
 
-    /* ===== EON CHATBOT ===== */
-    .eon-orb-btn {
-      position: fixed;
-      bottom: 28px;
-      right: 28px;
-      z-index: 200;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #2af5ff, #0048ff 55%, #7c00ff);
-      box-shadow: 0 0 24px rgba(0,200,240,0.4), 0 4px 16px rgba(0,0,0,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      border: 1.5px solid rgba(255,255,255,0.2);
-      transition: transform .2s, box-shadow .2s;
-      animation: orb-pulse 3s ease-in-out infinite;
-    }
-    .eon-orb-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 36px rgba(0,200,240,0.6), 0 6px 20px rgba(0,0,0,0.5);
-    }
-    @keyframes orb-pulse {
-      0%, 100% { box-shadow: 0 0 24px rgba(0,200,240,0.4), 0 4px 16px rgba(0,0,0,0.5); }
-      50% { box-shadow: 0 0 40px rgba(0,200,240,0.65), 0 4px 16px rgba(0,0,0,0.5); }
-    }
-    .eon-orb-btn svg { width: 24px; height: 24px; }
-    .eon-orb-btn canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      opacity: 0.3;
-      pointer-events: none;
-    }
-    .eon-window {
-      position: fixed;
-      bottom: 96px;
-      right: 28px;
-      z-index: 199;
-      width: 380px;
-      max-width: calc(100vw - 40px);
-      background: #0e0e12;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,200,240,0.06);
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      animation: eon-in .25s cubic-bezier(.22,1,.36,1) both;
-    }
-    .eon-window.open { display: flex; }
-    @keyframes eon-in {
-      from { opacity: 0; transform: translateY(16px) scale(0.96); }
+    /* ── ANIMATIONS ── */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: none; }
     }
-    .eon-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      background: rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
-    }
-    .eon-header-orb {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #2af5ff, #0048ff 55%, #7c00ff);
-      flex-shrink: 0;
-      box-shadow: 0 0 12px rgba(0,200,240,0.4);
-    }
-    .eon-header-info { flex: 1; }
-    .eon-header-name {
-      font-family: 'Cabinet Grotesk', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 800;
-      letter-spacing: -0.01em;
-    }
-    .eon-header-status {
-      font-size: 0.72rem;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .eon-status-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: status-blink 2s infinite;
-    }
-    @keyframes status-blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-    .eon-close {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1;
-      transition: background .2s, color .2s;
-    }
-    .eon-close:hover { background: rgba(255,255,255,0.12); color: var(--text); }
-    .eon-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      max-height: 340px;
-      min-height: 220px;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255,255,255,0.1) transparent;
-    }
-    .eon-messages::-webkit-scrollbar { width: 4px; }
-    .eon-messages::-webkit-scrollbar-track { background: transparent; }
-    .eon-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
-    .msg {
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-    }
-    .msg--eon { flex-direction: row; }
-    .msg--user { flex-direction: row-reverse; }
-    .msg-avatar {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #2af5ff, #0048ff 55%, #7c00ff);
-      flex-shrink: 0;
-      box-shadow: 0 0 8px rgba(0,200,240,0.3);
-    }
-    .msg-bubble {
-      max-width: 78%;
-      padding: 10px 14px;
-      border-radius: 14px;
-      font-size: 0.875rem;
-      line-height: 1.55;
-    }
-    .msg--eon .msg-bubble {
-      background: rgba(255,255,255,0.07);
-      border-bottom-left-radius: 4px;
-      color: var(--text);
-    }
-    .msg--user .msg-bubble {
-      background: var(--accent);
-      border-bottom-right-radius: 4px;
-      color: #000;
-      font-weight: 500;
-    }
-    .msg-typing .msg-bubble {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-      padding: 12px 16px;
-    }
-    .typing-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--muted);
-      animation: typing 1.2s infinite;
-    }
-    .typing-dot:nth-child(2) { animation-delay: .2s; }
-    .typing-dot:nth-child(3) { animation-delay: .4s; }
-    @keyframes typing {
-      0%, 100% { transform: translateY(0); opacity: 0.4; }
-      50% { transform: translateY(-4px); opacity: 1; }
-    }
-    .eon-input-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 16px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      background: rgba(0,0,0,0.2);
-    }
-    .eon-input {
-      flex: 1;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 10px 14px;
-      color: var(--text);
-      font-family: 'General Sans', sans-serif;
-      font-size: 0.875rem;
-      outline: none;
-      transition: border-color .2s;
-      resize: none;
-      max-height: 100px;
-      line-height: 1.5;
-    }
-    .eon-input:focus { border-color: rgba(0,200,240,0.4); }
-    .eon-input::placeholder { color: var(--faint); }
-    .eon-send {
-      width: 36px; height: 36px;
-      border-radius: 10px;
-      background: var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: opacity .2s, transform .15s;
-    }
-    .eon-send:hover { opacity: 0.85; transform: scale(1.05); }
-    .eon-send svg { width: 16px; height: 16px; fill: #000; }
-    .eon-footer-note {
-      text-align: center;
-      font-size: 0.65rem;
-      color: var(--faint);
-      padding: 8px 18px 12px;
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
 
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 900px) {
-      .nav-links, .nav-cta { display: none; }
-      .nav-hamburger { display: flex; }
-      .about-grid { grid-template-columns: 1fr; gap: 40px; }
-      .about-img-wrap { max-width: 320px; }
-      .about-stats { gap: 24px; flex-wrap: wrap; }
-      .bento-card--featured { grid-column: span 12; }
-      .bento-card--sm { grid-column: span 12; }
-      .bento-card--third { grid-column: span 12; }
-      .bento-card--stealth { grid-column: span 12; }
-      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-      .footer-top { flex-direction: column; }
-      .footer-links { gap: 32px; flex-wrap: wrap; }
-      .eon-window { bottom: 88px; right: 16px; left: 16px; width: auto; max-width: none; }
-      .form-row { grid-template-columns: 1fr; }
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .mobile-nav { display: flex; }
+      .hero-h1 { font-size: clamp(3.5rem, 18vw, 6rem); }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .hero-actions a { width: 100%; max-width: 260px; text-align: center; }
+      .hero-bar-links li:nth-child(n+4) { display: none; }
+      .hero-bar-copy { display: none; }
     }
     @media (max-width: 480px) {
-      .hero-h1 { font-size: clamp(2.8rem, 14vw, 5rem); }
-      .hero-btns { flex-direction: column; align-items: center; }
-      .hero-btns .btn-primary,
-      .hero-btns .btn-ghost { width: 100%; max-width: 280px; text-align: center; }
-      section { padding: 72px clamp(20px, 5vw, 60px); }
-    }
-
-    /* ===== SCROLL REVEAL ===== */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity .65s ease, transform .65s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: none;
+      .hero-bar-links { gap: 20px; }
+      .hero-bar-links li:nth-child(n+3) { display: none; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- DESKTOP NAV -->
 <nav>
   <div class="nav-inner">
-    <a href="#" class="nav-logo">
-      <img src="/assets/jwod-logo.png" alt="JWood Technologies logo" onerror="this.style.display='none'">
-      <span>JWood Technologies</span>
+    <a href="/" class="nav-logo">
+      <img src="/assets/jwod-logo.png" alt="Jwood Technologies">
     </a>
     <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#careers">Careers</a></li>
-      <li><a href="#terms">Legal</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/careers">Careers</a></li>
+      <li><a href="/terms">Legal</a></li>
     </ul>
-    <a href="#contact" class="nav-cta">Contact Us</a>
-    <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
+    <a href="/contact" class="nav-contact">Contact</a>
   </div>
 </nav>
 
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#about" onclick="closeMobile()">About</a>
-  <a href="#services" onclick="closeMobile()">Services</a>
-  <a href="#careers" onclick="closeMobile()">Careers</a>
-  <a href="#terms" onclick="closeMobile()">Legal</a>
-  <div class="mobile-cta-wrap">
-    <a href="#contact" class="nav-cta" onclick="closeMobile()">Contact Us</a>
-  </div>
+<!-- MOBILE NAV PILL -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="/" class="mobile-nav-logo">
+    <img src="/assets/jwod-logo.png" alt="Jwood Technologies">
+  </a>
+  <button class="mobile-hamburger" id="mobileHamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+<div class="mobile-dropdown" id="mobileDropdown">
+  <a href="/about">About <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/services">Services <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/careers">Careers <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/contact">Contact <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
+  <a href="/terms">Legal <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
 </div>
 
 <!-- HERO -->
-<section class="hero" id="home">
+<div class="hero">
   <video class="hero-video" autoplay muted playsinline loop preload="auto" disablepictureinpicture>
     <source src="/assets/hero-backdrop.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <span class="hero-label">JWood Technologies</span>
-    <h1 class="hero-h1"><em>Intelligence</em><br>Redefined.</h1>
-    <p class="hero-sub">We build AI-powered platforms and digital systems that transform how businesses operate, connect, and grow.</p>
-    <div class="hero-btns">
-      <a href="#services" class="btn-primary">Explore Our Work</a>
-      <a href="#contact" class="btn-ghost">Start a Project</a>
+    <div class="hero-eyebrow">Jwood Technologies</div>
+    <h1 class="hero-h1">Intelligence<em>Redefined.</em></h1>
+    <p class="hero-sub">AI-powered platforms and digital systems built for businesses that demand more.</p>
+    <div class="hero-actions">
+      <a href="/services" class="btn-line">Our Services</a>
+      <a href="/contact" class="btn-accent">Start a Project</a>
     </div>
   </div>
-  <div class="hero-scroll">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M8 3v10M4 9l4 4 4-4"/>
-    </svg>
-    <span>Scroll</span>
+  <div class="hero-bar">
+    <ul class="hero-bar-links">
+      <li><a href="/about">About</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/careers">Careers</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/terms">Legal</a></li>
+    </ul>
+    <span class="hero-bar-copy">© 2025 Jwood Technologies, LLC</span>
   </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="section-inner">
-    <div class="about-grid">
-      <div class="about-img-wrap reveal">
-        <img class="about-img" src="/assets/jacob-wood.jpg" alt="Jacob J. Wood, Founder" onerror="this.parentElement.style.display='none'">
-        <div class="about-img-accent"></div>
-      </div>
-      <div class="reveal">
-        <span class="section-label">About</span>
-        <h2 class="section-title">Built for builders who won't settle.</h2>
-        <p class="about-pull">We exist to make <em>intelligent technology</em> accessible to every ambitious business — not just the Fortune 500.</p>
-        <p class="section-body">JWood Technologies is an AI-first digital agency founded on the belief that the right technology should level the playing field. We design, build, and deploy intelligent systems that help businesses operate faster, smarter, and at scale.</p>
-        <p class="section-body" style="margin-top:16px;">From conversational AI to full-stack digital infrastructure, every product we ship is crafted with a single objective: measurable impact for our clients.</p>
-        <div class="about-stats">
-          <div>
-            <div class="stat-num">10<span>+</span></div>
-            <div class="stat-label">AI platforms deployed</div>
-          </div>
-          <div>
-            <div class="stat-num">3<span>x</span></div>
-            <div class="stat-label">Average efficiency gain</div>
-          </div>
-          <div>
-            <div class="stat-num">24/7</div>
-            <div class="stat-label">System uptime</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SERVICES -->
-<section id="services">
-  <div class="section-inner">
-    <span class="section-label reveal">Services</span>
-    <h2 class="section-title reveal">What we build.</h2>
-    <p class="section-body reveal">End-to-end digital systems — from intelligent automation to consumer-facing platforms — designed to compound over time.</p>
-    <div class="bento">
-      <div class="bento-card bento-card--featured reveal">
-        <div class="bento-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0110 10 10 10 0 01-10 10A10 10 0 012 12 10 10 0 0112 2M12 7v5l3 3"/></svg>
-        </div>
-        <div class="bento-title">Conversational AI & Automation</div>
-        <p class="bento-body">We design and deploy AI agents that handle complex workflows — customer support, lead qualification, internal operations — with human-level nuance and 24/7 availability. Our systems learn from your business context, not generic training data.</p>
-      </div>
-      <div class="bento-card bento-card--sm reveal">
-        <div class="bento-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        </div>
-        <div class="bento-title">Digital Platform Development</div>
-        <p class="bento-body">Full-stack applications built for scale — web, mobile, API-first architecture. We ship fast and build for longevity.</p>
-      </div>
-      <div class="bento-card bento-card--third reveal">
-        <div class="bento-icon">
-          <svg viewBox="0 0 24 24"><path d="M3 3h18v4H3zM3 10h18v4H3zM3 17h18v4H3z"/></svg>
-        </div>
-        <div class="bento-title">Data & Analytics</div>
-        <p class="bento-body">Turn raw data into actionable intelligence. Custom dashboards, predictive models, and real-time reporting pipelines.</p>
-      </div>
-      <div class="bento-card bento-card--third reveal">
-        <div class="bento-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
-        </div>
-        <div class="bento-title">Brand & Creative Systems</div>
-        <p class="bento-body">Identity systems, design languages, and creative infrastructure that scale with your brand as it grows.</p>
-      </div>
-      <div class="bento-card bento-card--third reveal">
-        <div class="bento-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <div class="bento-title">Infrastructure & Security</div>
-        <p class="bento-body">Cloud architecture, CI/CD pipelines, and security hardening for systems that can't afford to go down.</p>
-      </div>
-      <div class="bento-card bento-card--stealth reveal">
-        <div class="bento-icon" style="margin-bottom:0;">
-          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-        </div>
-        <div class="bento-stealth-text">
-          <div class="bento-title">Have something else in mind?</div>
-          <p class="bento-body">We take on custom engagements. <a href="#contact" style="color:var(--accent);">Tell us about your project →</a></p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CAREERS -->
-<section id="careers">
-  <div class="section-inner">
-    <span class="section-label reveal">Careers</span>
-    <h2 class="section-title reveal">Join the team.</h2>
-    <p class="section-body reveal">We're building the infrastructure for tomorrow's intelligent businesses. If you want to work on problems that matter, you're in the right place.</p>
-    <div class="careers-empty reveal">
-      <div class="careers-icon">
-        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
-      </div>
-      <div class="careers-empty-title">No open roles right now.</div>
-      <p class="careers-empty-body">We're heads-down building. When we're ready to grow the team, you'll hear it here first. Drop your info and we'll reach out when the timing is right.</p>
-      <a href="mailto:hello@jwoodtechnologies.com" class="careers-notify">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        Get notified about future openings
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="section-inner">
-    <span class="section-label reveal">Contact</span>
-    <h2 class="section-title reveal">Let's build something.</h2>
-    <div class="contact-grid">
-      <div class="reveal">
-        <p class="section-body" style="max-width:none;margin-bottom:40px;">Whether you have a project in mind, a problem to solve, or just want to explore what's possible — we'd love to hear from you.</p>
-        <div class="contact-info-item">
-          <div class="contact-info-icon">
-            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </div>
-          <div>
-            <div class="contact-info-label">Email</div>
-            <div class="contact-info-val"><a href="mailto:hello@jwoodtechnologies.com" style="color:var(--accent);">hello@jwoodtechnologies.com</a></div>
-          </div>
-        </div>
-        <div class="contact-info-item">
-          <div class="contact-info-icon">
-            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <div>
-            <div class="contact-info-label">Location</div>
-            <div class="contact-info-val">United States — Remote-first</div>
-          </div>
-        </div>
-        <div class="contact-info-item">
-          <div class="contact-info-icon">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <div>
-            <div class="contact-info-label">Response time</div>
-            <div class="contact-info-val">Within 24 hours</div>
-          </div>
-        </div>
-      </div>
-      <div class="reveal">
-        <form id="contactForm">
-          <div class="form-row">
-            <div class="form-field">
-              <label>First Name</label>
-              <input type="text" name="firstName" placeholder="Jacob" required>
-            </div>
-            <div class="form-field">
-              <label>Last Name</label>
-              <input type="text" name="lastName" placeholder="Wood" required>
-            </div>
-          </div>
-          <div class="form-field">
-            <label>Email Address</label>
-            <input type="email" name="email" placeholder="you@company.com" required>
-          </div>
-          <div class="form-field">
-            <label>Company</label>
-            <input type="text" name="company" placeholder="Your company">
-          </div>
-          <div class="form-field">
-            <label>What can we help with?</label>
-            <select name="service">
-              <option value="">Select a service...</option>
-              <option>Conversational AI & Automation</option>
-              <option>Digital Platform Development</option>
-              <option>Data & Analytics</option>
-              <option>Brand & Creative Systems</option>
-              <option>Infrastructure & Security</option>
-              <option>Other / Not sure yet</option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label>Tell us about your project</label>
-            <textarea name="message" placeholder="Describe your goals, timeline, and any key details..."></textarea>
-          </div>
-          <button type="submit" class="form-submit">Send Message →</button>
-          <div class="form-success" id="formSuccess">Message sent! We'll be in touch within 24 hours.</div>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TERMS -->
-<section id="terms">
-  <div class="section-inner">
-    <span class="section-label reveal">Legal</span>
-    <h2 class="section-title reveal">Terms of Service</h2>
-    <div class="tos-content reveal">
-      <p>By accessing or using any JWood Technologies platform, product, or service, you agree to be bound by these Terms of Service. Please read them carefully.</p>
-
-      <h3>1. Services</h3>
-      <p>JWood Technologies provides AI-powered software platforms, digital consulting, and related technical services. We reserve the right to modify, suspend, or discontinue any service at our discretion with reasonable notice where practicable.</p>
-
-      <h3>2. Accounts & Access</h3>
-      <p>You are responsible for maintaining the confidentiality of your account credentials. You agree to notify us immediately of any unauthorized access. We may suspend accounts that violate these terms without prior notice.</p>
-
-      <h3>3. Acceptable Use</h3>
-      <p>You agree not to use our services to:</p>
-      <ul>
-        <li>Violate any applicable laws or regulations</li>
-        <li>Transmit malicious code or interfere with system integrity</li>
-        <li>Harvest data, reverse-engineer, or attempt unauthorized access</li>
-        <li>Engage in abusive, harassing, or harmful conduct toward others</li>
-      </ul>
-
-      <h3>4. Intellectual Property</h3>
-      <p>All JWood Technologies products, brands, and source code are the exclusive property of JWood Technologies. Nothing in these terms grants you a license to use our intellectual property except as expressly stated.</p>
-
-      <h3>5. Privacy</h3>
-      <p>Your use of our services is also governed by our Privacy Policy. We collect only the data necessary to provide and improve our services, and we do not sell your personal information to third parties.</p>
-
-      <h3>6. Limitation of Liability</h3>
-      <p>To the maximum extent permitted by law, JWood Technologies shall not be liable for indirect, incidental, special, consequential, or punitive damages arising from your use of or inability to use our services.</p>
-
-      <h3>7. Governing Law</h3>
-      <p>These terms are governed by the laws of the United States. Any disputes shall be resolved through binding arbitration in accordance with applicable federal law.</p>
-
-      <h3>8. Changes to Terms</h3>
-      <p>We may update these terms at any time. Continued use of our services after changes constitutes acceptance of the revised terms. We will notify users of material changes via email or in-platform notice.</p>
-
-      <h3>Contact</h3>
-      <p>For legal inquiries: <a href="mailto:legal@jwoodtechnologies.com" style="color:var(--accent);">legal@jwoodtechnologies.com</a></p>
-
-      <p class="tos-updated">Last updated: June 2025</p>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <div class="footer-logo">
-          <img src="/assets/jwod-logo.png" alt="JWood Technologies" onerror="this.style.display='none'">
-          <span class="footer-logo-name">JWood Technologies</span>
-        </div>
-        <p class="footer-tagline">Intelligence Redefined.<br>AI-powered platforms built for the future of business.</p>
-      </div>
-      <div class="footer-links">
-        <div class="footer-col">
-          <div class="footer-col-title">Company</div>
-          <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#careers">Careers</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <div class="footer-col-title">Connect</div>
-          <ul>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="mailto:hello@jwoodtechnologies.com">Email Us</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <div class="footer-col-title">Legal</div>
-          <ul>
-            <li><a href="#terms">Terms of Service</a></li>
-            <li><a href="#terms">Privacy Policy</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p class="footer-copy">© 2025 JWood Technologies, LLC. All rights reserved.</p>
-      <div class="footer-socials">
-        <!-- LinkedIn -->
-        <a href="#" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
-        </a>
-        <!-- X/Twitter -->
-        <a href="#" aria-label="X (Twitter)">
-          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<!-- EON CHATBOT -->
-<button class="eon-orb-btn" id="eonOrb" aria-label="Open EON AI assistant">
-  <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-    <path d="M8 12h8M12 8v8"/>
-  </svg>
-</button>
-
-<div class="eon-window" id="eonWindow">
-  <div class="eon-header">
-    <div class="eon-header-orb"></div>
-    <div class="eon-header-info">
-      <div class="eon-header-name">EON</div>
-      <div class="eon-header-status">
-        <div class="eon-status-dot"></div>
-        Online — JWood AI
-      </div>
-    </div>
-    <button class="eon-close" id="eonClose" aria-label="Close">✕</button>
-  </div>
-  <div class="eon-messages" id="eonMessages">
-    <div class="msg msg--eon">
-      <div class="msg-avatar"></div>
-      <div class="msg-bubble">Hey! I'm EON — JWood's AI assistant. I can answer questions about our services, help scope a project, or connect you with the team. What's on your mind?</div>
-    </div>
-  </div>
-  <div class="eon-input-row">
-    <textarea class="eon-input" id="eonInput" placeholder="Ask me anything..." rows="1"></textarea>
-    <button class="eon-send" id="eonSend" aria-label="Send">
-      <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
-    </button>
-  </div>
-  <div class="eon-footer-note">Powered by JWood AI · Intelligence Redefined</div>
 </div>
 
 <script>
-/* ===== MOBILE NAV ===== */
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-hamburger.addEventListener('click', () => {
-  mobileMenu.classList.toggle('open');
-});
-function closeMobile() {
-  mobileMenu.classList.remove('open');
-}
-document.addEventListener('click', e => {
-  if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
-    closeMobile();
-  }
-});
-
-/* ===== SCROLL REVEAL ===== */
-const reveals = document.querySelectorAll('.reveal');
-const revealObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-reveals.forEach(el => revealObs.observe(el));
-
-/* ===== CONTACT FORM ===== */
-document.getElementById('contactForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const form = e.target;
-  const btn = form.querySelector('.form-submit');
-  const success = document.getElementById('formSuccess');
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
-  const data = Object.fromEntries(new FormData(form));
-  try {
-    await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-    success.style.display = 'block';
-    form.reset();
-  } catch {
-    btn.textContent = 'Send Message →';
-    btn.disabled = false;
-  }
-});
-
-/* ===== EON CHATBOT ===== */
-const eonOrb = document.getElementById('eonOrb');
-const eonWindow = document.getElementById('eonWindow');
-const eonClose = document.getElementById('eonClose');
-const eonMessages = document.getElementById('eonMessages');
-const eonInput = document.getElementById('eonInput');
-const eonSend = document.getElementById('eonSend');
-
-eonOrb.addEventListener('click', () => {
-  eonWindow.classList.toggle('open');
-  if (eonWindow.classList.contains('open')) eonInput.focus();
-});
-eonClose.addEventListener('click', () => eonWindow.classList.remove('open'));
-
-function addMsg(role, text) {
-  const div = document.createElement('div');
-  div.className = 'msg msg--' + role;
-  if (role === 'eon') div.innerHTML = '<div class="msg-avatar"></div><div class="msg-bubble"></div>';
-  else div.innerHTML = '<div class="msg-bubble"></div>';
-  div.querySelector('.msg-bubble').textContent = text;
-  eonMessages.appendChild(div);
-  eonMessages.scrollTop = eonMessages.scrollHeight;
-  return div;
-}
-
-function showTyping() {
-  const div = document.createElement('div');
-  div.className = 'msg msg--eon msg-typing';
-  div.innerHTML = '<div class="msg-avatar"></div><div class="msg-bubble"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
-  eonMessages.appendChild(div);
-  eonMessages.scrollTop = eonMessages.scrollHeight;
-  return div;
-}
-
-const eonHistory = [];
-
-async function sendEon() {
-  const text = eonInput.value.trim();
-  if (!text) return;
-  eonInput.value = '';
-  eonInput.style.height = 'auto';
-  addMsg('user', text);
-  eonHistory.push({ role: 'user', content: text });
-  const typing = showTyping();
-  try {
-    const res = await fetch('/api/eon', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: eonHistory })
-    });
-    const data = await res.json();
-    typing.remove();
-    const reply = data.content?.[0]?.text || data.reply || "I'm having trouble connecting right now. Email us at hello@jwoodtechnologies.com and we'll get back to you shortly.";
-    addMsg('eon', reply);
-    eonHistory.push({ role: 'assistant', content: reply });
-  } catch {
-    typing.remove();
-    addMsg('eon', "I'm having trouble connecting right now. Please email us at hello@jwoodtechnologies.com and we'll be in touch.");
-  }
-}
-
-eonSend.addEventListener('click', sendEon);
-eonInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendEon(); }
-});
-eonInput.addEventListener('input', () => {
-  eonInput.style.height = 'auto';
-  eonInput.style.height = Math.min(eonInput.scrollHeight, 100) + 'px';
-});
+  const ham = document.getElementById('mobileHamburger');
+  const drop = document.getElementById('mobileDropdown');
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('active');
+    drop.classList.toggle('open');
+  });
+  document.addEventListener('click', e => {
+    if (!ham.contains(e.target) && !drop.contains(e.target)) {
+      ham.classList.remove('active');
+      drop.classList.remove('open');
+    }
+  });
 </script>
 </body>
 </html>
