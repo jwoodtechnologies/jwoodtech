@@ -12,7 +12,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 16px; }
     body {
-      background: #000;
+      background: #050505;
       color: #fff;
       font-family: 'Inter', system-ui, sans-serif;
       font-weight: 400;
@@ -149,25 +149,27 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      background: transparent;
     }
     .hero-video {
-      position: absolute;
+      position: fixed;
       inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0.45;
+      z-index: -2;
     }
     .hero-grad {
-      position: absolute;
+      position: fixed;
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(0,0,0,0.4) 0%,
-        rgba(0,0,0,0.0) 40%,
-        rgba(0,0,0,0.7) 80%,
-        #000 100%
+        rgba(0,0,0,0.35) 0%,
+        rgba(0,0,0,0.15) 40%,
+        rgba(0,0,0,0.55) 80%,
+        rgba(0,0,0,0.85) 100%
       );
+      z-index: -1;
     }
     .hero-body {
       position: relative;
@@ -301,7 +303,7 @@
     .section-h2 em { font-style: italic; }
 
     /* ─── SERVICES ─── */
-    .services-section { background: #000; border-top: 1px solid rgba(255,255,255,0.06); }
+    .services-section { background: rgba(0,0,0,0.72); border-top: 1px solid rgba(255,255,255,0.06); }
     .services-top {
       display: flex;
       justify-content: space-between;
@@ -325,14 +327,14 @@
       border: 1px solid rgba(255,255,255,0.06);
     }
     .service-card {
-      background: #000;
+      background: rgba(0,0,0,0.5);
       padding: 44px 36px 48px;
       display: flex;
       flex-direction: column;
       gap: 16px;
       transition: background .25s;
     }
-    .service-card:hover { background: #0a0a0a; }
+    .service-card:hover { background: rgba(255,255,255,0.04); }
     .service-card-num {
       font-size: 0.62rem;
       font-weight: 500;
@@ -372,7 +374,7 @@
     .service-card:hover .service-card-link svg { transform: translateX(3px); }
 
     /* ─── NUMBERS ─── */
-    .numbers-section { background: #050505; border-top: 1px solid rgba(255,255,255,0.06); }
+    .numbers-section { background: rgba(0,0,0,0.78); border-top: 1px solid rgba(255,255,255,0.06); }
     .numbers-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -381,11 +383,11 @@
       border: 1px solid rgba(255,255,255,0.06);
     }
     .number-cell {
-      background: #050505;
+      background: rgba(0,0,0,0.45);
       padding: 52px 40px;
       transition: background .2s;
     }
-    .number-cell:hover { background: #0a0a0a; }
+    .number-cell:hover { background: rgba(255,255,255,0.04); }
     .number-val {
       font-family: 'Playfair Display', Georgia, serif;
       font-size: clamp(3rem, 5vw, 5rem);
@@ -404,7 +406,7 @@
     }
 
     /* ─── PAGE PREVIEWS ─── */
-    .previews-section { background: #000; border-top: 1px solid rgba(255,255,255,0.06); }
+    .previews-section { background: rgba(0,0,0,0.72); border-top: 1px solid rgba(255,255,255,0.06); }
     .previews-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -455,7 +457,7 @@
 
     /* ─── FOOTER ─── */
     .site-footer {
-      background: #000;
+      background: rgba(0,0,0,0.88);
       border-top: 1px solid rgba(255,255,255,0.07);
       padding: clamp(60px,8vw,100px) clamp(24px,6vw,80px) 40px;
     }
@@ -542,7 +544,6 @@
 <nav class="nav-island" id="navIsland">
   <a href="/" class="nav-logo">
     <img src="/assets/IMG_6989.png" alt="Jwood Technologies" onerror="this.style.display='none'">
-    <span class="nav-logo-text">Jwood Technologies</span>
   </a>
   <ul class="nav-center-links">
     <li><a href="#services">Services</a></li>
@@ -571,13 +572,13 @@
   </video>
   <div class="hero-grad"></div>
   <div class="hero-body">
-    <div class="hero-side-text">Jwood Technologies — Est. 2024</div>
+    <div class="hero-side-text">Jwood Technologies — Est. 2020</div>
     <div class="hero-main">
       <h1 class="hero-h1">
         <em>Intelligence</em>
         <span class="word-plain">Redefined.</span>
       </h1>
-      <p class="hero-tagline">AI-powered platforms and digital systems built for businesses that demand the best.</p>
+      <p class="hero-tagline">Digital platforms and intelligent systems built for businesses that demand the best.</p>
       <div class="hero-actions">
         <a href="#services" class="btn-white">Our Services</a>
         <a href="/contact" class="btn-outline">Start a Project</a>
@@ -603,8 +604,8 @@
     <div class="services-grid">
       <div class="service-card" data-reveal>
         <span class="service-card-num">01</span>
-        <div class="service-card-name"><em>Conversational AI</em><br>& Automation</div>
-        <p class="service-card-body">Intelligent agents that handle complex workflows — support, sales, operations — with 24/7 availability and your business context built in.</p>
+        <div class="service-card-name"><em>Automation</em><br>& Intelligent Systems</div>
+        <p class="service-card-body">Custom systems that handle complex workflows — support, sales, operations — with 24/7 availability and your business context built in.</p>
         <span class="service-card-link">Learn more <svg width="14" height="14" viewBox="0 0 14 14"><line x1="2" y1="7" x2="12" y2="7"/><polyline points="8 3 12 7 8 11"/></svg></span>
       </div>
       <div class="service-card" data-reveal="delay-1">
@@ -629,7 +630,7 @@
     <div class="numbers-grid">
       <div class="number-cell" data-reveal>
         <div class="number-val">10<sup>+</sup></div>
-        <div class="number-label">AI systems deployed</div>
+        <div class="number-label">Systems deployed</div>
       </div>
       <div class="number-cell" data-reveal="delay-1">
         <div class="number-val">3<sup>×</sup></div>
