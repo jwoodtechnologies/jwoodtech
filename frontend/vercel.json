@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "^/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "^/static/(.*)", "dest": "/static/$1" },
+    { "src": "^/favicon(.*)", "dest": "/favicon$1" },
+    { "src": "^/manifest.json", "dest": "/manifest.json" },
+    { "src": "^/robots.txt", "dest": "/robots.txt" },
+    { "src": "^/$", "dest": "/jwoodtech.html" },
+    { "src": "^/(eon|woodchat|vineyard|privacy|terms|research|woodchat-admin|vineyard-admin)(.*)", "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
