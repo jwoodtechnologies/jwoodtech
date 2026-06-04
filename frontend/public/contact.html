@@ -155,12 +155,8 @@
         </div>
         <div class="chat-opts" id="chatOpts">
           <button class="chat-opt" data-type="project">Start a project</button>
-          <button class="chat-opt" data-type="consulting">Consulting inquiry</button>
-          <button class="chat-opt" data-type="automation">Automation &amp; systems</button>
-          <button class="chat-opt" data-type="platform">Platform development</button>
-          <button class="chat-opt" data-type="cybersecurity">Cybersecurity</button>
-          <button class="chat-opt" data-type="question">Ask a question</button>
-          <button class="chat-opt" data-type="other">Something else</button>
+          <button class="chat-opt" data-type="consulting">Consulting</button>
+          <button class="chat-opt" data-type="other">General inquiry</button>
         </div>
       </div>
 
@@ -220,68 +216,53 @@
     const chatFormFields = document.getElementById('chatFormFields');
 
     const RESPONSES = {
-      project:      "Great. Tell us about your project and we'll get back to you within one business day.",
-      consulting:   "Absolutely. Our consulting engagements cover strategy, architecture, digital transformation, and fractional CTO work. Share your details and we'll set up a call.",
-      automation:   "Smart choice. We design and build custom automation systems and workflows that run your operations 24/7. Tell us what you're working with.",
-      platform:     "Let's build something. Whether it's web, mobile, or API — we scope and ship fast. Drop your info below.",
-      cybersecurity:"Security first. We handle vulnerability assessments, pen testing, and security architecture. Tell us about your environment.",
-      question:     "Of course. Drop your details below and ask away.",
-      other:        "No problem at all — tell us what's on your mind."
+      project:    "Perfect. Tell us what you're building and we'll take it from there.",
+      consulting: "Let's talk. Share your details and we'll be in touch to set up a call.",
+      other:      "Of course — tell us what's on your mind."
     };
 
-    const PROJECT_FIELDS = `
-      <div class="chat-row">
-        <div class="chat-field"><label>First Name</label><input type="text" name="first_name" placeholder="First" required></div>
-        <div class="chat-field"><label>Last Name</label><input type="text" name="last_name" placeholder="Last" required></div>
-      </div>
-      <div class="chat-field"><label>Email</label><input type="email" name="email" placeholder="you@company.com" required></div>
-      <div class="chat-field"><label>Company</label><input type="text" name="company" placeholder="Company name"></div>
-      <div class="chat-field"><label>Service</label>
-        <select name="service">
-          <option value="" disabled selected>Select a service</option>
-          <option>Automation &amp; Systems</option>
-          <option>Platform Development</option>
-          <option>Data &amp; Infrastructure</option>
-          <option>Brand &amp; Design</option>
-          <option>Software Conception</option>
-          <option>Infrastructure</option>
-          <option>Cybersecurity</option>
-          <option>Consulting</option>
-        </select>
-      </div>`;
-
-    const NAME_EMAIL_FIELDS = `
-      <div class="chat-row">
-        <div class="chat-field"><label>Name</label><input type="text" name="name" placeholder="Your name" required></div>
-        <div class="chat-field"><label>Email</label><input type="email" name="email" placeholder="you@company.com" required></div>
-      </div>`;
-
-    const CONSULTING_FIELDS = `
-      <div class="chat-row">
-        <div class="chat-field"><label>First Name</label><input type="text" name="first_name" placeholder="First" required></div>
-        <div class="chat-field"><label>Last Name</label><input type="text" name="last_name" placeholder="Last" required></div>
-      </div>
-      <div class="chat-field"><label>Email</label><input type="email" name="email" placeholder="you@company.com" required></div>
-      <div class="chat-field"><label>Company / Role</label><input type="text" name="company" placeholder="Company name or title"></div>
-      <div class="chat-field"><label>Consulting Area</label>
-        <select name="consulting_area">
-          <option value="" disabled selected>Select an area</option>
-          <option>Technology Strategy</option>
-          <option>Digital Transformation</option>
-          <option>Architecture Review</option>
-          <option>Fractional CTO</option>
-          <option>Cybersecurity Advisory</option>
-        </select>
-      </div>`;
-
     const FIELDS_HTML = {
-      project:      PROJECT_FIELDS,
-      consulting:   CONSULTING_FIELDS,
-      automation:   PROJECT_FIELDS,
-      platform:     PROJECT_FIELDS,
-      cybersecurity:PROJECT_FIELDS,
-      question:     NAME_EMAIL_FIELDS,
-      other:        NAME_EMAIL_FIELDS
+      project: `
+        <div class="chat-row">
+          <div class="chat-field"><label>First Name</label><input type="text" name="first_name" placeholder="First" required></div>
+          <div class="chat-field"><label>Last Name</label><input type="text" name="last_name" placeholder="Last" required></div>
+        </div>
+        <div class="chat-field"><label>Email</label><input type="email" name="email" placeholder="you@company.com" required></div>
+        <div class="chat-field"><label>Company</label><input type="text" name="company" placeholder="Company name"></div>
+        <div class="chat-field"><label>Service</label>
+          <select name="service">
+            <option value="" disabled selected>What are you looking for?</option>
+            <option>Automation &amp; Systems</option>
+            <option>Platform Development</option>
+            <option>Data &amp; Infrastructure</option>
+            <option>Brand &amp; Design</option>
+            <option>Software Conception</option>
+            <option>Infrastructure</option>
+            <option>Cybersecurity</option>
+          </select>
+        </div>`,
+      consulting: `
+        <div class="chat-row">
+          <div class="chat-field"><label>First Name</label><input type="text" name="first_name" placeholder="First" required></div>
+          <div class="chat-field"><label>Last Name</label><input type="text" name="last_name" placeholder="Last" required></div>
+        </div>
+        <div class="chat-field"><label>Email</label><input type="email" name="email" placeholder="you@company.com" required></div>
+        <div class="chat-field"><label>Company / Role</label><input type="text" name="company" placeholder="Company or title"></div>
+        <div class="chat-field"><label>Focus Area</label>
+          <select name="consulting_area">
+            <option value="" disabled selected>What do you need?</option>
+            <option>Technology Strategy</option>
+            <option>Digital Transformation</option>
+            <option>Architecture Review</option>
+            <option>Fractional CTO</option>
+            <option>Cybersecurity Advisory</option>
+          </select>
+        </div>`,
+      other: `
+        <div class="chat-row">
+          <div class="chat-field"><label>Name</label><input type="text" name="name" placeholder="Your name" required></div>
+          <div class="chat-field"><label>Email</label><input type="email" name="email" placeholder="you@company.com" required></div>
+        </div>`
     };
 
     function addMsg(type, text) {
