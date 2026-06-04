@@ -6,26 +6,27 @@
   <title>Contact — Jwood Technologies</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; overflow-x: hidden; }
     body { background: #030303; color: #fff; font-family: 'Inter', sans-serif; font-weight: 300; overflow-x: hidden; }
 
-    [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
     [data-reveal].in { opacity: 1; transform: none; }
-    [data-reveal="d1"] { transition-delay: 0.12s; }
-    [data-reveal="d2"] { transition-delay: 0.22s; }
-    [data-reveal="d3"] { transition-delay: 0.32s; }
+    [data-reveal="d1"] { transition-delay: 0.1s; }
+    [data-reveal="d2"] { transition-delay: 0.2s; }
 
-    /* Island Nav */
+    .site-video { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.28; z-index: -2; }
+    .site-overlay { position: fixed; inset: 0; z-index: -1; background: linear-gradient(to bottom, rgba(3,3,3,0.55) 0%, rgba(3,3,3,0.2) 40%, rgba(3,3,3,0.7) 100%); pointer-events: none; }
+
     .island-nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: min(94vw, 1000px); height: 54px; background: rgba(8,8,8,0.55); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; padding: 0 6px 0 20px; display: flex; align-items: center; justify-content: space-between; z-index: 1000; }
     .nav-logo img { height: 14px; max-width: 130px; filter: brightness(0) invert(1); display: block; }
     .nav-center { display: flex; align-items: center; gap: 32px; }
-    .nav-center a { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); text-decoration: none; transition: color .2s; }
+    .nav-center a { font-weight: 400; font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); text-decoration: none; transition: color .2s; }
     .nav-center a:hover { color: #fff; }
     .nav-right { display: flex; align-items: center; gap: 8px; }
-    .nav-contact { background: #fff; color: #000; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.75rem; letter-spacing: 0.08em; padding: 9px 20px; border-radius: 100px; text-decoration: none; transition: opacity .2s; white-space: nowrap; }
+    .nav-contact { background: #fff; color: #000; font-weight: 500; font-size: 0.75rem; letter-spacing: 0.08em; padding: 9px 20px; border-radius: 100px; text-decoration: none; transition: opacity .2s; white-space: nowrap; }
     .nav-contact:hover { opacity: 0.85; }
     .nav-ham { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.08); border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transition: background .2s; }
     .nav-ham:hover { background: rgba(255,255,255,0.13); }
@@ -35,88 +36,59 @@
     .nav-ham.open span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
     .nav-drop { display: none; position: fixed; top: 82px; left: 50%; transform: translateX(-50%); width: min(94vw, 1000px); background: rgba(8,8,8,0.97); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; z-index: 999; }
     .nav-drop.open { display: block; }
-    .nav-drop a { display: block; padding: 18px 28px; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.9rem; color: rgba(255,255,255,0.55); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s, background .2s; }
+    .nav-drop a { display: block; padding: 18px 28px; font-weight: 400; font-size: 0.9rem; color: rgba(255,255,255,0.55); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s, background .2s; }
     .nav-drop a:last-child { border-bottom: none; }
     .nav-drop a:hover { color: #fff; background: rgba(255,255,255,0.03); }
 
-    /* Hero with backdrop */
-    .page-hero {
-      position: relative;
-      padding-top: calc(54px + 100px + 20px);
-      padding-bottom: 100px;
-      padding-left: clamp(24px,6vw,80px);
-      padding-right: clamp(24px,6vw,80px);
-      overflow: hidden;
-    }
-    .page-hero-bg {
-      position: absolute; inset: 0;
-      background-image: url('/assets/backdrop-glass.jpg');
-      background-size: cover; background-position: center;
-      filter: grayscale(0.6) brightness(0.18);
-      z-index: 0;
-    }
-    .page-hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to right, rgba(3,3,3,0.75) 0%, rgba(3,3,3,0.3) 100%);
-      z-index: 1;
-    }
-    .page-hero > *:not(.page-hero-bg):not(.page-hero-overlay) { position: relative; z-index: 2; }
-    .page-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
-    .page-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,6rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
-    .page-hero-sub { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 1rem; color: rgba(255,255,255,0.45); max-width: 420px; line-height: 1.75; margin-top: 18px; }
+    .page-hero { padding: calc(54px + 100px + 20px) clamp(24px,6vw,80px) 80px; }
+    .page-label { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 18px; }
+    .page-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3.5rem,8vw,6.5rem); letter-spacing: -0.03em; line-height: 0.95; color: #fff; }
 
-    /* Contact layout */
-    .contact-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 80px; padding: 80px clamp(24px,6vw,80px); align-items: start; }
+    .contact-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; padding: 0 clamp(24px,6vw,80px) 100px; background: rgba(0,0,0,0.55); border-top: 1px solid rgba(255,255,255,0.06); padding-top: 72px; align-items: start; }
 
-    /* Left: info */
-    .contact-info-title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 32px; }
-    .contact-item { padding: 24px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .contact-item:last-child { border-bottom: none; }
-    .contact-item-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.25); margin-bottom: 8px; }
-    .contact-item-value { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.95rem; color: rgba(255,255,255,0.75); }
-    .contact-item-value a { color: rgba(255,255,255,0.75); text-decoration: none; transition: color .2s; }
-    .contact-item-value a:hover { color: #fff; }
+    .info-group { padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .info-group:last-child { border-bottom: none; }
+    .info-label { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.22); margin-bottom: 6px; }
+    .info-value { font-size: 0.92rem; color: rgba(255,255,255,0.65); }
+    .info-value a { color: rgba(255,255,255,0.65); text-decoration: none; transition: color .2s; }
+    .info-value a:hover { color: #fff; }
 
-    /* Right: form */
-    .contact-form-wrap { }
-    .form-title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 28px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-    .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-    .form-group label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); }
+    .form-group { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+    .form-group label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.28); }
     .form-group input,
     .form-group textarea,
     .form-group select {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 6px;
-      padding: 14px 16px;
+      padding: 13px 16px;
       font-family: 'Inter', sans-serif;
       font-weight: 300;
       font-size: 0.88rem;
       color: #fff;
       width: 100%;
-      transition: border-color .2s, background .2s;
       outline: none;
+      transition: border-color .2s, background .2s;
       -webkit-appearance: none;
     }
     .form-group input::placeholder,
-    .form-group textarea::placeholder { color: rgba(255,255,255,0.18); }
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.16); }
     .form-group input:focus,
     .form-group textarea:focus,
-    .form-group select:focus { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.06); }
-    .form-group textarea { resize: vertical; min-height: 140px; }
+    .form-group select:focus { border-color: rgba(255,255,255,0.32); background: rgba(255,255,255,0.06); }
+    .form-group textarea { resize: vertical; min-height: 130px; }
     .form-group select option { background: #111; color: #fff; }
-    .btn-submit { background: #fff; color: #000; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.1em; padding: 15px 32px; border-radius: 100px; border: none; cursor: pointer; transition: opacity .2s; width: 100%; margin-top: 8px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .btn-submit { background: #fff; color: #000; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.1em; padding: 14px 32px; border-radius: 100px; border: none; cursor: pointer; width: 100%; margin-top: 6px; transition: opacity .2s; }
     .btn-submit:hover { opacity: 0.85; }
 
-    /* Footer */
-    footer { background: #000; border-top: 1px solid rgba(255,255,255,0.06); margin-top: 80px; }
+    footer { background: rgba(0,0,0,0.9); border-top: 1px solid rgba(255,255,255,0.06); }
     .footer-inner { padding: 0 clamp(24px,6vw,80px); }
     .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 32px 0; gap: 24px; flex-wrap: wrap; }
     .footer-nav { display: flex; list-style: none; gap: 24px; flex-wrap: wrap; }
-    .footer-nav a { font-family: 'Inter', sans-serif; font-size: 0.7rem; color: rgba(255,255,255,0.22); text-decoration: none; letter-spacing: 0.06em; transition: color .2s; }
+    .footer-nav a { font-size: 0.7rem; color: rgba(255,255,255,0.22); text-decoration: none; letter-spacing: 0.06em; transition: color .2s; }
     .footer-nav a:hover { color: rgba(255,255,255,0.6); }
-    .footer-copy { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
+    .footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
 
     @media (max-width: 860px) {
       .nav-center { display: none; }
@@ -126,6 +98,11 @@
   </style>
 </head>
 <body>
+
+  <video class="site-video" autoplay muted playsinline loop preload="auto" disablepictureinpicture>
+    <source src="/assets/hero-backdrop.mp4" type="video/mp4">
+  </video>
+  <div class="site-overlay"></div>
 
   <nav class="island-nav">
     <a href="/" class="nav-logo">
@@ -143,7 +120,6 @@
       </button>
     </div>
   </nav>
-
   <div class="nav-drop" id="navDrop">
     <a href="/about">About</a>
     <a href="/services">Services</a>
@@ -152,73 +128,62 @@
   </div>
 
   <div class="page-hero">
-    <div class="page-hero-bg"></div>
-    <div class="page-hero-overlay"></div>
     <p class="page-label" data-reveal>Contact</p>
-    <h1 data-reveal="d1">Let's build something.</h1>
-    <p class="page-hero-sub" data-reveal="d2">Tell us what you're working on. We respond within one business day.</p>
+    <h1 data-reveal="d1">Let's build<br>something.</h1>
   </div>
 
   <div class="contact-layout">
     <div data-reveal>
-      <h3 class="contact-info-title">Get in touch.</h3>
-      <div class="contact-item">
-        <p class="contact-item-label">Email</p>
-        <p class="contact-item-value"><a href="mailto:info@jwoodtechnologies.com">info@jwoodtechnologies.com</a></p>
+      <div class="info-group">
+        <p class="info-label">Email</p>
+        <p class="info-value"><a href="mailto:info@jwoodtechnologies.com">info@jwoodtechnologies.com</a></p>
       </div>
-      <div class="contact-item">
-        <p class="contact-item-label">Response Time</p>
-        <p class="contact-item-value">Within one business day</p>
+      <div class="info-group">
+        <p class="info-label">Response time</p>
+        <p class="info-value">Within one business day</p>
       </div>
-      <div class="contact-item">
-        <p class="contact-item-label">Location</p>
-        <p class="contact-item-value">United States</p>
-      </div>
-      <div class="contact-item">
-        <p class="contact-item-label">Engagements</p>
-        <p class="contact-item-value">Custom platforms, automation, infrastructure — serious projects only.</p>
+      <div class="info-group">
+        <p class="info-label">Location</p>
+        <p class="info-value">United States</p>
       </div>
     </div>
 
-    <div data-reveal="d1">
-      <h3 class="form-title">Send us a message.</h3>
-      <form action="mailto:info@jwoodtechnologies.com" method="post" enctype="text/plain">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="fname">First Name</label>
-            <input type="text" id="fname" name="first_name" placeholder="Jacob" required>
-          </div>
-          <div class="form-group">
-            <label for="lname">Last Name</label>
-            <input type="text" id="lname" name="last_name" placeholder="Wood" required>
-          </div>
+    <form data-reveal="d1" action="mailto:info@jwoodtechnologies.com" method="post" enctype="text/plain">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" name="first_name" placeholder="First" required>
         </div>
         <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" placeholder="you@company.com" required>
+          <label>Last Name</label>
+          <input type="text" name="last_name" placeholder="Last" required>
         </div>
-        <div class="form-group">
-          <label for="company">Company</label>
-          <input type="text" id="company" name="company" placeholder="Your company name">
-        </div>
-        <div class="form-group">
-          <label for="service">What are you looking for?</label>
-          <select id="service" name="service">
-            <option value="" disabled selected>Select a service</option>
-            <option>Automation &amp; Systems</option>
-            <option>Platform Development</option>
-            <option>Data &amp; Infrastructure</option>
-            <option>Brand &amp; Design</option>
-            <option>Other / Not sure yet</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="message">Tell us about your project</label>
-          <textarea id="message" name="message" placeholder="What are you building? What problem are you solving?" required></textarea>
-        </div>
-        <button type="submit" class="btn-submit">Send Message</button>
-      </form>
-    </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="you@company.com" required>
+      </div>
+      <div class="form-group">
+        <label>Company</label>
+        <input type="text" name="company" placeholder="Company name">
+      </div>
+      <div class="form-group">
+        <label>Service</label>
+        <select name="service">
+          <option value="" disabled selected>Select a service</option>
+          <option>Automation &amp; Systems</option>
+          <option>Platform Development</option>
+          <option>Data &amp; Infrastructure</option>
+          <option>Brand &amp; Design</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea name="message" placeholder="Tell us about your project." required></textarea>
+      </div>
+      <button type="submit" class="btn-submit">Send Message</button>
+    </form>
   </div>
 
   <footer>
@@ -238,15 +203,10 @@
   </footer>
 
   <script>
-    const ham = document.getElementById('navHam');
-    const drop = document.getElementById('navDrop');
-    if (ham && drop) {
-      ham.addEventListener('click', () => { ham.classList.toggle('open'); drop.classList.toggle('open'); });
-      document.addEventListener('click', e => { if (!ham.contains(e.target) && !drop.contains(e.target)) { ham.classList.remove('open'); drop.classList.remove('open'); } });
-      drop.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { ham.classList.remove('open'); drop.classList.remove('open'); }));
-    }
-    const io = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+    const ham=document.getElementById('navHam'),drop=document.getElementById('navDrop');
+    if(ham&&drop){ham.addEventListener('click',()=>{ham.classList.toggle('open');drop.classList.toggle('open');});document.addEventListener('click',e=>{if(!ham.contains(e.target)&&!drop.contains(e.target)){ham.classList.remove('open');drop.classList.remove('open');}});drop.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');drop.classList.remove('open');}));}
+    const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
   </script>
 </body>
 </html>

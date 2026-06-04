@@ -6,17 +6,21 @@
   <title>About — Jwood Technologies</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,700;0,800;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; overflow-x: hidden; }
     body { background: #030303; color: #fff; font-family: 'Inter', sans-serif; font-weight: 300; overflow-x: hidden; }
 
-    [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
     [data-reveal].in { opacity: 1; transform: none; }
-    [data-reveal="d1"] { transition-delay: 0.12s; }
-    [data-reveal="d2"] { transition-delay: 0.22s; }
-    [data-reveal="d3"] { transition-delay: 0.32s; }
+    [data-reveal="d1"] { transition-delay: 0.1s; }
+    [data-reveal="d2"] { transition-delay: 0.2s; }
+    [data-reveal="d3"] { transition-delay: 0.3s; }
+
+    /* Fixed video bg */
+    .site-video { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.28; z-index: -2; }
+    .site-overlay { position: fixed; inset: 0; z-index: -1; background: linear-gradient(to bottom, rgba(3,3,3,0.55) 0%, rgba(3,3,3,0.2) 40%, rgba(3,3,3,0.7) 100%); pointer-events: none; }
 
     /* Island Nav */
     .island-nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: min(94vw, 1000px); height: 54px; background: rgba(8,8,8,0.55); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; padding: 0 6px 0 20px; display: flex; align-items: center; justify-content: space-between; z-index: 1000; }
@@ -39,115 +43,79 @@
     .nav-drop a:last-child { border-bottom: none; }
     .nav-drop a:hover { color: #fff; background: rgba(255,255,255,0.03); }
 
-    /* Page Hero with backdrop */
-    .page-hero {
-      position: relative;
-      padding-top: calc(54px + 100px + 20px);
-      padding-bottom: 100px;
-      padding-left: clamp(24px,6vw,80px);
-      padding-right: clamp(24px,6vw,80px);
-      overflow: hidden;
-    }
-    .page-hero-bg {
-      position: absolute; inset: 0;
-      background-image: url('/assets/backdrop-concrete.jpg');
-      background-size: cover; background-position: center;
-      filter: grayscale(0.3) brightness(0.25);
-      z-index: 0;
-    }
-    .page-hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(3,3,3,0.6) 0%, rgba(3,3,3,0.3) 100%);
-      z-index: 1;
-    }
-    .page-hero > *:not(.page-hero-bg):not(.page-hero-overlay) { position: relative; z-index: 2; }
-    .page-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
-    .page-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,6rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
-    .page-hero-sub { font-family: 'Inter', sans-serif; font-weight: 300; font-size: clamp(0.9rem,2vw,1.05rem); color: rgba(255,255,255,0.5); max-width: 520px; line-height: 1.75; margin-top: 20px; }
+    /* Page hero */
+    .page-hero { padding: calc(54px + 100px + 20px) clamp(24px,6vw,80px) 100px; }
+    .page-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 18px; }
+    .page-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3.5rem,8vw,6.5rem); letter-spacing: -0.03em; line-height: 0.95; color: #fff; }
 
-    /* Light section */
-    .section-light {
-      background: #f7f7f5;
-      color: #0a0a0a;
-      padding: 100px clamp(24px,6vw,80px);
-      border-top: 1px solid rgba(0,0,0,0.06);
-    }
-    .section-light .section-eyebrow { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(0,0,0,0.35); margin-bottom: 16px; }
-    .section-light h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.03em; color: #0a0a0a; margin-bottom: 48px; }
-
-    /* Founder section — dark */
-    .founder-section { padding: 100px clamp(24px,6vw,80px); background: #030303; border-top: 1px solid rgba(255,255,255,0.06); }
-    .founder-grid { display: grid; grid-template-columns: 380px 1fr; gap: 72px; align-items: start; }
-    .founder-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: top; filter: grayscale(1) contrast(1.05); display: block; }
-    .founder-img-placeholder { width: 100%; aspect-ratio: 3/4; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
-    .founder-caption { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.65rem; color: rgba(255,255,255,0.28); letter-spacing: 0.1em; margin-top: 12px; }
-    .founder-name { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.02em; color: #fff; margin-bottom: 6px; }
-    .founder-title { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.35); margin-bottom: 32px; }
-    .founder-quote { font-family: 'Inter', sans-serif; font-weight: 300; font-style: italic; font-size: 1.35rem; line-height: 1.55; color: rgba(255,255,255,0.7); border-left: 1px solid rgba(255,255,255,0.2); padding-left: 24px; margin-bottom: 36px; }
-    .founder-body { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.92rem; color: rgba(255,255,255,0.45); line-height: 1.85; }
-    .founder-body p + p { margin-top: 20px; }
-
-    /* Timeline / history — light section */
-    .timeline { display: flex; flex-direction: column; gap: 0; }
-    .timeline-item { display: grid; grid-template-columns: 100px 1fr; gap: 32px; padding: 40px 0; border-bottom: 1px solid rgba(0,0,0,0.08); }
-    .timeline-item:last-child { border-bottom: none; }
-    .timeline-year { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 1.6rem; color: rgba(0,0,0,0.15); padding-top: 4px; }
-    .timeline-content h4 { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.15rem; color: #0a0a0a; margin-bottom: 8px; }
-    .timeline-content p { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.88rem; color: rgba(0,0,0,0.5); line-height: 1.8; }
-
-    /* Mission grid — dark */
-    .mission-section { padding: 100px clamp(24px,6vw,80px); background: #030303; border-top: 1px solid rgba(255,255,255,0.06); }
-    .mission-section h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(1.8rem,3.5vw,2.8rem); letter-spacing: -0.02em; margin-bottom: 48px; }
-    .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.06); }
-    .mission-cell { background: #030303; padding: 48px 40px; transition: background .25s; }
-    .mission-cell:hover { background: rgba(255,255,255,0.02); }
-    .mission-num { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 4rem; color: rgba(255,255,255,0.08); line-height: 1; margin-bottom: 16px; }
-    .mission-title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.3rem; color: #fff; margin-bottom: 12px; }
-    .mission-body { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.85rem; color: rgba(255,255,255,0.4); line-height: 1.8; }
+    /* Founder */
+    .founder { display: grid; grid-template-columns: 380px 1fr; gap: 80px; align-items: start; padding: 0 clamp(24px,6vw,80px) 100px; background: rgba(0,0,0,0.55); border-top: 1px solid rgba(255,255,255,0.06); padding-top: 80px; }
+    .founder img { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: top center; filter: grayscale(1); display: block; }
+    .founder-placeholder { width: 100%; aspect-ratio: 3/4; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .founder-caption { font-size: 0.65rem; color: rgba(255,255,255,0.25); letter-spacing: 0.08em; margin-top: 10px; }
+    .founder-name { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.02em; margin-bottom: 6px; }
+    .founder-role { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.3); margin-bottom: 36px; }
+    .founder-quote { font-style: italic; font-size: 1.25rem; line-height: 1.55; color: rgba(255,255,255,0.65); border-left: 1px solid rgba(255,255,255,0.18); padding-left: 24px; margin-bottom: 32px; }
+    .founder-body { font-size: 0.9rem; color: rgba(255,255,255,0.4); line-height: 1.85; }
+    .founder-body p + p { margin-top: 18px; }
 
     /* Press strip */
-    .press-strip { background: #080808; border-top: 1px solid rgba(255,255,255,0.06); padding: 40px clamp(24px,6vw,80px); display: flex; align-items: center; gap: 48px; flex-wrap: wrap; }
-    .press-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.2); white-space: nowrap; }
-    .press-logos { display: flex; align-items: center; gap: 40px; flex-wrap: wrap; }
-    .press-name { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 0.04em; color: rgba(255,255,255,0.22); text-transform: uppercase; transition: color .2s; }
-    .press-name:hover { color: rgba(255,255,255,0.5); }
+    .press { background: rgba(0,0,0,0.72); border-top: 1px solid rgba(255,255,255,0.06); padding: 36px clamp(24px,6vw,80px); display: flex; align-items: center; gap: 40px; flex-wrap: wrap; }
+    .press-label { font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.18); white-space: nowrap; }
+    .press-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.1); }
+    .press-names { display: flex; gap: 36px; flex-wrap: wrap; align-items: center; }
+    .press-name { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
 
-    /* Billboard band */
-    .billboard-band { background: #f7f7f5; padding: 80px clamp(24px,6vw,80px); border-top: 1px solid rgba(0,0,0,0.06); }
-    .billboard-band .section-eyebrow { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(0,0,0,0.35); margin-bottom: 16px; }
-    .billboard-band h3 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(1.6rem,3vw,2.4rem); letter-spacing: -0.03em; color: #0a0a0a; margin-bottom: 32px; }
-    .billboard-img { width: 100%; max-width: 900px; display: block; border-radius: 4px; box-shadow: 0 24px 80px rgba(0,0,0,0.18); }
-
-    /* Stats strip — light */
-    .stats-strip { background: #0a0a0a; padding: 64px clamp(24px,6vw,80px); display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; border-top: 1px solid rgba(255,255,255,0.06); }
-    .stat-cell { padding: 40px 32px; text-align: center; }
+    /* Stats */
+    .stats { background: rgba(255,255,255,0.03); border-top: 1px solid rgba(255,255,255,0.06); display: grid; grid-template-columns: repeat(3,1fr); }
+    .stat { padding: 56px 40px; border-right: 1px solid rgba(255,255,255,0.06); }
+    .stat:last-child { border-right: none; }
     .stat-num { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2.5rem,5vw,4rem); letter-spacing: -0.03em; color: #fff; }
-    .stat-label { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.78rem; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; margin-top: 6px; }
+    .stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.28); letter-spacing: 0.06em; margin-top: 6px; }
+
+    /* Billboard */
+    .billboard { background: rgba(0,0,0,0.6); border-top: 1px solid rgba(255,255,255,0.06); padding: 80px clamp(24px,6vw,80px); }
+    .section-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 24px; }
+    .billboard img { width: 100%; max-width: 860px; display: block; }
+
+    /* Pillars */
+    .pillars { background: rgba(0,0,0,0.5); border-top: 1px solid rgba(255,255,255,0.06); padding: 80px clamp(24px,6vw,80px); }
+    .pillars h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.03em; margin-bottom: 56px; }
+    .pillars-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.06); }
+    .pillar { background: rgba(3,3,3,0.8); padding: 44px 40px; transition: background .25s; }
+    .pillar:hover { background: rgba(255,255,255,0.03); }
+    .pillar-num { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 3.5rem; color: rgba(255,255,255,0.06); line-height: 1; margin-bottom: 16px; }
+    .pillar-title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.2rem; color: #fff; margin-bottom: 10px; }
+    .pillar-body { font-size: 0.83rem; color: rgba(255,255,255,0.35); line-height: 1.8; }
 
     /* Footer */
-    footer { background: #000; border-top: 1px solid rgba(255,255,255,0.06); }
+    footer { background: rgba(0,0,0,0.9); border-top: 1px solid rgba(255,255,255,0.06); }
     .footer-inner { padding: 0 clamp(24px,6vw,80px); }
     .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 32px 0; gap: 24px; flex-wrap: wrap; }
     .footer-nav { display: flex; list-style: none; gap: 24px; flex-wrap: wrap; }
-    .footer-nav a { font-family: 'Inter', sans-serif; font-size: 0.7rem; color: rgba(255,255,255,0.22); text-decoration: none; letter-spacing: 0.06em; transition: color .2s; }
+    .footer-nav a { font-size: 0.7rem; color: rgba(255,255,255,0.22); text-decoration: none; letter-spacing: 0.06em; transition: color .2s; }
     .footer-nav a:hover { color: rgba(255,255,255,0.6); }
-    .footer-copy { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
+    .footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
 
     @media (max-width: 860px) {
       .nav-center { display: none; }
-      .founder-grid { grid-template-columns: 1fr; gap: 40px; }
-      .founder-img-wrap { max-width: 300px; }
-      .mission-grid { grid-template-columns: 1fr; }
-      .stats-strip { grid-template-columns: 1fr 1fr; }
-      .timeline-item { grid-template-columns: 70px 1fr; gap: 20px; }
+      .founder { grid-template-columns: 1fr; gap: 36px; }
+      .founder-img-wrap { max-width: 280px; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 520px) {
-      .mission-grid { grid-template-columns: 1fr; }
-      .stats-strip { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+      .stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
     }
   </style>
 </head>
 <body>
+
+  <video class="site-video" autoplay muted playsinline loop preload="auto" disablepictureinpicture>
+    <source src="/assets/hero-backdrop.mp4" type="video/mp4">
+  </video>
+  <div class="site-overlay"></div>
 
   <nav class="island-nav">
     <a href="/" class="nav-logo">
@@ -165,7 +133,6 @@
       </button>
     </div>
   </nav>
-
   <div class="nav-drop" id="navDrop">
     <a href="/about">About</a>
     <a href="/services">Services</a>
@@ -174,46 +141,33 @@
   </div>
 
   <div class="page-hero">
-    <div class="page-hero-bg"></div>
-    <div class="page-hero-overlay"></div>
     <p class="page-label" data-reveal>About</p>
-    <h1 data-reveal="d1">Built different.</h1>
-    <p class="page-hero-sub" data-reveal="d2">Five years of building systems that matter — for businesses that refuse to settle.</p>
+    <h1 data-reveal="d1">Built<br>different.</h1>
   </div>
 
-  <!-- Founder — dark -->
-  <section class="founder-section">
-    <div class="founder-grid">
-      <div data-reveal>
-        <img
-          src="/assets/jacob-wood.jpg"
-          style="object-position: top center;"
-          alt="Jacob J. Wood"
-          class="founder-img"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
-        >
-        <div class="founder-img-placeholder" style="display:none;"></div>
-        <p class="founder-caption">Jacob J. Wood — Founder &amp; CEO</p>
-      </div>
-      <div data-reveal="d1">
-        <h2 class="founder-name">Jacob J. Wood</h2>
-        <p class="founder-title">Founder &amp; Chief Executive Officer</p>
-        <blockquote class="founder-quote">
-          "We build the systems that let exceptional businesses operate at a higher level."
-        </blockquote>
-        <div class="founder-body">
-          <p>Jwood Technologies was founded in 2020 — a moment when the world was forcing businesses to rethink everything about how they operate. We stepped in to help companies make that transition: moving online, building digital infrastructure, and doing it without compromising on quality.</p>
-          <p>What started as crisis response became a long-term mission. Today we work with corporations and small businesses alike, building platforms and systems that become genuine competitive advantages — not short-term fixes.</p>
-          <p>We're also developing in-house products that leverage the latest advancements in intelligence as a tool to help businesses operate smarter, move faster, and scale further than traditional approaches allow.</p>
-        </div>
+  <section class="founder">
+    <div data-reveal>
+      <img src="/assets/jacob-wood.jpg" alt="Jacob J. Wood"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+      <div class="founder-placeholder" style="display:none;"></div>
+      <p class="founder-caption">Jacob J. Wood — Founder &amp; CEO</p>
+    </div>
+    <div data-reveal="d1">
+      <h2 class="founder-name">Jacob J. Wood</h2>
+      <p class="founder-role">Founder &amp; Chief Executive Officer</p>
+      <blockquote class="founder-quote">"We build the systems that let exceptional businesses operate at a higher level."</blockquote>
+      <div class="founder-body">
+        <p>Jwood Technologies was founded in 2020. When the pandemic forced businesses to rethink how they operate, we were there — helping companies move online, building the infrastructure they needed to survive and grow.</p>
+        <p>Today we work with corporations and independent businesses, delivering platforms and automation that create genuine competitive advantage. We also develop in-house products that leverage next-generation intelligence as a tool — helping businesses operate smarter and scale further.</p>
       </div>
     </div>
   </section>
 
-  <!-- Press strip -->
-  <div class="press-strip" data-reveal>
-    <p class="press-label">As seen in</p>
-    <div class="press-logos">
+  <!-- Press -->
+  <div class="press" data-reveal>
+    <span class="press-label">As seen in</span>
+    <div class="press-divider"></div>
+    <div class="press-names">
       <span class="press-name">Fox</span>
       <span class="press-name">MarketWatch</span>
       <span class="press-name">Yahoo Finance</span>
@@ -221,88 +175,52 @@
     </div>
   </div>
 
-  <!-- Stats strip -->
-  <div class="stats-strip" data-reveal>
-    <div class="stat-cell">
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat" data-reveal>
       <div class="stat-num">2020</div>
       <div class="stat-label">Founded</div>
     </div>
-    <div class="stat-cell">
+    <div class="stat" data-reveal="d1">
       <div class="stat-num">100+</div>
       <div class="stat-label">Platforms launched</div>
     </div>
-    <div class="stat-cell">
-      <div class="stat-num">∞</div>
-      <div class="stat-label">Long-term partnerships</div>
+    <div class="stat" data-reveal="d2">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Years in market</div>
     </div>
   </div>
 
-  <!-- Billboard — light band -->
-  <div class="billboard-band" data-reveal>
-    <p class="section-eyebrow">Out in the world</p>
-    <h3>On the billboard.</h3>
-    <img src="/assets/billboard.jpg" alt="Jwood Technologies billboard" class="billboard-img" onerror="this.style.display='none'">
+  <!-- Billboard -->
+  <div class="billboard" data-reveal>
+    <p class="section-label">Out in the world</p>
+    <img src="/assets/billboard.jpg" alt="Jwood Technologies billboard"
+      onerror="this.style.display='none'">
   </div>
 
-  <!-- History — light section -->
-  <section class="section-light">
-    <p class="section-eyebrow" data-reveal>Our history</p>
-    <h2 data-reveal="d1">Where we've been.</h2>
-    <div class="timeline">
-      <div class="timeline-item" data-reveal>
-        <div class="timeline-year">2020</div>
-        <div class="timeline-content">
-          <h4>Founded during a turning point</h4>
-          <p>Jwood Technologies was established at the height of the pandemic, when businesses across every industry needed to move online — fast. We built e-commerce platforms, booking systems, and digital storefronts that kept companies operating when their physical doors closed.</p>
-        </div>
-      </div>
-      <div class="timeline-item" data-reveal="d1">
-        <div class="timeline-year">2021</div>
-        <div class="timeline-content">
-          <h4>Scaling across industries</h4>
-          <p>Expanded our client base to include corporations and growth-stage companies. Delivered hundreds of web applications, e-commerce platforms, and custom automation systems across retail, services, healthcare, and more.</p>
-        </div>
-      </div>
-      <div class="timeline-item" data-reveal="d2">
-        <div class="timeline-year">2023</div>
-        <div class="timeline-content">
-          <h4>Intelligence as a tool</h4>
-          <p>Began integrating next-generation intelligence capabilities into client systems — not as a buzzword, but as a practical tool. Automation, personalization, and operational efficiency at a level previously unavailable to most businesses.</p>
-        </div>
-      </div>
-      <div class="timeline-item" data-reveal>
-        <div class="timeline-year">Now</div>
-        <div class="timeline-content">
-          <h4>Building what's next</h4>
-          <p>Actively developing in-house products while continuing to serve our client base. Our focus remains the same: systems that are technically rigorous, built to last, and designed to give the businesses we work with a real edge.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Mission — dark -->
-  <section class="mission-section">
+  <!-- Pillars -->
+  <section class="pillars">
     <h2 data-reveal>What we stand for.</h2>
-    <div class="mission-grid">
-      <div class="mission-cell" data-reveal>
-        <div class="mission-num">01</div>
-        <h3 class="mission-title">Intelligence First</h3>
-        <p class="mission-body">Every system we build starts with a clear understanding of the problem. We don't ship solutions that look impressive — we ship solutions that work.</p>
+    <div class="pillars-grid">
+      <div class="pillar" data-reveal>
+        <div class="pillar-num">01</div>
+        <h3 class="pillar-title">Intelligence First</h3>
+        <p class="pillar-body">We don't ship solutions that look impressive. We ship solutions that work.</p>
       </div>
-      <div class="mission-cell" data-reveal="d1">
-        <div class="mission-num">02</div>
-        <h3 class="mission-title">Built to Last</h3>
-        <p class="mission-body">We engineer for durability. Scalable architecture, clean code, and systems that can grow with your business — not against it.</p>
+      <div class="pillar" data-reveal="d1">
+        <div class="pillar-num">02</div>
+        <h3 class="pillar-title">Built to Last</h3>
+        <p class="pillar-body">Scalable architecture, clean code — systems that grow with your business.</p>
       </div>
-      <div class="mission-cell" data-reveal>
-        <div class="mission-num">03</div>
-        <h3 class="mission-title">Radical Clarity</h3>
-        <p class="mission-body">No jargon. No guesswork. We communicate with precision — on scope, timelines, trade-offs, and outcomes. You always know exactly where things stand.</p>
+      <div class="pillar" data-reveal>
+        <div class="pillar-num">03</div>
+        <h3 class="pillar-title">Radical Clarity</h3>
+        <p class="pillar-body">No jargon. On scope, timelines, trade-offs, and outcomes — you always know where things stand.</p>
       </div>
-      <div class="mission-cell" data-reveal="d1">
-        <div class="mission-num">04</div>
-        <h3 class="mission-title">Partnership Over Projects</h3>
-        <p class="mission-body">We're not a vendor. We're a long-term partner. The businesses we work with have our full attention, and we remain invested in their outcomes well beyond launch.</p>
+      <div class="pillar" data-reveal="d1">
+        <div class="pillar-num">04</div>
+        <h3 class="pillar-title">Partnership Over Projects</h3>
+        <p class="pillar-body">We're invested in your outcomes long after launch.</p>
       </div>
     </div>
   </section>

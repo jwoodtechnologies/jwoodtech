@@ -6,26 +6,29 @@
   <title>Careers — Jwood Technologies</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; overflow-x: hidden; }
     body { background: #030303; color: #fff; font-family: 'Inter', sans-serif; font-weight: 300; overflow-x: hidden; }
 
-    [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
     [data-reveal].in { opacity: 1; transform: none; }
-    [data-reveal="d1"] { transition-delay: 0.12s; }
-    [data-reveal="d2"] { transition-delay: 0.22s; }
-    [data-reveal="d3"] { transition-delay: 0.32s; }
+    [data-reveal="d1"] { transition-delay: 0.1s; }
+    [data-reveal="d2"] { transition-delay: 0.2s; }
+
+    /* Fixed video bg */
+    .site-video { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.28; z-index: -2; }
+    .site-overlay { position: fixed; inset: 0; z-index: -1; background: linear-gradient(to bottom, rgba(3,3,3,0.55) 0%, rgba(3,3,3,0.2) 40%, rgba(3,3,3,0.7) 100%); pointer-events: none; }
 
     /* Island Nav */
     .island-nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: min(94vw, 1000px); height: 54px; background: rgba(8,8,8,0.55); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; padding: 0 6px 0 20px; display: flex; align-items: center; justify-content: space-between; z-index: 1000; }
     .nav-logo img { height: 14px; max-width: 130px; filter: brightness(0) invert(1); display: block; }
     .nav-center { display: flex; align-items: center; gap: 32px; }
-    .nav-center a { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); text-decoration: none; transition: color .2s; }
+    .nav-center a { font-weight: 400; font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); text-decoration: none; transition: color .2s; }
     .nav-center a:hover { color: #fff; }
     .nav-right { display: flex; align-items: center; gap: 8px; }
-    .nav-contact { background: #fff; color: #000; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.75rem; letter-spacing: 0.08em; padding: 9px 20px; border-radius: 100px; text-decoration: none; transition: opacity .2s; white-space: nowrap; }
+    .nav-contact { background: #fff; color: #000; font-weight: 500; font-size: 0.75rem; letter-spacing: 0.08em; padding: 9px 20px; border-radius: 100px; text-decoration: none; transition: opacity .2s; white-space: nowrap; }
     .nav-contact:hover { opacity: 0.85; }
     .nav-ham { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.08); border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transition: background .2s; }
     .nav-ham:hover { background: rgba(255,255,255,0.13); }
@@ -35,96 +38,63 @@
     .nav-ham.open span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
     .nav-drop { display: none; position: fixed; top: 82px; left: 50%; transform: translateX(-50%); width: min(94vw, 1000px); background: rgba(8,8,8,0.97); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; z-index: 999; }
     .nav-drop.open { display: block; }
-    .nav-drop a { display: block; padding: 18px 28px; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.9rem; color: rgba(255,255,255,0.55); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s, background .2s; }
+    .nav-drop a { display: block; padding: 18px 28px; font-weight: 400; font-size: 0.9rem; color: rgba(255,255,255,0.55); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s, background .2s; }
     .nav-drop a:last-child { border-bottom: none; }
     .nav-drop a:hover { color: #fff; background: rgba(255,255,255,0.03); }
 
-    /* Globe Hero */
-    .globe-hero {
-      position: relative;
-      height: 100dvh;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-    }
-    .globe-hero-bg {
-      position: absolute; inset: 0;
-      background-image: url('/assets/backdrop-hex.jpg');
-      background-size: cover; background-position: center;
-      filter: grayscale(0.5) brightness(0.15);
-      z-index: 0;
-    }
-    .globe-hero-overlay {
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 70% 50%, rgba(3,3,3,0.2) 0%, rgba(3,3,3,0.85) 70%);
-      z-index: 1;
-    }
-    #globe-canvas {
-      position: absolute;
-      right: -80px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 620px;
-      height: 620px;
-      z-index: 2;
-      cursor: grab;
-    }
+    /* Globe hero */
+    .globe-hero { position: relative; height: 100dvh; display: flex; align-items: center; overflow: hidden; }
+    #globe-canvas { position: absolute; right: -60px; top: 50%; transform: translateY(-50%); width: 600px; height: 600px; z-index: 1; cursor: grab; }
     #globe-canvas:active { cursor: grabbing; }
-    .globe-hero-content {
-      position: relative;
-      z-index: 3;
-      padding: 0 clamp(24px,6vw,80px);
-      max-width: 560px;
-    }
-    .page-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 20px; }
+    .globe-content { position: relative; z-index: 2; padding: 0 clamp(24px,6vw,80px); max-width: 520px; }
+    .page-label { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 18px; }
     .globe-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,5.5rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
-    .globe-hero-sub { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.95rem; color: rgba(255,255,255,0.45); line-height: 1.8; margin-top: 20px; max-width: 400px; }
-    .globe-drag-hint { font-family: 'Inter', sans-serif; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.2); margin-top: 16px; display: flex; align-items: center; gap: 8px; }
-    .globe-drag-hint::before { content: ''; display: block; width: 20px; height: 1px; background: rgba(255,255,255,0.15); }
+    .globe-sub { font-size: 0.9rem; color: rgba(255,255,255,0.38); line-height: 1.8; margin-top: 18px; max-width: 360px; }
+    .drag-hint { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.18); margin-top: 20px; }
 
-    /* Light values section */
-    .section-light { background: #f7f7f5; color: #0a0a0a; padding: 100px clamp(24px,6vw,80px); }
-    .section-light .section-eyebrow { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(0,0,0,0.35); margin-bottom: 16px; }
-    .section-light h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.03em; color: #0a0a0a; margin-bottom: 48px; }
-    .values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(0,0,0,0.08); }
-    .value-cell { background: #f7f7f5; padding: 48px 40px; transition: background .25s; }
-    .value-cell:hover { background: #efefed; }
-    .value-num { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 3rem; color: rgba(0,0,0,0.08); line-height: 1; margin-bottom: 16px; }
-    .value-name { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.2rem; color: #0a0a0a; margin-bottom: 10px; }
-    .value-body { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.85rem; color: rgba(0,0,0,0.5); line-height: 1.8; }
+    /* Values */
+    .values { background: rgba(0,0,0,0.65); border-top: 1px solid rgba(255,255,255,0.06); padding: 80px clamp(24px,6vw,80px); }
+    .values h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.03em; margin-bottom: 56px; }
+    .values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.06); }
+    .value { background: rgba(3,3,3,0.75); padding: 44px 36px; transition: background .25s; }
+    .value:hover { background: rgba(255,255,255,0.03); }
+    .value-num { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 3rem; color: rgba(255,255,255,0.06); line-height: 1; margin-bottom: 14px; }
+    .value-name { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
+    .value-body { font-size: 0.82rem; color: rgba(255,255,255,0.32); line-height: 1.8; }
 
-    /* Open Roles — dark */
-    .roles-section { background: #030303; padding: 100px clamp(24px,6vw,80px); border-top: 1px solid rgba(255,255,255,0.06); }
-    .roles-section h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.03em; margin-bottom: 16px; }
-    .roles-sub { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.9rem; color: rgba(255,255,255,0.38); line-height: 1.75; margin-bottom: 48px; max-width: 540px; }
-    .openings-box { border: 1px dashed rgba(255,255,255,0.12); padding: 64px 48px; text-align: center; margin-bottom: 32px; }
-    .openings-empty strong { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.15rem; color: rgba(255,255,255,0.6); display: block; margin-bottom: 10px; }
-    .openings-empty p { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.88rem; color: rgba(255,255,255,0.28); line-height: 1.75; }
-    .openings-cta { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.85rem; color: rgba(255,255,255,0.35); line-height: 1.75; margin-bottom: 24px; }
-    .btn-primary { background: #fff; color: #000; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.1em; padding: 13px 28px; border-radius: 100px; border: none; cursor: pointer; text-decoration: none; display: inline-block; transition: opacity .2s; }
+    /* Roles */
+    .roles { background: rgba(0,0,0,0.5); border-top: 1px solid rgba(255,255,255,0.06); padding: 80px clamp(24px,6vw,80px); }
+    .roles h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.03em; margin-bottom: 40px; }
+    .roles-box { border: 1px dashed rgba(255,255,255,0.1); padding: 56px; text-align: center; margin-bottom: 28px; }
+    .roles-box strong { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.1rem; color: rgba(255,255,255,0.55); display: block; margin-bottom: 8px; }
+    .roles-box p { font-size: 0.85rem; color: rgba(255,255,255,0.25); }
+    .btn-primary { background: #fff; color: #000; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.1em; padding: 13px 28px; border-radius: 100px; text-decoration: none; display: inline-block; transition: opacity .2s; }
     .btn-primary:hover { opacity: 0.82; }
 
-    /* Footer */
-    footer { background: #000; border-top: 1px solid rgba(255,255,255,0.06); }
+    footer { background: rgba(0,0,0,0.9); border-top: 1px solid rgba(255,255,255,0.06); }
     .footer-inner { padding: 0 clamp(24px,6vw,80px); }
     .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 32px 0; gap: 24px; flex-wrap: wrap; }
     .footer-nav { display: flex; list-style: none; gap: 24px; flex-wrap: wrap; }
-    .footer-nav a { font-family: 'Inter', sans-serif; font-size: 0.7rem; color: rgba(255,255,255,0.22); text-decoration: none; letter-spacing: 0.06em; transition: color .2s; }
+    .footer-nav a { font-size: 0.7rem; color: rgba(255,255,255,0.22); text-decoration: none; letter-spacing: 0.06em; transition: color .2s; }
     .footer-nav a:hover { color: rgba(255,255,255,0.6); }
-    .footer-copy { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
+    .footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
 
     @media (max-width: 860px) {
       .nav-center { display: none; }
-      #globe-canvas { width: 400px; height: 400px; right: -120px; }
+      #globe-canvas { width: 360px; height: 360px; right: -100px; }
       .values-grid { grid-template-columns: 1fr; }
     }
-    @media (max-width: 600px) {
+    @media (max-width: 560px) {
       #globe-canvas { display: none; }
-      .globe-hero-overlay { background: rgba(3,3,3,0.75); }
     }
   </style>
 </head>
 <body>
+
+  <video class="site-video" autoplay muted playsinline loop preload="auto" disablepictureinpicture>
+    <source src="/assets/hero-backdrop.mp4" type="video/mp4">
+  </video>
+  <div class="site-overlay"></div>
 
   <nav class="island-nav">
     <a href="/" class="nav-logo">
@@ -142,7 +112,6 @@
       </button>
     </div>
   </nav>
-
   <div class="nav-drop" id="navDrop">
     <a href="/about">About</a>
     <a href="/services">Services</a>
@@ -151,57 +120,48 @@
   </div>
 
   <div class="globe-hero">
-    <div class="globe-hero-bg"></div>
-    <div class="globe-hero-overlay"></div>
     <canvas id="globe-canvas"></canvas>
-    <div class="globe-hero-content">
+    <div class="globe-content">
       <p class="page-label" data-reveal>Careers</p>
-      <h1 data-reveal="d1">Work on what matters.</h1>
-      <p class="globe-hero-sub" data-reveal="d2">A small, focused team solving real problems with real consequences. We hire for craft, curiosity, and character.</p>
-      <p class="globe-drag-hint" data-reveal="d3">Drag to explore</p>
+      <h1 data-reveal="d1">Work on<br>what matters.</h1>
+      <p class="globe-sub" data-reveal="d2">Craft, curiosity, character. That's what we hire for.</p>
+      <p class="drag-hint" data-reveal="d2">↙ Drag the globe</p>
     </div>
   </div>
 
-  <!-- Values — light -->
-  <section class="section-light">
-    <p class="section-eyebrow" data-reveal>Culture</p>
-    <h2 data-reveal="d1">What we value.</h2>
+  <section class="values">
+    <h2 data-reveal>What we value.</h2>
     <div class="values-grid">
-      <div class="value-cell" data-reveal>
+      <div class="value" data-reveal>
         <div class="value-num">I</div>
         <h4 class="value-name">High Standards</h4>
-        <p class="value-body">We hold the bar high — for our work, our communication, and our commitments. Average is never acceptable here.</p>
+        <p class="value-body">Average is never acceptable here.</p>
       </div>
-      <div class="value-cell" data-reveal="d1">
+      <div class="value" data-reveal="d1">
         <div class="value-num">II</div>
         <h4 class="value-name">Ownership</h4>
-        <p class="value-body">You own what you build. That means the pride of great work and the accountability when something needs fixing.</p>
+        <p class="value-body">You own what you build — the pride and the accountability.</p>
       </div>
-      <div class="value-cell" data-reveal>
+      <div class="value" data-reveal>
         <div class="value-num">III</div>
         <h4 class="value-name">Honest Communication</h4>
-        <p class="value-body">We say what we mean, directly and with respect. No politics, no performance — just clear thinking and honest feedback.</p>
+        <p class="value-body">Direct, respectful, no politics.</p>
       </div>
-      <div class="value-cell" data-reveal="d1">
+      <div class="value" data-reveal="d1">
         <div class="value-num">IV</div>
         <h4 class="value-name">Continuous Learning</h4>
-        <p class="value-body">The best people here are always getting better. We invest in growth and expect curiosity as a baseline, not a bonus.</p>
+        <p class="value-body">Curiosity is a baseline, not a bonus.</p>
       </div>
     </div>
   </section>
 
-  <!-- Open Roles — dark -->
-  <section class="roles-section">
+  <section class="roles">
     <h2 data-reveal>Open Roles</h2>
-    <p class="roles-sub" data-reveal="d1">We're not actively hiring right now, but we're always interested in exceptional people.</p>
-    <div class="openings-box" data-reveal>
-      <div class="openings-empty">
-        <strong>No open positions.</strong>
-        <p>Check back soon — we grow deliberately and hire with intention.</p>
-      </div>
+    <div class="roles-box" data-reveal>
+      <strong>No open positions.</strong>
+      <p>We hire deliberately. Check back soon.</p>
     </div>
-    <p class="openings-cta" data-reveal="d1">If you believe your skills and values align with what we're building, we'd still love to hear from you. Reach out with what you do and how you think.</p>
-    <a href="mailto:info@jwoodtechnologies.com?subject=Introducing%20Myself" class="btn-primary" data-reveal="d2">Introduce Yourself</a>
+    <a href="mailto:info@jwoodtechnologies.com?subject=Introducing%20Myself" class="btn-primary" data-reveal="d1">Introduce Yourself</a>
   </section>
 
   <footer>
@@ -222,162 +182,55 @@
 
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
   <script>
-    /* ---------- Globe ---------- */
     (function() {
       const canvas = document.getElementById('globe-canvas');
       if (!canvas || typeof THREE === 'undefined') return;
-
       const W = canvas.offsetWidth, H = canvas.offsetHeight;
-      canvas.width = W * devicePixelRatio;
-      canvas.height = H * devicePixelRatio;
-
+      canvas.width = W * devicePixelRatio; canvas.height = H * devicePixelRatio;
       const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-      renderer.setPixelRatio(devicePixelRatio);
-      renderer.setSize(W, H);
+      renderer.setPixelRatio(devicePixelRatio); renderer.setSize(W, H);
       renderer.setClearColor(0x000000, 0);
-
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 1000);
+      const camera = new THREE.PerspectiveCamera(45, W/H, 0.1, 1000);
       camera.position.z = 2.6;
 
-      /* Procedural earth-like texture */
-      const texSize = 1024;
-      const texCanvas = document.createElement('canvas');
-      texCanvas.width = texSize;
-      texCanvas.height = texSize / 2;
-      const ctx = texCanvas.getContext('2d');
+      const tc = document.createElement('canvas'); tc.width = 1024; tc.height = 512;
+      const cx = tc.getContext('2d');
+      const g = cx.createLinearGradient(0,0,0,512);
+      g.addColorStop(0,'#152a4a'); g.addColorStop(.5,'#1b3660'); g.addColorStop(1,'#0d1f35');
+      cx.fillStyle = g; cx.fillRect(0,0,1024,512);
+      cx.fillStyle = '#3a5c3a';
+      [[160,140,120,90],[300,160,60,50],[430,130,85,70],[565,148,105,82],[685,168,92,62],[200,280,80,58],[490,278,62,50],[755,218,82,56],[888,182,72,52],[108,202,50,35],[958,238,62,46],[385,358,88,50],[608,342,70,40],[828,338,58,35]].forEach(([x,y,w,h])=>{cx.beginPath();cx.ellipse(x,y,w,h,.3,0,Math.PI*2);cx.fill();});
+      cx.fillStyle='#4a6b4a';
+      [[155,132,70,52],[296,154,38,30],[426,122,48,38],[558,140,60,46]].forEach(([x,y,w,h])=>{cx.beginPath();cx.ellipse(x,y,w,h,0,0,Math.PI*2);cx.fill();});
+      cx.fillStyle='#8a7a58';
+      [[548,152,28,18],[202,173,22,14]].forEach(([x,y,w,h])=>{cx.beginPath();cx.ellipse(x,y,w,h,0,0,Math.PI*2);cx.fill();});
+      cx.fillStyle='#c8e4ef'; cx.fillRect(0,0,1024,26); cx.fillRect(0,488,1024,24);
+      const tex = new THREE.CanvasTexture(tc);
 
-      /* Ocean base */
-      const oceanGrad = ctx.createLinearGradient(0, 0, 0, texCanvas.height);
-      oceanGrad.addColorStop(0, '#1a2a4a');
-      oceanGrad.addColorStop(0.5, '#1e3a5f');
-      oceanGrad.addColorStop(1, '#0d1f35');
-      ctx.fillStyle = oceanGrad;
-      ctx.fillRect(0, 0, texCanvas.width, texCanvas.height);
-
-      /* Simple continent-like shapes using ellipses */
-      ctx.fillStyle = '#3d5a3e';
-      const continents = [
-        [160, 140, 120, 90], [300, 160, 60, 50], [420, 130, 80, 70],
-        [560, 150, 100, 80], [680, 170, 90, 60], [200, 280, 80, 60],
-        [480, 280, 60, 50], [750, 220, 80, 55], [880, 180, 70, 50],
-        [100, 200, 50, 35], [950, 240, 60, 45], [380, 360, 90, 50],
-        [600, 340, 70, 40], [820, 340, 55, 35],
-      ];
-      continents.forEach(([x, y, w, h]) => {
-        ctx.beginPath();
-        ctx.ellipse(x, y, w, h, Math.random() * 0.5, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      /* Lighter land highlights */
-      ctx.fillStyle = '#4a6b4a';
-      continents.forEach(([x, y, w, h]) => {
-        ctx.beginPath();
-        ctx.ellipse(x - 10, y - 10, w * 0.6, h * 0.6, 0.2, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      /* Desert/arid tones */
-      ctx.fillStyle = '#8a7a5a';
-      [[550, 155, 30, 20], [200, 175, 25, 15], [450, 140, 20, 15]].forEach(([x, y, w, h]) => {
-        ctx.beginPath();
-        ctx.ellipse(x, y, w, h, 0, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      /* Polar caps */
-      ctx.fillStyle = '#d0e8f0';
-      ctx.fillRect(0, 0, texCanvas.width, 28);
-      ctx.fillRect(0, texCanvas.height - 20, texCanvas.width, 20);
-
-      const earthTex = new THREE.CanvasTexture(texCanvas);
-
-      /* Globe sphere */
-      const geo = new THREE.SphereGeometry(1, 64, 64);
-      const mat = new THREE.MeshPhongMaterial({
-        map: earthTex,
-        specular: new THREE.Color(0x2244aa),
-        shininess: 18,
-      });
-      const globe = new THREE.Mesh(geo, mat);
+      const globe = new THREE.Mesh(new THREE.SphereGeometry(1,64,64), new THREE.MeshPhongMaterial({map:tex,specular:new THREE.Color(0x223388),shininess:20}));
       scene.add(globe);
+      scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.07,64,64), new THREE.MeshPhongMaterial({color:0x2277cc,transparent:true,opacity:0.06})));
+      scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.13,64,64), new THREE.MeshBasicMaterial({color:0x3366bb,transparent:true,opacity:0.03,side:THREE.BackSide})));
+      scene.add(new THREE.AmbientLight(0xffffff,0.35));
+      const sun=new THREE.DirectionalLight(0xfff5e0,1.4); sun.position.set(3,1,2); scene.add(sun);
+      scene.add(Object.assign(new THREE.DirectionalLight(0x334466,0.35),{position:new THREE.Vector3(-2,-1,-2)}));
 
-      /* Atmosphere glow */
-      const atmosGeo = new THREE.SphereGeometry(1.08, 64, 64);
-      const atmosMat = new THREE.MeshPhongMaterial({
-        color: 0x3399ff,
-        transparent: true,
-        opacity: 0.07,
-        side: THREE.FrontSide,
-      });
-      scene.add(new THREE.Mesh(atmosGeo, atmosMat));
+      let dragging=false,px=0,py=0,vx=0,vy=0;
+      canvas.addEventListener('mousedown',e=>{dragging=true;px=e.clientX;py=e.clientY;vx=vy=0;});
+      window.addEventListener('mousemove',e=>{if(!dragging)return;vx=(e.clientX-px)*.008;vy=(e.clientY-py)*.008;globe.rotation.y+=vx;globe.rotation.x+=vy;px=e.clientX;py=e.clientY;});
+      window.addEventListener('mouseup',()=>{dragging=false;});
+      canvas.addEventListener('touchstart',e=>{dragging=true;px=e.touches[0].clientX;py=e.touches[0].clientY;vx=vy=0;},{passive:true});
+      window.addEventListener('touchmove',e=>{if(!dragging)return;vx=(e.touches[0].clientX-px)*.008;vy=(e.touches[0].clientY-py)*.008;globe.rotation.y+=vx;globe.rotation.x+=vy;px=e.touches[0].clientX;py=e.touches[0].clientY;},{passive:true});
+      window.addEventListener('touchend',()=>{dragging=false;});
 
-      /* Outer glow ring */
-      const glowGeo = new THREE.SphereGeometry(1.14, 64, 64);
-      const glowMat = new THREE.MeshBasicMaterial({
-        color: 0x4488dd,
-        transparent: true,
-        opacity: 0.035,
-        side: THREE.BackSide,
-      });
-      scene.add(new THREE.Mesh(glowGeo, glowMat));
-
-      /* Lights */
-      const ambient = new THREE.AmbientLight(0xffffff, 0.35);
-      scene.add(ambient);
-      const sun = new THREE.DirectionalLight(0xfff5e8, 1.4);
-      sun.position.set(3, 1, 2);
-      scene.add(sun);
-      const fill = new THREE.DirectionalLight(0x334466, 0.4);
-      fill.position.set(-2, -1, -2);
-      scene.add(fill);
-
-      /* Drag controls */
-      let isDragging = false, prevX = 0, prevY = 0;
-      let velX = 0, velY = 0;
-      const sensitivity = 0.008;
-
-      canvas.addEventListener('mousedown', e => { isDragging = true; prevX = e.clientX; prevY = e.clientY; velX = 0; velY = 0; });
-      window.addEventListener('mousemove', e => {
-        if (!isDragging) return;
-        const dx = e.clientX - prevX, dy = e.clientY - prevY;
-        velX = dx * sensitivity; velY = dy * sensitivity;
-        globe.rotation.y += velX; globe.rotation.x += velY;
-        prevX = e.clientX; prevY = e.clientY;
-      });
-      window.addEventListener('mouseup', () => { isDragging = false; });
-
-      canvas.addEventListener('touchstart', e => { isDragging = true; prevX = e.touches[0].clientX; prevY = e.touches[0].clientY; velX = 0; velY = 0; }, { passive: true });
-      window.addEventListener('touchmove', e => {
-        if (!isDragging) return;
-        const dx = e.touches[0].clientX - prevX, dy = e.touches[0].clientY - prevY;
-        velX = dx * sensitivity; velY = dy * sensitivity;
-        globe.rotation.y += velX; globe.rotation.x += velY;
-        prevX = e.touches[0].clientX; prevY = e.touches[0].clientY;
-      }, { passive: true });
-      window.addEventListener('touchend', () => { isDragging = false; });
-
-      function animate() {
-        requestAnimationFrame(animate);
-        if (!isDragging) {
-          velX *= 0.95; velY *= 0.95;
-          globe.rotation.y += velX + 0.0015;
-          globe.rotation.x += velY;
-          globe.rotation.x = Math.max(-0.5, Math.min(0.5, globe.rotation.x));
-        }
-        renderer.render(scene, camera);
-      }
-      animate();
+      (function animate(){requestAnimationFrame(animate);if(!dragging){vx*=.95;vy*=.95;globe.rotation.y+=vx+.0015;globe.rotation.x=Math.max(-.4,Math.min(.4,globe.rotation.x+vy));}renderer.render(scene,camera);})();
     })();
 
-    /* ---------- Nav ---------- */
-    const ham = document.getElementById('navHam');
-    const drop = document.getElementById('navDrop');
-    if (ham && drop) {
-      ham.addEventListener('click', () => { ham.classList.toggle('open'); drop.classList.toggle('open'); });
-      document.addEventListener('click', e => { if (!ham.contains(e.target) && !drop.contains(e.target)) { ham.classList.remove('open'); drop.classList.remove('open'); } });
-      drop.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { ham.classList.remove('open'); drop.classList.remove('open'); }));
-    }
-    const io = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+    const ham=document.getElementById('navHam'),drop=document.getElementById('navDrop');
+    if(ham&&drop){ham.addEventListener('click',()=>{ham.classList.toggle('open');drop.classList.toggle('open');});document.addEventListener('click',e=>{if(!ham.contains(e.target)&&!drop.contains(e.target)){ham.classList.remove('open');drop.classList.remove('open');}});drop.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');drop.classList.remove('open');}));}
+    const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
   </script>
 </body>
 </html>
