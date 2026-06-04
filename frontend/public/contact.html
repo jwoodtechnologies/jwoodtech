@@ -44,7 +44,7 @@
     .chat-card { width: 100%; max-width: 620px; background: rgba(10,10,10,0.72); backdrop-filter: blur(36px); -webkit-backdrop-filter: blur(36px); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; overflow: hidden; }
     .chat-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.02); }
     .chat-avatar { width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .chat-avatar img { width: 26px; height: auto; filter: brightness(0) invert(1); display: block; }
+    .chat-avatar img { width: 32px; height: auto; filter: brightness(0) invert(1); display: block; }
     .chat-name { display: block; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.95rem; color: #fff; letter-spacing: -0.01em; }
     .chat-status { display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: rgba(255,255,255,0.32); margin-top: 3px; }
     .chat-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; display: inline-block; flex-shrink: 0; }
@@ -53,7 +53,7 @@
     @keyframes msgIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
     .chat-msg--out { flex-direction: row-reverse; }
     .chat-msg-av { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .chat-msg-av img { width: 15px; height: auto; filter: brightness(0) invert(1); }
+    .chat-msg-av img { width: 18px; height: auto; filter: brightness(0) invert(1); }
     .chat-bubble { padding: 11px 16px; border-radius: 18px; font-size: 0.87rem; line-height: 1.6; max-width: 320px; }
     .chat-msg--in .chat-bubble { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.88); border-bottom-left-radius: 5px; }
     .chat-msg--out .chat-bubble { background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-bottom-right-radius: 5px; }
@@ -138,7 +138,7 @@
     <div class="chat-card" data-reveal>
       <div class="chat-header">
         <div class="chat-avatar">
-          <img src="/assets/IMG_6989.png" alt="Jwood Technologies" onerror="this.style.display='none'">
+          <img src="/assets/jwod-logo.png" alt="Jwood Technologies" onerror="this.style.display='none'">
         </div>
         <div>
           <span class="chat-name">Jwood Technologies</span>
@@ -149,12 +149,16 @@
       <div class="chat-messages" id="chatMessages">
         <div class="chat-msg chat-msg--in">
           <div class="chat-msg-av">
-            <img src="/assets/IMG_6989.png" alt="" onerror="this.style.display='none'">
+            <img src="/assets/jwod-logo.png" alt="" onerror="this.style.display='none'">
           </div>
           <div class="chat-bubble">Hey — how can we help you today?</div>
         </div>
         <div class="chat-opts" id="chatOpts">
           <button class="chat-opt" data-type="project">Start a project</button>
+          <button class="chat-opt" data-type="consulting">Consulting inquiry</button>
+          <button class="chat-opt" data-type="automation">Automation &amp; systems</button>
+          <button class="chat-opt" data-type="platform">Platform development</button>
+          <button class="chat-opt" data-type="cybersecurity">Cybersecurity</button>
           <button class="chat-opt" data-type="question">Ask a question</button>
           <button class="chat-opt" data-type="other">Something else</button>
         </div>
@@ -216,45 +220,75 @@
     const chatFormFields = document.getElementById('chatFormFields');
 
     const RESPONSES = {
-      project: "Great. Tell us about your project and we'll get back to you within one business day.",
-      question: "Of course. Drop your details below and ask away.",
-      other: "No problem at all — tell us what's on your mind."
+      project:      "Great. Tell us about your project and we'll get back to you within one business day.",
+      consulting:   "Absolutely. Our consulting engagements cover strategy, architecture, digital transformation, and fractional CTO work. Share your details and we'll set up a call.",
+      automation:   "Smart choice. We design and build custom automation systems and workflows that run your operations 24/7. Tell us what you're working with.",
+      platform:     "Let's build something. Whether it's web, mobile, or API — we scope and ship fast. Drop your info below.",
+      cybersecurity:"Security first. We handle vulnerability assessments, pen testing, and security architecture. Tell us about your environment.",
+      question:     "Of course. Drop your details below and ask away.",
+      other:        "No problem at all — tell us what's on your mind."
     };
 
-    const FIELDS_HTML = {
-      project: `
-        <div class="chat-row">
-          <div class="chat-field"><label>First Name</label><input type="text" name="first_name" placeholder="First" required></div>
-          <div class="chat-field"><label>Last Name</label><input type="text" name="last_name" placeholder="Last" required></div>
-        </div>
+    const PROJECT_FIELDS = `
+      <div class="chat-row">
+        <div class="chat-field"><label>First Name</label><input type="text" name="first_name" placeholder="First" required></div>
+        <div class="chat-field"><label>Last Name</label><input type="text" name="last_name" placeholder="Last" required></div>
+      </div>
+      <div class="chat-field"><label>Email</label><input type="email" name="email" placeholder="you@company.com" required></div>
+      <div class="chat-field"><label>Company</label><input type="text" name="company" placeholder="Company name"></div>
+      <div class="chat-field"><label>Service</label>
+        <select name="service">
+          <option value="" disabled selected>Select a service</option>
+          <option>Automation &amp; Systems</option>
+          <option>Platform Development</option>
+          <option>Data &amp; Infrastructure</option>
+          <option>Brand &amp; Design</option>
+          <option>Software Conception</option>
+          <option>Infrastructure</option>
+          <option>Cybersecurity</option>
+          <option>Consulting</option>
+        </select>
+      </div>`;
+
+    const NAME_EMAIL_FIELDS = `
+      <div class="chat-row">
+        <div class="chat-field"><label>Name</label><input type="text" name="name" placeholder="Your name" required></div>
         <div class="chat-field"><label>Email</label><input type="email" name="email" placeholder="you@company.com" required></div>
-        <div class="chat-field"><label>Company</label><input type="text" name="company" placeholder="Company name"></div>
-        <div class="chat-field"><label>Service</label>
-          <select name="service">
-            <option value="" disabled selected>Select a service</option>
-            <option>Automation &amp; Systems</option>
-            <option>Platform Development</option>
-            <option>Data &amp; Infrastructure</option>
-            <option>Brand &amp; Design</option>
-          </select>
-        </div>`,
-      question: `
-        <div class="chat-row">
-          <div class="chat-field"><label>Name</label><input type="text" name="name" placeholder="Your name" required></div>
-          <div class="chat-field"><label>Email</label><input type="email" name="email" placeholder="you@company.com" required></div>
-        </div>`,
-      other: `
-        <div class="chat-row">
-          <div class="chat-field"><label>Name</label><input type="text" name="name" placeholder="Your name" required></div>
-          <div class="chat-field"><label>Email</label><input type="email" name="email" placeholder="you@company.com" required></div>
-        </div>`
+      </div>`;
+
+    const CONSULTING_FIELDS = `
+      <div class="chat-row">
+        <div class="chat-field"><label>First Name</label><input type="text" name="first_name" placeholder="First" required></div>
+        <div class="chat-field"><label>Last Name</label><input type="text" name="last_name" placeholder="Last" required></div>
+      </div>
+      <div class="chat-field"><label>Email</label><input type="email" name="email" placeholder="you@company.com" required></div>
+      <div class="chat-field"><label>Company / Role</label><input type="text" name="company" placeholder="Company name or title"></div>
+      <div class="chat-field"><label>Consulting Area</label>
+        <select name="consulting_area">
+          <option value="" disabled selected>Select an area</option>
+          <option>Technology Strategy</option>
+          <option>Digital Transformation</option>
+          <option>Architecture Review</option>
+          <option>Fractional CTO</option>
+          <option>Cybersecurity Advisory</option>
+        </select>
+      </div>`;
+
+    const FIELDS_HTML = {
+      project:      PROJECT_FIELDS,
+      consulting:   CONSULTING_FIELDS,
+      automation:   PROJECT_FIELDS,
+      platform:     PROJECT_FIELDS,
+      cybersecurity:PROJECT_FIELDS,
+      question:     NAME_EMAIL_FIELDS,
+      other:        NAME_EMAIL_FIELDS
     };
 
     function addMsg(type, text) {
       const msg = document.createElement('div');
       msg.className = `chat-msg chat-msg--${type}`;
       if (type === 'in') {
-        msg.innerHTML = `<div class="chat-msg-av"><img src="/assets/IMG_6989.png" alt="" onerror="this.style.display='none'"></div><div class="chat-bubble">${text}</div>`;
+        msg.innerHTML = `<div class="chat-msg-av"><img src="/assets/jwod-logo.png" alt="" onerror="this.style.display='none'"></div><div class="chat-bubble">${text}</div>`;
       } else {
         msg.innerHTML = `<div class="chat-bubble">${text}</div>`;
       }
@@ -266,7 +300,7 @@
       const t = document.createElement('div');
       t.className = 'chat-msg chat-msg--in typing-indicator';
       t.id = 'typingIndicator';
-      t.innerHTML = `<div class="chat-msg-av"><img src="/assets/IMG_6989.png" alt="" onerror="this.style.display='none'"></div><div class="typing-dots"><span></span><span></span><span></span></div>`;
+      t.innerHTML = `<div class="chat-msg-av"><img src="/assets/jwod-logo.png" alt="" onerror="this.style.display='none'"></div><div class="typing-dots"><span></span><span></span><span></span></div>`;
       chatMessages.appendChild(t);
       t.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
