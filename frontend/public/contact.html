@@ -6,7 +6,7 @@
   <title>Contact — Jwood Technologies</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; overflow-x: hidden; }
@@ -39,56 +39,78 @@
     .nav-drop a:last-child { border-bottom: none; }
     .nav-drop a:hover { color: #fff; background: rgba(255,255,255,0.03); }
 
-    /* Page Hero */
-    .page-hero { padding-top: calc(54px + 80px + 20px); padding-bottom: 80px; padding-left: clamp(24px,6vw,80px); padding-right: clamp(24px,6vw,80px); border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .page-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 20px; }
+    /* Hero with backdrop */
+    .page-hero {
+      position: relative;
+      padding-top: calc(54px + 100px + 20px);
+      padding-bottom: 100px;
+      padding-left: clamp(24px,6vw,80px);
+      padding-right: clamp(24px,6vw,80px);
+      overflow: hidden;
+    }
+    .page-hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('/assets/backdrop-glass.jpg');
+      background-size: cover; background-position: center;
+      filter: grayscale(0.6) brightness(0.18);
+      z-index: 0;
+    }
+    .page-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(3,3,3,0.75) 0%, rgba(3,3,3,0.3) 100%);
+      z-index: 1;
+    }
+    .page-hero > *:not(.page-hero-bg):not(.page-hero-overlay) { position: relative; z-index: 2; }
+    .page-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
     .page-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,6rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
+    .page-hero-sub { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 1rem; color: rgba(255,255,255,0.45); max-width: 420px; line-height: 1.75; margin-top: 18px; }
 
     /* Contact layout */
-    .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; padding: 80px clamp(24px,6vw,80px); align-items: start; }
+    .contact-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 80px; padding: 80px clamp(24px,6vw,80px); align-items: start; }
 
     /* Left: info */
-    .info-intro { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.95rem; color: rgba(255,255,255,0.42); line-height: 1.85; margin-bottom: 48px; }
-    .info-items { display: flex; flex-direction: column; gap: 28px; }
-    .info-item { display: flex; gap: 16px; align-items: flex-start; }
-    .info-icon { width: 34px; height: 34px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .info-icon svg { stroke: rgba(255,255,255,0.5); }
-    .info-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.28); margin-bottom: 4px; }
-    .info-value { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.88rem; color: #fff; line-height: 1.6; }
-    .info-value a { color: #fff; text-decoration: none; transition: color .2s; }
-    .info-value a:hover { color: rgba(255,255,255,0.65); }
+    .contact-info-title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 32px; }
+    .contact-item { padding: 24px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .contact-item:last-child { border-bottom: none; }
+    .contact-item-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.25); margin-bottom: 8px; }
+    .contact-item-value { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.95rem; color: rgba(255,255,255,0.75); }
+    .contact-item-value a { color: rgba(255,255,255,0.75); text-decoration: none; transition: color .2s; }
+    .contact-item-value a:hover { color: #fff; }
 
     /* Right: form */
-    .contact-form { display: flex; flex-direction: column; gap: 20px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .field { display: flex; flex-direction: column; gap: 8px; }
-    .field label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(255,255,255,0.35); }
-    .field input, .field textarea, .field select {
+    .contact-form-wrap { }
+    .form-title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 28px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .form-group label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.3); }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.1);
-      color: #fff;
+      border-radius: 6px;
+      padding: 14px 16px;
       font-family: 'Inter', sans-serif;
       font-weight: 300;
       font-size: 0.88rem;
-      padding: 13px 16px;
-      outline: none;
-      transition: border-color .2s;
-      border-radius: 0;
+      color: #fff;
       width: 100%;
+      transition: border-color .2s, background .2s;
+      outline: none;
       -webkit-appearance: none;
-      appearance: none;
     }
-    .field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,0.2); }
-    .field input:focus, .field textarea:focus, .field select:focus { border-color: rgba(255,255,255,0.35); }
-    .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; cursor: pointer; }
-    .field select option { background: #111; color: #fff; }
-    .field textarea { resize: vertical; min-height: 120px; line-height: 1.7; }
-    .btn-submit { background: #fff; color: #000; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.1em; padding: 15px 28px; border-radius: 100px; border: none; cursor: pointer; width: 100%; transition: opacity .2s; margin-top: 4px; }
-    .btn-submit:hover { opacity: 0.82; }
-    .form-success { display: none; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.7); font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.88rem; padding: 20px 24px; line-height: 1.7; }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.18); }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.06); }
+    .form-group textarea { resize: vertical; min-height: 140px; }
+    .form-group select option { background: #111; color: #fff; }
+    .btn-submit { background: #fff; color: #000; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.1em; padding: 15px 32px; border-radius: 100px; border: none; cursor: pointer; transition: opacity .2s; width: 100%; margin-top: 8px; }
+    .btn-submit:hover { opacity: 0.85; }
 
     /* Footer */
-    footer { background: #000; border-top: 1px solid rgba(255,255,255,0.06); }
+    footer { background: #000; border-top: 1px solid rgba(255,255,255,0.06); margin-top: 80px; }
     .footer-inner { padding: 0 clamp(24px,6vw,80px); }
     .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 32px 0; gap: 24px; flex-wrap: wrap; }
     .footer-nav { display: flex; list-style: none; gap: 24px; flex-wrap: wrap; }
@@ -99,8 +121,6 @@
     @media (max-width: 860px) {
       .nav-center { display: none; }
       .contact-layout { grid-template-columns: 1fr; gap: 48px; }
-    }
-    @media (max-width: 520px) {
       .form-row { grid-template-columns: 1fr; }
     }
   </style>
@@ -132,92 +152,71 @@
   </div>
 
   <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-overlay"></div>
     <p class="page-label" data-reveal>Contact</p>
     <h1 data-reveal="d1">Let's build something.</h1>
+    <p class="page-hero-sub" data-reveal="d2">Tell us what you're working on. We respond within one business day.</p>
   </div>
 
   <div class="contact-layout">
     <div data-reveal>
-      <p class="info-intro">Tell us about your project. We respond to every inquiry personally — usually within one business day.</p>
-      <div class="info-items">
-        <div class="info-item">
-          <div class="info-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 4l6 5 6-5M2 3h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
-            </svg>
-          </div>
-          <div>
-            <p class="info-label">Email</p>
-            <p class="info-value"><a href="mailto:hello@jwoodtechnologies.com">hello@jwoodtechnologies.com</a></p>
-          </div>
-        </div>
-        <div class="info-item">
-          <div class="info-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M8 1C5.24 1 3 3.24 3 6c0 4.25 5 9 5 9s5-4.75 5-9c0-2.76-2.24-5-5-5z"/>
-              <circle cx="8" cy="6" r="1.5"/>
-            </svg>
-          </div>
-          <div>
-            <p class="info-label">Location</p>
-            <p class="info-value">United States</p>
-          </div>
-        </div>
-        <div class="info-item">
-          <div class="info-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="8" cy="8" r="6"/>
-              <path d="M8 4v4l2.5 2.5"/>
-            </svg>
-          </div>
-          <div>
-            <p class="info-label">Response Time</p>
-            <p class="info-value">Within 1 business day</p>
-          </div>
-        </div>
+      <h3 class="contact-info-title">Get in touch.</h3>
+      <div class="contact-item">
+        <p class="contact-item-label">Email</p>
+        <p class="contact-item-value"><a href="mailto:info@jwoodtechnologies.com">info@jwoodtechnologies.com</a></p>
+      </div>
+      <div class="contact-item">
+        <p class="contact-item-label">Response Time</p>
+        <p class="contact-item-value">Within one business day</p>
+      </div>
+      <div class="contact-item">
+        <p class="contact-item-label">Location</p>
+        <p class="contact-item-value">United States</p>
+      </div>
+      <div class="contact-item">
+        <p class="contact-item-label">Engagements</p>
+        <p class="contact-item-value">Custom platforms, automation, infrastructure — serious projects only.</p>
       </div>
     </div>
 
     <div data-reveal="d1">
-      <form class="contact-form" id="contactForm" novalidate>
+      <h3 class="form-title">Send us a message.</h3>
+      <form action="mailto:info@jwoodtechnologies.com" method="post" enctype="text/plain">
         <div class="form-row">
-          <div class="field">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" placeholder="Jacob" required>
+          <div class="form-group">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" name="first_name" placeholder="Jacob" required>
           </div>
-          <div class="field">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" placeholder="Wood" required>
+          <div class="form-group">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" name="last_name" placeholder="Wood" required>
           </div>
         </div>
-        <div class="field">
+        <div class="form-group">
           <label for="email">Email Address</label>
           <input type="email" id="email" name="email" placeholder="you@company.com" required>
         </div>
-        <div class="field">
+        <div class="form-group">
           <label for="company">Company</label>
-          <input type="text" id="company" name="company" placeholder="Your Company">
+          <input type="text" id="company" name="company" placeholder="Your company name">
         </div>
-        <div class="field">
-          <label for="service">Service Interest</label>
-          <select id="service" name="service" style="-webkit-appearance:none; background-color:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); color:#fff; font-family:'Inter',sans-serif; font-weight:300; font-size:0.88rem; padding:13px 40px 13px 16px; outline:none; width:100%; cursor:pointer; transition:border-color .2s; background-image:url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'8\' viewBox=\'0 0 12 8\' fill=\'none\'%3E%3Cpath d=\'M1 1l5 5 5-5\' stroke=\'rgba(255,255,255,0.4)\' stroke-width=\'1.2\' stroke-linecap=\'round\'/%3E%3C/svg%3E'); background-repeat:no-repeat; background-position:right 16px center;">
-            <option value="" style="background:#111;color:#fff;">Select a service…</option>
-            <option value="automation" style="background:#111;color:#fff;">Automation &amp; Systems</option>
-            <option value="platform" style="background:#111;color:#fff;">Platform Development</option>
-            <option value="data" style="background:#111;color:#fff;">Data &amp; Analytics</option>
-            <option value="brand" style="background:#111;color:#fff;">Brand &amp; Creative Systems</option>
-            <option value="infrastructure" style="background:#111;color:#fff;">Infrastructure &amp; Security</option>
-            <option value="other" style="background:#111;color:#fff;">Other / Not sure yet</option>
+        <div class="form-group">
+          <label for="service">What are you looking for?</label>
+          <select id="service" name="service">
+            <option value="" disabled selected>Select a service</option>
+            <option>Automation &amp; Systems</option>
+            <option>Platform Development</option>
+            <option>Data &amp; Infrastructure</option>
+            <option>Brand &amp; Design</option>
+            <option>Other / Not sure yet</option>
           </select>
         </div>
-        <div class="field">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Tell us about your project, timeline, and any specific requirements…" required></textarea>
+        <div class="form-group">
+          <label for="message">Tell us about your project</label>
+          <textarea id="message" name="message" placeholder="What are you building? What problem are you solving?" required></textarea>
         </div>
         <button type="submit" class="btn-submit">Send Message</button>
-        <div class="form-success" id="formSuccess">
-          Thank you — your message has been received. We'll be in touch within one business day.
-        </div>
       </form>
     </div>
   </div>
@@ -248,21 +247,6 @@
     }
     const io = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
-
-    const form = document.getElementById('contactForm');
-    const success = document.getElementById('formSuccess');
-    if (form) {
-      form.addEventListener('submit', e => {
-        e.preventDefault();
-        const btn = form.querySelector('.btn-submit');
-        btn.textContent = 'Sending…';
-        btn.disabled = true;
-        setTimeout(() => {
-          form.querySelectorAll('input, textarea, select, button').forEach(el => el.style.display = 'none');
-          success.style.display = 'block';
-        }, 900);
-      });
-    }
   </script>
 </body>
 </html>

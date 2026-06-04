@@ -48,9 +48,8 @@
     /* Hero */
     .hero { position: relative; height: 100dvh; display: flex; align-items: center; }
     .hero-glow { position: absolute; width: min(600px, 90vw); height: 300px; background: radial-gradient(ellipse, rgba(255,255,255,0.04) 0%, transparent 70%); pointer-events: none; left: clamp(24px,6vw,80px); top: 50%; transform: translateY(-50%); }
-    .hero-rule { width: 36px; height: 1px; background: rgba(255,255,255,0.3); margin-bottom: 22px; }
-    .hero-eyebrow { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 14px; }
     .hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: clamp(2.4rem, 6vw, 5.2rem); line-height: 1.05; letter-spacing: -0.02em; color: #fff; }
+    .hero h1 em { font-style: italic; font-weight: 700; }
     .hero-tagline { font-family: 'Inter', sans-serif; font-weight: 300; font-size: clamp(0.82rem, 2vw, 0.92rem); color: rgba(255,255,255,0.42); max-width: 400px; line-height: 1.75; margin-top: 20px; }
     .hero-btns { display: flex; flex-direction: row; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
     .btn-primary { background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #000; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.06em; padding: 13px 26px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.3); cursor: pointer; text-decoration: none; display: inline-block; transition: opacity .2s, background .2s; }
@@ -147,11 +146,9 @@
   <section class="hero">
     <div class="hero-glow"></div>
     <div class="hero-content">
-      <div class="hero-rule" data-reveal></div>
-      <p class="hero-eyebrow" data-reveal="d1">Jwood Technologies</p>
-      <h1 data-reveal="d2">Intelligence<br>Redefined.</h1>
-      <p class="hero-tagline" data-reveal="d3">Digital platforms and systems built for businesses that demand the best.</p>
-      <div class="hero-btns" data-reveal="d3">
+      <h1 data-reveal="d1"><em>Intelligence</em><br>Redefined.</h1>
+      <p class="hero-tagline" data-reveal="d2">Digital platforms and systems built for businesses that demand the best.</p>
+      <div class="hero-btns" data-reveal="d2">
         <a href="/services" class="btn-primary">Our Services</a>
         <a href="/contact" class="btn-secondary">Get in Touch</a>
       </div>
@@ -215,7 +212,7 @@
       <div class="footer-cta" data-reveal>
         <h3>Ready to build?</h3>
         <p class="footer-cta-sub">Tell us what you're working on. We'll take it from there.</p>
-        <a href="mailto:hello@jwoodtechnologies.com" class="footer-email">hello@jwoodtechnologies.com</a>
+        <a href="mailto:info@jwoodtechnologies.com" class="footer-email">info@jwoodtechnologies.com</a>
         <br>
         <a href="/contact" class="btn-primary footer-cta-btn">Start a conversation</a>
       </div>
