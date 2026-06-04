@@ -6,10 +6,10 @@
   <title>Careers — Jwood Technologies</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
     body { background: #030303; color: #fff; font-family: 'Inter', sans-serif; font-weight: 300; overflow-x: hidden; }
 
     [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
@@ -20,7 +20,7 @@
 
     /* Island Nav */
     .island-nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: min(94vw, 1000px); height: 54px; background: rgba(8,8,8,0.55); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; padding: 0 6px 0 20px; display: flex; align-items: center; justify-content: space-between; z-index: 1000; }
-    .nav-logo img { height: 20px; filter: brightness(0) invert(1); display: block; }
+    .nav-logo img { height: 14px; max-width: 130px; filter: brightness(0) invert(1); display: block; }
     .nav-center { display: flex; align-items: center; gap: 32px; }
     .nav-center a { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); text-decoration: none; transition: color .2s; }
     .nav-center a:hover { color: #fff; }
@@ -42,7 +42,7 @@
     /* Page Hero */
     .page-hero { padding-top: calc(54px + 80px + 20px); padding-bottom: 80px; padding-left: clamp(24px,6vw,80px); padding-right: clamp(24px,6vw,80px); border-bottom: 1px solid rgba(255,255,255,0.06); }
     .page-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 20px; }
-    .page-hero h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,6rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
+    .page-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,6rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
 
     /* Main content */
     .careers-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; padding: 80px clamp(24px,6vw,80px); align-items: start; }
@@ -50,17 +50,17 @@
     /* Left column */
     .intro-text { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.95rem; color: rgba(255,255,255,0.45); line-height: 1.85; margin-bottom: 20px; }
     .values-list { margin-top: 48px; }
-    .values-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 32px; }
+    .values-title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 32px; }
     .value-item { display: flex; gap: 20px; padding: 24px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
     .value-item:last-child { border-bottom: none; }
-    .value-numeral { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.75rem; color: rgba(255,255,255,0.2); letter-spacing: 0.1em; min-width: 28px; padding-top: 3px; }
+    .value-numeral { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.75rem; color: rgba(255,255,255,0.2); letter-spacing: 0.1em; min-width: 28px; padding-top: 3px; }
     .value-content { flex: 1; }
-    .value-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: #fff; margin-bottom: 6px; }
+    .value-name { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1rem; color: #fff; margin-bottom: 6px; }
     .value-body { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.82rem; color: rgba(255,255,255,0.38); line-height: 1.7; }
 
     /* Right column */
     .openings-panel { position: sticky; top: 96px; }
-    .openings-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.4rem; color: #fff; margin-bottom: 24px; }
+    .openings-title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.4rem; color: #fff; margin-bottom: 24px; }
     .openings-box { border: 1px dashed rgba(255,255,255,0.12); padding: 48px 36px; text-align: center; margin-bottom: 24px; }
     .openings-empty { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.88rem; color: rgba(255,255,255,0.3); line-height: 1.75; }
     .openings-empty strong { font-weight: 500; color: rgba(255,255,255,0.5); display: block; margin-bottom: 8px; font-size: 1rem; }

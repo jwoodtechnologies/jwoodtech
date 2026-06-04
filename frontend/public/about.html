@@ -6,10 +6,10 @@
   <title>About — Jwood Technologies</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
     body { background: #030303; color: #fff; font-family: 'Inter', sans-serif; font-weight: 300; overflow-x: hidden; }
 
     [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
@@ -20,7 +20,7 @@
 
     /* Island Nav */
     .island-nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: min(94vw, 1000px); height: 54px; background: rgba(8,8,8,0.55); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; padding: 0 6px 0 20px; display: flex; align-items: center; justify-content: space-between; z-index: 1000; }
-    .nav-logo img { height: 20px; filter: brightness(0) invert(1); display: block; }
+    .nav-logo img { height: 14px; max-width: 130px; filter: brightness(0) invert(1); display: block; }
     .nav-center { display: flex; align-items: center; gap: 32px; }
     .nav-center a { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); text-decoration: none; transition: color .2s; }
     .nav-center a:hover { color: #fff; }
@@ -42,7 +42,7 @@
     /* Page Hero */
     .page-hero { padding-top: calc(54px + 80px + 20px); padding-bottom: 80px; padding-left: clamp(24px,6vw,80px); padding-right: clamp(24px,6vw,80px); border-bottom: 1px solid rgba(255,255,255,0.06); }
     .page-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 20px; }
-    .page-hero h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,6rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
+    .page-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,6rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
 
     /* Main content */
     main { padding: 0 clamp(24px,6vw,80px); }
@@ -54,7 +54,7 @@
     .founder-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: top; filter: grayscale(1) contrast(1.05); display: block; }
     .founder-img-placeholder { width: 100%; aspect-ratio: 3/4; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
     .founder-caption { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.65rem; color: rgba(255,255,255,0.28); letter-spacing: 0.1em; margin-top: 12px; }
-    .founder-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.02em; color: #fff; margin-bottom: 8px; }
+    .founder-name { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.02em; color: #fff; margin-bottom: 8px; }
     .founder-title { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.4); margin-bottom: 32px; }
     .founder-quote { font-family: 'Inter', sans-serif; font-weight: 300; font-style: italic; font-size: 1.4rem; line-height: 1.5; color: rgba(255,255,255,0.7); border-left: 1px solid rgba(255,255,255,0.2); padding-left: 24px; margin-bottom: 32px; }
     .founder-body { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.92rem; color: rgba(255,255,255,0.45); line-height: 1.85; }
@@ -62,12 +62,12 @@
 
     /* Mission grid */
     .mission-section { padding: 80px 0; }
-    .mission-section h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.8rem,3.5vw,2.8rem); letter-spacing: -0.02em; margin-bottom: 48px; }
+    .mission-section h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(1.8rem,3.5vw,2.8rem); letter-spacing: -0.02em; margin-bottom: 48px; }
     .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.06); }
     .mission-cell { background: #030303; padding: 48px 40px; transition: background .25s; position: relative; }
     .mission-cell:hover { background: rgba(255,255,255,0.02); }
-    .mission-num { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 4rem; color: rgba(255,255,255,0.08); line-height: 1; margin-bottom: 16px; }
-    .mission-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.3rem; color: #fff; margin-bottom: 12px; }
+    .mission-num { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 4rem; color: rgba(255,255,255,0.08); line-height: 1; margin-bottom: 16px; }
+    .mission-title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.3rem; color: #fff; margin-bottom: 12px; }
     .mission-body { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.85rem; color: rgba(255,255,255,0.4); line-height: 1.8; }
 
     /* Footer */
