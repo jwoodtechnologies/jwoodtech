@@ -38,11 +38,11 @@
     .nav-drop a:hover { color: #fff; background: rgba(255,255,255,0.03); }
 
     /* Globe hero */
-    .globe-hero { position: relative; height: 100dvh; display: flex; align-items: center; }
-    .globe-wrap { position: absolute; right: clamp(-120px, -4vw, -40px); top: 50%; transform: translateY(-50%); }
-    #globe-canvas { display: block; width: 580px; height: 580px; cursor: grab; }
+    .globe-hero { position: relative; height: 100dvh; display: flex; align-items: center; padding: 0 clamp(24px,6vw,80px); gap: 40px; }
+    .globe-content { flex: 1; position: relative; z-index: 2; min-width: 0; }
+    .globe-wrap { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    #globe-canvas { display: block; width: 480px; height: 480px; cursor: grab; }
     #globe-canvas:active { cursor: grabbing; }
-    .globe-content { position: relative; z-index: 2; padding: 0 clamp(24px,6vw,80px); max-width: 500px; }
     .page-label { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 18px; }
     .globe-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,5.5rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
     .globe-sub { font-size: 0.9rem; color: rgba(255,255,255,0.38); line-height: 1.8; margin-top: 18px; max-width: 340px; }
@@ -85,18 +85,16 @@
     .footer-socials a { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.35); text-decoration: none; transition: background .2s, color .2s; }
     .footer-socials a:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
 
-    @media (max-width: 860px) {
-      .globe-wrap { right: -160px; }
-      #globe-canvas { width: 380px; height: 380px; }
-      .values-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 560px) {
+    @media (max-width: 960px) {
       .globe-wrap { display: none; }
+    }
+    @media (max-width: 860px) {
+      .values-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 640px) {
-      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .footer-nav { gap: 14px; }
+      .footer-nav { display: none; }
+      .footer-bottom { padding: 20px 0; }
     }
   </style>
 </head>
@@ -207,7 +205,7 @@
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     const DPR = window.devicePixelRatio || 1;
-    const SIZE = 580;
+    const SIZE = 480;
     canvas.style.width = SIZE + 'px';
     canvas.style.height = SIZE + 'px';
     canvas.width = SIZE * DPR;
