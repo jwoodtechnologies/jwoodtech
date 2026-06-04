@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Services — Jwood Technologies</title>
+  <title>Consulting — Jwood Technologies</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,700;0,800;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -17,11 +17,6 @@
     [data-reveal="d1"] { transition-delay: 0.12s; }
     [data-reveal="d2"] { transition-delay: 0.24s; }
     [data-reveal="d3"] { transition-delay: 0.36s; }
-
-    /* Fixed video — suppressed on this page for CTA sections */
-    .site-video { display: none; }
-    .site-overlay { display: none; }
-    .site-overlay { position: fixed; inset: 0; z-index: -1; background: linear-gradient(to bottom, rgba(3,3,3,0.5) 0%, rgba(3,3,3,0.1) 40%, rgba(3,3,3,0.65) 100%); pointer-events: none; }
 
     /* Nav */
     .island-nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: min(94vw, 1000px); height: 54px; background: rgba(8,8,8,0.55); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; padding: 0 6px 0 20px; display: flex; align-items: center; justify-content: space-between; z-index: 1000; }
@@ -40,8 +35,11 @@
     .nav-drop a { display: block; padding: 18px 28px; font-weight: 400; font-size: 0.9rem; color: rgba(255,255,255,0.55); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s, background .2s; }
     .nav-drop a:last-child { border-bottom: none; }
     .nav-drop a:hover { color: #fff; background: rgba(255,255,255,0.03); }
+    .nav-drop-socials { display: flex; align-items: center; gap: 10px; padding: 16px 28px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .nav-drop-socials a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); text-decoration: none; transition: background .2s, color .2s, border-color .2s; padding: 0; border-bottom: none !important; }
+    .nav-drop-socials a:hover { background: rgba(255,255,255,0.14); color: #fff; border-color: rgba(255,255,255,0.25); }
 
-    /* Hero — full height with photo backdrop */
+    /* Hero */
     .hero {
       position: relative;
       height: 100dvh;
@@ -52,22 +50,22 @@
     }
     .hero-bg {
       position: absolute; inset: 0;
-      background-image: url('/assets/pexels-diego-f-parra-33199-15478112.jpg');
+      background-image: url('/assets/pexels-todd-trapani-488382-3790058.jpg');
       background-size: cover; background-position: center;
-      filter: brightness(0.45) saturate(0.5);
+      filter: brightness(0.32) saturate(0.5);
       z-index: 0;
       transform: scale(1.04);
       transition: transform 8s ease;
     }
     .hero:hover .hero-bg { transform: scale(1.0); }
-    .hero-grad { position: absolute; inset: 0; background: linear-gradient(to top, rgba(3,3,3,0.92) 0%, rgba(3,3,3,0.3) 50%, rgba(3,3,3,0.2) 100%); z-index: 1; }
+    .hero-grad { position: absolute; inset: 0; background: linear-gradient(to top, rgba(3,3,3,0.92) 0%, rgba(3,3,3,0.35) 50%, rgba(3,3,3,0.15) 100%); z-index: 1; }
     .hero-content { position: relative; z-index: 2; max-width: 700px; }
     .page-label { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 20px; }
     .hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,6rem); letter-spacing: -0.03em; line-height: 0.95; color: #fff; }
     .hero-sub { font-size: 0.95rem; color: rgba(255,255,255,0.42); line-height: 1.75; margin-top: 20px; max-width: 460px; }
 
-    /* Service chapters — each a full visual section */
-    .service-chapter {
+    /* Consulting chapters */
+    .consult-chapter {
       position: relative;
       padding: 100px clamp(24px,6vw,80px);
       border-top: 1px solid rgba(255,255,255,0.06);
@@ -76,58 +74,39 @@
       grid-template-columns: 1fr 1fr;
       gap: 80px;
       align-items: center;
-      min-height: 520px;
+      min-height: 480px;
     }
-    .service-chapter:nth-child(even) { direction: rtl; }
-    .service-chapter:nth-child(even) > * { direction: ltr; }
+    .consult-chapter:nth-child(even) { direction: rtl; }
+    .consult-chapter:nth-child(even) > * { direction: ltr; }
     .chapter-bg {
       position: absolute; inset: 0;
       background-size: cover; background-position: center;
-      filter: brightness(0.38) saturate(0.6);
+      filter: brightness(0.22) saturate(0.5);
       z-index: 0;
       transition: filter 0.6s ease;
     }
-    .service-chapter:hover .chapter-bg { filter: brightness(0.5) saturate(0.75); }
+    .consult-chapter:hover .chapter-bg { filter: brightness(0.32) saturate(0.65); }
     .chapter-grad { position: absolute; inset: 0; z-index: 1; }
-    .service-chapter:nth-child(odd) .chapter-grad { background: linear-gradient(to right, rgba(3,3,3,0.75) 0%, rgba(3,3,3,0.3) 60%, rgba(3,3,3,0.0) 100%); }
-    .service-chapter:nth-child(even) .chapter-grad { background: linear-gradient(to left, rgba(3,3,3,0.75) 0%, rgba(3,3,3,0.3) 60%, rgba(3,3,3,0.0) 100%); }
+    .consult-chapter:nth-child(odd) .chapter-grad { background: linear-gradient(to right, rgba(3,3,3,0.82) 0%, rgba(3,3,3,0.3) 60%, rgba(3,3,3,0.0) 100%); }
+    .consult-chapter:nth-child(even) .chapter-grad { background: linear-gradient(to left, rgba(3,3,3,0.82) 0%, rgba(3,3,3,0.3) 60%, rgba(3,3,3,0.0) 100%); }
     .chapter-content { position: relative; z-index: 2; }
     .chapter-num { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 5rem; color: rgba(255,255,255,0.22); line-height: 1; margin-bottom: 8px; letter-spacing: -0.04em; }
     .chapter-name { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(1.8rem,3.5vw,2.8rem); letter-spacing: -0.03em; color: #fff; margin-bottom: 20px; line-height: 1.1; }
     .chapter-body { font-size: 0.92rem; color: rgba(255,255,255,0.42); line-height: 1.85; max-width: 420px; }
     .chapter-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
     .tag { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.14); padding: 5px 12px; border-radius: 100px; backdrop-filter: blur(8px); background: rgba(255,255,255,0.04); transition: border-color .2s, color .2s; }
-    .service-chapter:hover .tag { border-color: rgba(255,255,255,0.28); color: rgba(255,255,255,0.7); }
+    .consult-chapter:hover .tag { border-color: rgba(255,255,255,0.28); color: rgba(255,255,255,0.7); }
     .chapter-visual { position: relative; z-index: 2; }
-    .chapter-glow {
-      width: 100%; padding-top: 100%;
-      background: radial-gradient(ellipse, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 40%, transparent 70%);
-      border-radius: 50%;
-      position: relative;
-    }
-    .chapter-glow::after {
-      content: '';
-      position: absolute;
-      inset: 15%;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 50%;
-      animation: pulse 4s ease-in-out infinite;
-    }
+    .chapter-glow { width: 100%; padding-top: 100%; background: radial-gradient(ellipse, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 40%, transparent 70%); border-radius: 50%; position: relative; }
+    .chapter-glow::after { content: ''; position: absolute; inset: 15%; border: 1px solid rgba(255,255,255,0.08); border-radius: 50%; animation: pulse 4s ease-in-out infinite; }
     @keyframes pulse { 0%,100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
 
-    /* CTA strip */
-    .cta-strip {
-      position: relative;
-      padding: 100px clamp(24px,6vw,80px);
-      border-top: 1px solid rgba(255,255,255,0.06);
-      text-align: center;
-      background: #080808;
-      isolation: isolate;
-    }
+    /* CTA */
+    .cta-strip { padding: 100px clamp(24px,6vw,80px); border-top: 1px solid rgba(255,255,255,0.06); text-align: center; background: #080808; isolation: isolate; }
     .cta-strip h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2.5rem,6vw,5rem); letter-spacing: -0.03em; margin-bottom: 16px; }
     .cta-strip p { font-size: 0.92rem; color: rgba(255,255,255,0.38); margin-bottom: 36px; }
-    .btn-white { background: rgba(255,255,255,0.1); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.1em; padding: 15px 36px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.2); text-decoration: none; display: inline-block; transition: background .2s, border-color .2s; }
-    .btn-white:hover { background: rgba(255,255,255,0.17); border-color: rgba(255,255,255,0.32); }
+    .btn-glass { background: rgba(255,255,255,0.1); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.1em; padding: 15px 36px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.2); text-decoration: none; display: inline-block; transition: background .2s, border-color .2s; }
+    .btn-glass:hover { background: rgba(255,255,255,0.17); border-color: rgba(255,255,255,0.32); }
 
     /* Footer */
     footer { background: rgba(0,0,0,0.88); border-top: 1px solid rgba(255,255,255,0.06); }
@@ -138,23 +117,16 @@
     .footer-nav a { font-size: 0.7rem; color: rgba(255,255,255,0.22); text-decoration: none; letter-spacing: 0.06em; transition: color .2s; }
     .footer-nav a:hover { color: rgba(255,255,255,0.6); }
     .footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
-
-    .nav-drop-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 4px 0; }
-    .nav-drop-socials { display: flex; align-items: center; gap: 10px; padding: 16px 28px; border-top: 1px solid rgba(255,255,255,0.05); }
-    .nav-drop-socials a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); text-decoration: none; transition: background .2s, color .2s, border-color .2s; padding: 0; border-bottom: none !important; }
-    .nav-drop-socials a:hover { background: rgba(255,255,255,0.14); color: #fff; border-color: rgba(255,255,255,0.25); }
     .footer-socials { display: flex; align-items: center; gap: 8px; }
     .footer-socials a { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.35); text-decoration: none; transition: background .2s, color .2s; }
     .footer-socials a:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
 
     @media (max-width: 860px) {
-      .service-chapter { grid-template-columns: 1fr; direction: ltr !important; }
-      .service-chapter:nth-child(even) { direction: ltr; }
+      .consult-chapter { grid-template-columns: 1fr; direction: ltr !important; }
       .chapter-visual { display: none; }
-      .service-chapter:nth-child(odd) .chapter-grad,
-      .service-chapter:nth-child(even) .chapter-grad { background: linear-gradient(to top, rgba(3,3,3,0.9) 0%, rgba(3,3,3,0.4) 100%); }
+      .consult-chapter:nth-child(odd) .chapter-grad,
+      .consult-chapter:nth-child(even) .chapter-grad { background: linear-gradient(to top, rgba(3,3,3,0.9) 0%, rgba(3,3,3,0.4) 100%); }
     }
-
     @media (max-width: 640px) {
       .footer-bottom { gap: 14px; padding: 20px 0; }
       .footer-nav { gap: 12px; }
@@ -163,11 +135,6 @@
   </style>
 </head>
 <body>
-
-  <video class="site-video" autoplay muted playsinline loop preload="auto" disablepictureinpicture>
-    <source src="/assets/hero-backdrop.mp4" type="video/mp4">
-  </video>
-  <div class="site-overlay"></div>
 
   <nav class="island-nav">
     <a href="/" class="nav-logo">
@@ -180,7 +147,7 @@
       </button>
     </div>
   </nav>
-    <div class="nav-drop" id="navDrop">
+  <div class="nav-drop" id="navDrop">
     <a href="/about">About</a>
     <a href="/services">Services</a>
     <a href="/consulting">Consulting</a>
@@ -197,25 +164,25 @@
     <div class="hero-bg"></div>
     <div class="hero-grad"></div>
     <div class="hero-content">
-      <p class="page-label" data-reveal>Services</p>
-      <h1 data-reveal="d1">What we<br>build.</h1>
-      <p class="hero-sub" data-reveal="d2">Custom platforms, automation, and infrastructure — engineered for businesses that refuse to settle.</p>
+      <p class="page-label" data-reveal>Consulting</p>
+      <h1 data-reveal="d1">Where strategy<br>meets execution.</h1>
+      <p class="hero-sub" data-reveal="d2">We sit at the table with your leadership, understand your constraints, and deliver a clear path forward — from technology audits to full digital transformation.</p>
     </div>
   </section>
 
-  <!-- Service 01 -->
-  <div class="service-chapter">
+  <!-- Consulting 01 -->
+  <div class="consult-chapter">
     <div class="chapter-bg" style="background-image:url('/assets/pexels-todd-trapani-488382-3790058.jpg');"></div>
     <div class="chapter-grad"></div>
     <div class="chapter-content" data-reveal>
       <div class="chapter-num">01</div>
-      <h2 class="chapter-name">Automation &amp; Systems</h2>
-      <p class="chapter-body">We build the systems that run your business while you sleep. Custom workflows, intelligent routing, and 24/7 operations — designed around your exact process.</p>
+      <h2 class="chapter-name">Technology Strategy</h2>
+      <p class="chapter-body">We help leadership make informed, defensible technology decisions. Whether you're choosing a stack, evaluating vendors, or planning a multi-year roadmap — we give you the clarity to move with confidence.</p>
       <div class="chapter-tags">
-        <span class="tag">Workflow Automation</span>
-        <span class="tag">CRM Integration</span>
-        <span class="tag">Operations</span>
-        <span class="tag">24/7 Systems</span>
+        <span class="tag">Tech Roadmapping</span>
+        <span class="tag">Vendor Evaluation</span>
+        <span class="tag">Strategic Planning</span>
+        <span class="tag">Executive Advisory</span>
       </div>
     </div>
     <div class="chapter-visual" data-reveal="d1">
@@ -223,19 +190,19 @@
     </div>
   </div>
 
-  <!-- Service 02 -->
-  <div class="service-chapter">
+  <!-- Consulting 02 -->
+  <div class="consult-chapter">
     <div class="chapter-bg" style="background-image:url('/assets/pexels-luis-ruiz-1774931.jpg');"></div>
     <div class="chapter-grad"></div>
     <div class="chapter-content" data-reveal>
       <div class="chapter-num">02</div>
-      <h2 class="chapter-name">Platform Development</h2>
-      <p class="chapter-body">Full-stack web and mobile applications built to scale from day one. We move fast and build for the long term — no shortcuts, no tech debt that comes back to bite.</p>
+      <h2 class="chapter-name">Digital Transformation</h2>
+      <p class="chapter-body">Moving a business into the digital era requires more than new software. We guide organizations through end-to-end transformation — process re-engineering, platform migration, and change management that actually sticks.</p>
       <div class="chapter-tags">
-        <span class="tag">Web Applications</span>
-        <span class="tag">Mobile</span>
-        <span class="tag">E-Commerce</span>
-        <span class="tag">APIs</span>
+        <span class="tag">Process Re-engineering</span>
+        <span class="tag">Platform Migration</span>
+        <span class="tag">Change Management</span>
+        <span class="tag">Modernization</span>
       </div>
     </div>
     <div class="chapter-visual" data-reveal="d1">
@@ -243,19 +210,19 @@
     </div>
   </div>
 
-  <!-- Service 03 -->
-  <div class="service-chapter">
+  <!-- Consulting 03 -->
+  <div class="consult-chapter">
     <div class="chapter-bg" style="background-image:url('/assets/pexels-diego-f-parra-33199-15478112.jpg');"></div>
     <div class="chapter-grad"></div>
     <div class="chapter-content" data-reveal>
       <div class="chapter-num">03</div>
-      <h2 class="chapter-name">Data &amp; Infrastructure</h2>
-      <p class="chapter-body">Analytics, cloud architecture, and the operational backbone that lets you scale without breaking. We engineer systems that grow with your business, not against it.</p>
+      <h2 class="chapter-name">Architecture Review</h2>
+      <p class="chapter-body">We audit your existing systems — identifying bottlenecks, security gaps, and architectural debt before they become expensive problems. Then we deliver a clear remediation plan your team can execute.</p>
       <div class="chapter-tags">
-        <span class="tag">Cloud Architecture</span>
-        <span class="tag">Analytics</span>
-        <span class="tag">Data Pipelines</span>
-        <span class="tag">Infrastructure</span>
+        <span class="tag">Systems Audit</span>
+        <span class="tag">Security Review</span>
+        <span class="tag">Performance Analysis</span>
+        <span class="tag">Remediation Planning</span>
       </div>
     </div>
     <div class="chapter-visual" data-reveal="d1">
@@ -263,19 +230,19 @@
     </div>
   </div>
 
-  <!-- Service 04 -->
-  <div class="service-chapter">
+  <!-- Consulting 04 -->
+  <div class="consult-chapter">
     <div class="chapter-bg" style="background-image:url('/assets/pexels-todd-trapani-488382-3790058.jpg'); background-position: bottom;"></div>
     <div class="chapter-grad"></div>
     <div class="chapter-content" data-reveal>
       <div class="chapter-num">04</div>
-      <h2 class="chapter-name">Brand &amp; Design</h2>
-      <p class="chapter-body">Visual systems that make an impression and a statement. From identity to interface, we design for businesses that understand presentation is part of the product.</p>
+      <h2 class="chapter-name">Fractional CTO</h2>
+      <p class="chapter-body">Get senior technical leadership without a full-time hire. We embed with your team on a part-time or project basis — making key decisions, mentoring engineers, and aligning technology to business objectives.</p>
       <div class="chapter-tags">
-        <span class="tag">Identity</span>
-        <span class="tag">UI/UX Design</span>
-        <span class="tag">Design Systems</span>
-        <span class="tag">Marketing</span>
+        <span class="tag">Technical Leadership</span>
+        <span class="tag">Team Mentorship</span>
+        <span class="tag">Hiring Support</span>
+        <span class="tag">Stakeholder Communication</span>
       </div>
     </div>
     <div class="chapter-visual" data-reveal="d1">
@@ -283,59 +250,19 @@
     </div>
   </div>
 
-  <!-- Service 05 -->
-  <div class="service-chapter">
+  <!-- Consulting 05 -->
+  <div class="consult-chapter">
     <div class="chapter-bg" style="background-image:url('/assets/pexels-luis-ruiz-1774931.jpg');"></div>
     <div class="chapter-grad"></div>
     <div class="chapter-content" data-reveal>
       <div class="chapter-num">05</div>
-      <h2 class="chapter-name">Software Conception</h2>
-      <p class="chapter-body">From idea to architecture. We take raw concepts and turn them into defined, buildable products — market fit, system design, and technical scope all worked out before a line of code is written.</p>
+      <h2 class="chapter-name">Cybersecurity Advisory</h2>
+      <p class="chapter-body">We help organizations understand their risk surface and build a security posture that matches their actual threat model. From compliance roadmaps to incident response planning, we make security practical.</p>
       <div class="chapter-tags">
-        <span class="tag">Product Definition</span>
-        <span class="tag">System Architecture</span>
-        <span class="tag">Technical Scoping</span>
-        <span class="tag">Prototyping</span>
-      </div>
-    </div>
-    <div class="chapter-visual" data-reveal="d1">
-      <div class="chapter-glow"></div>
-    </div>
-  </div>
-
-  <!-- Service 06 -->
-  <div class="service-chapter">
-    <div class="chapter-bg" style="background-image:url('/assets/pexels-diego-f-parra-33199-15478112.jpg');"></div>
-    <div class="chapter-grad"></div>
-    <div class="chapter-content" data-reveal>
-      <div class="chapter-num">06</div>
-      <h2 class="chapter-name">Infrastructure</h2>
-      <p class="chapter-body">The backbone behind every scalable business. We design and implement cloud infrastructure, DevOps pipelines, and security architecture that keeps your operations fast, secure, and ready to grow.</p>
-      <div class="chapter-tags">
-        <span class="tag">Cloud Setup</span>
-        <span class="tag">DevOps</span>
-        <span class="tag">Security</span>
-        <span class="tag">Scalability</span>
-      </div>
-    </div>
-    <div class="chapter-visual" data-reveal="d1">
-      <div class="chapter-glow"></div>
-    </div>
-  </div>
-
-  <!-- Service 07 -->
-  <div class="service-chapter">
-    <div class="chapter-bg" style="background-image:url('/assets/pexels-luis-ruiz-1774931.jpg'); background-position: center;"></div>
-    <div class="chapter-grad"></div>
-    <div class="chapter-content" data-reveal>
-      <div class="chapter-num">07</div>
-      <h2 class="chapter-name">Cybersecurity</h2>
-      <p class="chapter-body">Security isn't an afterthought — it's architecture. We assess vulnerabilities, harden systems, and build security practices into your operations from day one, protecting your business and your clients.</p>
-      <div class="chapter-tags">
-        <span class="tag">Vulnerability Assessment</span>
-        <span class="tag">Penetration Testing</span>
-        <span class="tag">Security Architecture</span>
-        <span class="tag">Compliance</span>
+        <span class="tag">Risk Assessment</span>
+        <span class="tag">Compliance Roadmap</span>
+        <span class="tag">Incident Response</span>
+        <span class="tag">Security Culture</span>
       </div>
     </div>
     <div class="chapter-visual" data-reveal="d1">
@@ -345,21 +272,21 @@
 
   <!-- CTA -->
   <div class="cta-strip">
-    <h2 data-reveal>Ready to build?</h2>
-    <p data-reveal="d1">Tell us what you're working on.</p>
-    <a href="/contact" class="btn-white" data-reveal="d2">Start a conversation</a>
+    <h2 data-reveal>Let's talk.</h2>
+    <p data-reveal="d1">Tell us what you're working through.</p>
+    <a href="/contact" class="btn-glass" data-reveal="d2">Start a conversation</a>
   </div>
 
   <footer>
     <div class="footer-inner">
       <div class="footer-bottom">
         <div class="footer-left">
-        <a href="/"><img src="/assets/IMG_6989.png" alt="Jwood Technologies" style="height:18px;filter:brightness(0) invert(1);opacity:0.35;" onerror="this.style.display='none'"></a>
-        <div class="footer-socials">
-          <a href="https://www.instagram.com/jwoodtechnologies" target="_blank" rel="noopener" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>
-          <a href="https://www.linkedin.com/company/jwood-technologies" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-          <a href="https://x.com/jwoodtech" target="_blank" rel="noopener" aria-label="X / Twitter"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-        </div>
+          <a href="/"><img src="/assets/IMG_6989.png" alt="Jwood Technologies" style="height:18px;filter:brightness(0) invert(1);opacity:0.35;" onerror="this.style.display='none'"></a>
+          <div class="footer-socials">
+            <a href="https://www.instagram.com/jwoodtechnologies" target="_blank" rel="noopener" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>
+            <a href="https://www.linkedin.com/company/jwood-technologies" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+            <a href="https://x.com/jwoodtech" target="_blank" rel="noopener" aria-label="X / Twitter"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          </div>
         </div>
         <ul class="footer-nav">
           <li><a href="/about">About</a></li>

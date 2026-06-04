@@ -123,8 +123,9 @@
       .preview-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
-      .footer-nav { display: none; }
-      .footer-bottom { padding: 20px 0; }
+      .footer-bottom { gap: 14px; padding: 20px 0; }
+      .footer-nav { gap: 12px; }
+      .footer-copy { order: 99; width: 100%; }
     }
     @media (max-width: 560px) {
       .hero-btns { flex-direction: column; align-items: flex-start; }
@@ -155,6 +156,7 @@
     <div class="nav-drop" id="navDrop">
     <a href="/about">About</a>
     <a href="/services">Services</a>
+    <a href="/consulting">Consulting</a>
     <a href="/careers">Careers</a>
     <a href="/contact">Contact</a>
     <div class="nav-drop-socials">
@@ -277,6 +279,7 @@
         <ul class="footer-nav">
           <li><a href="/about">About</a></li>
           <li><a href="/services">Services</a></li>
+          <li><a href="/consulting">Consulting</a></li>
           <li><a href="/careers">Careers</a></li>
           <li><a href="/contact">Contact</a></li>
           <li><a href="/terms">Legal</a></li>

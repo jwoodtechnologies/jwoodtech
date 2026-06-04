@@ -37,17 +37,15 @@
     .nav-drop a:last-child { border-bottom: none; }
     .nav-drop a:hover { color: #fff; background: rgba(255,255,255,0.03); }
 
-    /* Globe hero */
-    .globe-hero { position: relative; height: 100dvh; display: flex; align-items: center; padding: 0 clamp(24px,6vw,80px); gap: 40px; }
-    .globe-content { flex: 1; position: relative; z-index: 2; min-width: 0; }
-    .globe-wrap { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-    #globe-canvas { display: block; width: 480px; height: 480px; cursor: grab; }
-    #globe-canvas:active { cursor: grabbing; }
+    /* Careers hero */
+    .careers-hero { position: relative; height: 100dvh; display: flex; align-items: flex-end; padding: 0 clamp(24px,6vw,80px) 80px; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background-image: url('/assets/pexels-luis-ruiz-1774931.jpg'); background-size: cover; background-position: center; filter: brightness(0.32) saturate(0.5); z-index: 0; transform: scale(1.04); transition: transform 8s ease; }
+    .careers-hero:hover .hero-bg { transform: scale(1.0); }
+    .hero-grad { position: absolute; inset: 0; background: linear-gradient(to top, rgba(3,3,3,0.92) 0%, rgba(3,3,3,0.35) 55%, rgba(3,3,3,0.15) 100%); z-index: 1; }
+    .hero-content { position: relative; z-index: 2; max-width: 700px; }
     .page-label { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 18px; }
     .globe-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,5.5rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
-    .globe-sub { font-size: 0.9rem; color: rgba(255,255,255,0.38); line-height: 1.8; margin-top: 18px; max-width: 340px; }
-    .drag-hint { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.18); margin-top: 20px; display: flex; align-items: center; gap: 8px; }
-    .drag-hint::before { content: ''; display: block; width: 18px; height: 1px; background: rgba(255,255,255,0.15); }
+    .hero-sub { font-size: 0.95rem; color: rgba(255,255,255,0.42); line-height: 1.75; margin-top: 20px; max-width: 460px; }
 
     /* Values */
     .values { background: rgba(0,0,0,0.38); border-top: 1px solid rgba(255,255,255,0.06); padding: 80px clamp(24px,6vw,80px); }
@@ -85,16 +83,14 @@
     .footer-socials a { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.35); text-decoration: none; transition: background .2s, color .2s; }
     .footer-socials a:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
 
-    @media (max-width: 960px) {
-      .globe-wrap { display: none; }
-    }
     @media (max-width: 860px) {
       .values-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 640px) {
-      .footer-nav { display: none; }
-      .footer-bottom { padding: 20px 0; }
+      .footer-bottom { gap: 14px; padding: 20px 0; }
+      .footer-nav { gap: 12px; }
+      .footer-copy { order: 99; width: 100%; }
     }
   </style>
 </head>
@@ -119,6 +115,7 @@
     <div class="nav-drop" id="navDrop">
     <a href="/about">About</a>
     <a href="/services">Services</a>
+    <a href="/consulting">Consulting</a>
     <a href="/careers">Careers</a>
     <a href="/contact">Contact</a>
     <div class="nav-drop-socials">
@@ -128,17 +125,15 @@
     </div>
   </div>
 
-  <div class="globe-hero">
-    <div class="globe-wrap">
-      <canvas id="globe-canvas" width="1160" height="1160"></canvas>
-    </div>
-    <div class="globe-content">
+  <section class="careers-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grad"></div>
+    <div class="hero-content">
       <p class="page-label" data-reveal>Careers</p>
       <h1 data-reveal="d1">Work on<br>what matters.</h1>
-      <p class="globe-sub" data-reveal="d2">Craft, curiosity, character. That's what we hire for.</p>
-      <p class="drag-hint" data-reveal="d2">Drag the globe</p>
+      <p class="hero-sub" data-reveal="d2">Craft, curiosity, character. That's what we hire for.</p>
     </div>
-  </div>
+  </section>
 
   <section class="values">
     <h2 data-reveal>What we value.</h2>
@@ -189,6 +184,7 @@
         <ul class="footer-nav">
           <li><a href="/about">About</a></li>
           <li><a href="/services">Services</a></li>
+          <li><a href="/consulting">Consulting</a></li>
           <li><a href="/careers">Careers</a></li>
           <li><a href="/contact">Contact</a></li>
           <li><a href="/terms">Legal</a></li>
@@ -199,180 +195,7 @@
   </footer>
 
   <script>
-  // Pure Canvas 2D globe — no external dependencies
-  (function() {
-    const canvas = document.getElementById('globe-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const DPR = window.devicePixelRatio || 1;
-    const SIZE = 480;
-    canvas.style.width = SIZE + 'px';
-    canvas.style.height = SIZE + 'px';
-    canvas.width = SIZE * DPR;
-    canvas.height = SIZE * DPR;
-    ctx.scale(DPR, DPR);
-    const cx = SIZE / 2, cy = SIZE / 2, R = SIZE * 0.42;
-
-    // Rotation state
-    let rotY = 0, rotX = 0.18;
-    let velY = 0.004, velX = 0;
-    let dragging = false, lastX = 0, lastY = 0;
-
-    // Land masses as lat/lon polygons (simplified continents)
-    const LAND = [
-      // North America
-      [[60,-140],[72,-140],[72,-95],[60,-75],[48,-53],[45,-67],[25,-80],[18,-90],[15,-85],[8,-77],[10,-75],[5,-77],[8,-73],[12,-70],[17,-67],[19,-70],[23,-82],[25,-80],[30,-81],[32,-80],[35,-76],[38,-75],[42,-70],[45,-64],[48,-53],[50,-55],[52,-57],[53,-56],[54,-58],[55,-59],[56,-60],[57,-62],[58,-62],[60,-65],[62,-64],[63,-66],[62,-68],[63,-70],[64,-66],[65,-68],[67,-70],[68,-72],[70,-73],[72,-73],[72,-68],[70,-68],[68,-66],[67,-64],[65,-62],[63,-62],[62,-60],[60,-60],[58,-68],[56,-68],[54,-58],[52,-57],[50,-55],[48,-53],[46,-54],[44,-52],[45,-64],[42,-70],[38,-75],[35,-76],[30,-81],[25,-80],[20,-87],[17,-88],[17,-92],[18,-97],[22,-105],[24,-110],[28,-112],[30,-113],[32,-117],[34,-120],[37,-122],[40,-124],[44,-124],[48,-125],[50,-127],[52,-128],[54,-130],[56,-131],[58,-135],[60,-140]],
-      // Europe
-      [[36,28],[38,27],[40,26],[42,28],[44,29],[46,30],[48,22],[50,14],[52,8],[54,8],[56,10],[58,5],[60,5],[62,6],[63,8],[62,10],[60,12],[58,12],[56,10],[55,14],[54,18],[52,22],[50,24],[48,22],[46,18],[44,15],[42,14],[40,16],[38,15],[36,14],[36,10],[37,8],[38,3],[40,0],[42,-3],[43,-2],[43,3],[44,5],[46,6],[47,8],[48,7],[50,4],[52,5],[54,8],[56,10],[58,12],[60,12],[62,10],[63,8],[64,5],[65,8],[66,10],[68,12],[70,14],[72,14],[72,18],[70,22],[68,24],[66,26],[64,26],[62,28],[60,30],[58,28],[56,24],[55,22],[54,22],[52,22],[50,24],[48,22],[46,24],[44,26],[42,28],[40,26],[38,27],[36,28]],
-      // Africa
-      [[-34,18],[-26,33],[-18,36],[-10,40],[0,42],[5,40],[10,42],[15,40],[20,38],[25,35],[30,32],[32,32],[34,36],[36,34],[38,30],[36,22],[36,10],[34,8],[32,10],[30,30],[28,33],[25,35],[20,38],[15,40],[10,42],[5,40],[0,42],[-5,40],[-10,38],[-15,36],[-18,36],[-22,35],[-26,33],[-30,28],[-34,18]],
-      // Asia (simplified)
-      [[70,30],[72,60],[72,100],[68,140],[60,140],[55,135],[50,140],[45,135],[40,130],[35,120],[30,122],[25,120],[20,110],[15,100],[10,100],[5,104],[0,105],[-5,108],[-8,115],[-10,125],[-8,130],[-5,130],[0,120],[5,100],[10,79],[15,75],[20,73],[25,70],[30,62],[35,58],[40,50],[45,42],[50,40],[55,35],[60,30],[65,30],[70,30]],
-      // South America
-      [[10,-62],[8,-65],[5,-68],[2,-72],[0,-75],[-5,-77],[-10,-75],[-15,-70],[-20,-68],[-25,-68],[-30,-68],[-35,-70],[-40,-72],[-45,-74],[-50,-72],[-54,-68],[-56,-68],[-54,-65],[-52,-58],[-50,-50],[-48,-40],[-40,-38],[-35,-38],[-30,-48],[-25,-48],[-20,-40],[-15,-38],[-10,-36],[-5,-35],[0,-48],[5,-50],[8,-55],[10,-62]],
-      // Australia
-      [[-25,114],[-22,114],[-18,122],[-14,128],[-12,130],[-12,135],[-14,140],[-18,148],[-22,150],[-26,153],[-30,153],[-35,150],[-38,146],[-40,148],[-38,148],[-36,150],[-34,152],[-32,152],[-30,153],[-28,155],[-26,153],[-22,150],[-18,148],[-14,140],[-12,135],[-14,130],[-18,128],[-22,122],[-25,114]],
-    ];
-
-    function project(lat, lon, rY, rX) {
-      const phi = (90 - lat) * Math.PI / 180;
-      const lam = lon * Math.PI / 180;
-      let x = Math.sin(phi) * Math.cos(lam);
-      let y = Math.cos(phi);
-      let z = Math.sin(phi) * Math.sin(lam);
-      // Rotate Y
-      const x1 = x * Math.cos(rY) - z * Math.sin(rY);
-      const z1 = x * Math.sin(rY) + z * Math.cos(rY);
-      // Rotate X
-      const y2 = y * Math.cos(rX) - z1 * Math.sin(rX);
-      const z2 = y * Math.sin(rX) + z1 * Math.cos(rX);
-      return { sx: cx + x1 * R, sy: cy - y2 * R, z: z2, visible: z2 > -0.05 };
-    }
-
-    function drawGlobe() {
-      ctx.clearRect(0, 0, SIZE, SIZE);
-
-      // Clip all drawing to globe circle
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.clip();
-
-      // Ocean
-      const ocean = ctx.createRadialGradient(cx - R * 0.25, cy - R * 0.25, R * 0.05, cx, cy, R);
-      ocean.addColorStop(0, '#2a2a2a');
-      ocean.addColorStop(0.45, '#161616');
-      ocean.addColorStop(1, '#080808');
-      ctx.beginPath();
-      ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.fillStyle = ocean;
-      ctx.fill();
-
-      // Graticule lines
-      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-      ctx.lineWidth = 0.5;
-      for (let lat = -75; lat <= 75; lat += 30) {
-        ctx.beginPath();
-        let first = true;
-        for (let lon = -180; lon <= 180; lon += 3) {
-          const p = project(lat, lon, rotY, rotX);
-          if (!p.visible) { first = true; continue; }
-          first ? ctx.moveTo(p.sx, p.sy) : ctx.lineTo(p.sx, p.sy);
-          first = false;
-        }
-        ctx.stroke();
-      }
-      for (let lon = -180; lon < 180; lon += 30) {
-        ctx.beginPath();
-        let first = true;
-        for (let lat = -89; lat <= 89; lat += 3) {
-          const p = project(lat, lon, rotY, rotX);
-          if (!p.visible) { first = true; continue; }
-          first ? ctx.moveTo(p.sx, p.sy) : ctx.lineTo(p.sx, p.sy);
-          first = false;
-        }
-        ctx.stroke();
-      }
-
-      // Land masses
-      LAND.forEach(poly => {
-        ctx.beginPath();
-        let started = false;
-        poly.forEach(([lat, lon]) => {
-          const p = project(lat, lon, rotY, rotX);
-          if (!p.visible) return;
-          if (!started) { ctx.moveTo(p.sx, p.sy); started = true; }
-          else ctx.lineTo(p.sx, p.sy);
-        });
-        if (started) {
-          ctx.closePath();
-          ctx.fillStyle = 'rgba(255,255,255,0.12)';
-          ctx.fill();
-          ctx.strokeStyle = 'rgba(255,255,255,0.22)';
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
-        }
-      });
-
-      // Specular highlight
-      const spec = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.35, 0, cx - R * 0.35, cy - R * 0.35, R * 0.65);
-      spec.addColorStop(0, 'rgba(255,255,255,0.14)');
-      spec.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.beginPath();
-      ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.fillStyle = spec;
-      ctx.fill();
-
-      ctx.restore();
-
-      // Atmosphere rim (outside clip so it bleeds past globe edge)
-      const atmos = ctx.createRadialGradient(cx, cy, R * 0.86, cx, cy, R * 1.14);
-      atmos.addColorStop(0, 'rgba(255,255,255,0)');
-      atmos.addColorStop(0.55, 'rgba(255,255,255,0.06)');
-      atmos.addColorStop(1, 'rgba(255,255,255,0.18)');
-      ctx.beginPath();
-      ctx.arc(cx, cy, R * 1.14, 0, Math.PI * 2);
-      ctx.fillStyle = atmos;
-      ctx.fill();
-    }
-
-    function animate() {
-      requestAnimationFrame(animate);
-      if (!dragging) {
-        rotY += velY;
-        velY = velY * 0.99 + 0.002 * 0.01;
-        velX *= 0.95;
-        rotX += velX;
-        rotX = Math.max(-0.5, Math.min(0.5, rotX));
-      }
-      drawGlobe();
-    }
-
-    canvas.addEventListener('mousedown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; velY = 0; velX = 0; });
-    window.addEventListener('mouseup', () => { dragging = false; });
-    window.addEventListener('mousemove', e => {
-      if (!dragging) return;
-      velY = (e.clientX - lastX) * 0.008;
-      velX = (e.clientY - lastY) * 0.008;
-      rotY += velY; rotX += velX;
-      rotX = Math.max(-0.5, Math.min(0.5, rotX));
-      lastX = e.clientX; lastY = e.clientY;
-    });
-    canvas.addEventListener('touchstart', e => { dragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; velY = 0; velX = 0; }, { passive: true });
-    window.addEventListener('touchend', () => { dragging = false; });
-    window.addEventListener('touchmove', e => {
-      if (!dragging) return;
-      velY = (e.touches[0].clientX - lastX) * 0.008;
-      velX = (e.touches[0].clientY - lastY) * 0.008;
-      rotY += velY; rotX += velX;
-      rotX = Math.max(-0.5, Math.min(0.5, rotX));
-      lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
-    }, { passive: true });
-
-    animate();
-  })();
-
-  const ham = document.getElementById('navHam'), drop = document.getElementById('navDrop');
+    const ham = document.getElementById('navHam'), drop = document.getElementById('navDrop');
   if (ham && drop) {
     ham.addEventListener('click', () => { ham.classList.toggle('open'); drop.classList.toggle('open'); });
     document.addEventListener('click', e => { if (!ham.contains(e.target) && !drop.contains(e.target)) { ham.classList.remove('open'); drop.classList.remove('open'); } });

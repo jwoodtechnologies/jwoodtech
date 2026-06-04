@@ -1,18 +1,61 @@
 {
   "version": 2,
   "routes": [
-    { "src": "^/assets/(.*)", "dest": "/assets/$1" },
-    { "src": "^/static/(.*)", "dest": "/static/$1" },
-    { "src": "^/favicon(.*)", "dest": "/favicon$1" },
-    { "src": "^/manifest.json", "dest": "/manifest.json" },
-    { "src": "^/robots.txt", "dest": "/robots.txt" },
-    { "src": "^/$", "dest": "/jwoodtech.html" },
-    { "src": "^/about$", "dest": "/about.html" },
-    { "src": "^/services$", "dest": "/services.html" },
-    { "src": "^/careers$", "dest": "/careers.html" },
-    { "src": "^/contact$", "dest": "/contact.html" },
-    { "src": "^/terms$", "dest": "/terms.html" },
-    { "src": "^/(woodchat|vineyard|privacy|research|woodchat-admin|vineyard-admin)(.*)", "dest": "/index.html" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    {
+      "src": "^/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "^/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "^/favicon(.*)",
+      "dest": "/favicon$1"
+    },
+    {
+      "src": "^/manifest.json",
+      "dest": "/manifest.json"
+    },
+    {
+      "src": "^/robots.txt",
+      "dest": "/robots.txt"
+    },
+    {
+      "src": "^/$",
+      "dest": "/jwoodtech.html"
+    },
+    {
+      "src": "^/about$",
+      "dest": "/about.html"
+    },
+    {
+      "src": "^/services$",
+      "dest": "/services.html"
+    },
+    {
+      "src": "^/careers$",
+      "dest": "/careers.html"
+    },
+    {
+      "src": "^/contact$",
+      "dest": "/contact.html"
+    },
+    {
+      "src": "^/terms$",
+      "dest": "/terms.html"
+    },
+    {
+      "src": "^/consulting$",
+      "dest": "/consulting.html"
+    },
+    {
+      "src": "^/(woodchat|vineyard|privacy|research|woodchat-admin|vineyard-admin)(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }
