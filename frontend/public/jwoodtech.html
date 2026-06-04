@@ -50,10 +50,10 @@
     .hero h1 em { font-style: italic; }
     .hero-tagline { font-family: 'Inter', sans-serif; font-weight: 300; font-size: clamp(0.85rem, 2vw, 0.95rem); color: rgba(255,255,255,0.4); max-width: 380px; line-height: 1.75; margin-top: 22px; }
     .hero-btns { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
-    .btn-primary { background: rgba(255,255,255,0.1); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.06em; padding: 13px 26px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.22); text-decoration: none; display: inline-block; transition: background .2s, border-color .2s; }
-    .btn-primary:hover { background: rgba(255,255,255,0.17); border-color: rgba(255,255,255,0.35); }
-    .btn-secondary { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.14); font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.75rem; letter-spacing: 0.06em; padding: 12px 26px; border-radius: 100px; text-decoration: none; display: inline-block; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: border-color .2s, color .2s, background .2s; }
-    .btn-secondary:hover { border-color: rgba(255,255,255,0.32); color: #fff; background: rgba(255,255,255,0.12); }
+    .btn-primary { background: rgba(255,255,255,0.14); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.06em; padding: 13px 26px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.32); text-decoration: none; display: inline-block; transition: background .2s, border-color .2s; }
+    .btn-primary:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.45); }
+    .btn-secondary { background: transparent; color: rgba(255,255,255,0.52); border: 1px solid rgba(255,255,255,0.14); font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.75rem; letter-spacing: 0.06em; padding: 12px 26px; border-radius: 100px; text-decoration: none; display: inline-block; transition: border-color .2s, color .2s; }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.82); }
     .hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; color: rgba(255,255,255,0.2); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; animation: bob 2.2s ease-in-out infinite; }
     @keyframes bob { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
 
@@ -107,6 +107,7 @@
     .footer-nav { display: flex; list-style: none; gap: 24px; flex-wrap: wrap; }
     .footer-nav a { font-size: 0.7rem; color: rgba(255,255,255,0.22); text-decoration: none; letter-spacing: 0.06em; transition: color .2s; }
     .footer-nav a:hover { color: rgba(255,255,255,0.6); }
+    .footer-left { display: flex; align-items: center; gap: 14px; }
     .footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
 
     .nav-drop-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 4px 0; }
@@ -120,6 +121,10 @@
     @media (max-width: 860px) {
       .services-grid { grid-template-columns: 1fr; }
       .preview-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .footer-nav { gap: 14px; }
     }
     @media (max-width: 560px) {
       .nav-contact { display: none; }
@@ -153,7 +158,6 @@
     <a href="/services">Services</a>
     <a href="/careers">Careers</a>
     <a href="/contact">Contact</a>
-    <div class="nav-drop-divider"></div>
     <div class="nav-drop-socials">
       <a href="https://www.instagram.com/jwoodtechnologies" target="_blank" rel="noopener" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>
       <a href="https://www.linkedin.com/company/jwood-technologies" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
@@ -264,6 +268,7 @@
         <a href="/contact" class="btn-primary footer-cta-btn">Start a conversation</a>
       </div>
       <div class="footer-bottom">
+        <div class="footer-left">
         <a href="/"><img src="/assets/IMG_6989.png" alt="Jwood Technologies" style="height:18px;filter:brightness(0) invert(1);opacity:0.35;" onerror="this.style.display='none'"></a>
         <div class="footer-socials">
           <a href="https://www.instagram.com/jwoodtechnologies" target="_blank" rel="noopener" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>
