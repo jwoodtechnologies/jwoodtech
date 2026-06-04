@@ -6,26 +6,27 @@
   <title>Services — Jwood Technologies</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,700;0,800;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; overflow-x: hidden; }
     body { background: #030303; color: #fff; font-family: 'Inter', sans-serif; font-weight: 300; overflow-x: hidden; }
 
-    [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform .8s ease; }
     [data-reveal].in { opacity: 1; transform: none; }
     [data-reveal="d1"] { transition-delay: 0.12s; }
-    [data-reveal="d2"] { transition-delay: 0.22s; }
-    [data-reveal="d3"] { transition-delay: 0.32s; }
+    [data-reveal="d2"] { transition-delay: 0.24s; }
+    [data-reveal="d3"] { transition-delay: 0.36s; }
 
-    /* Island Nav */
+    /* Fixed video */
+    .site-video { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; z-index: -2; }
+    .site-overlay { position: fixed; inset: 0; z-index: -1; background: linear-gradient(to bottom, rgba(3,3,3,0.5) 0%, rgba(3,3,3,0.1) 40%, rgba(3,3,3,0.65) 100%); pointer-events: none; }
+
+    /* Nav */
     .island-nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: min(94vw, 1000px); height: 54px; background: rgba(8,8,8,0.55); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; padding: 0 6px 0 20px; display: flex; align-items: center; justify-content: space-between; z-index: 1000; }
     .nav-logo img { height: 14px; max-width: 130px; filter: brightness(0) invert(1); display: block; }
-    .nav-center { display: flex; align-items: center; gap: 32px; }
-    .nav-center a { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); text-decoration: none; transition: color .2s; }
-    .nav-center a:hover { color: #fff; }
     .nav-right { display: flex; align-items: center; gap: 8px; }
-    .nav-contact { background: #fff; color: #000; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.75rem; letter-spacing: 0.08em; padding: 9px 20px; border-radius: 100px; text-decoration: none; transition: opacity .2s; white-space: nowrap; }
+    .nav-contact { background: #fff; color: #000; font-weight: 500; font-size: 0.75rem; letter-spacing: 0.08em; padding: 9px 20px; border-radius: 100px; text-decoration: none; transition: opacity .2s; white-space: nowrap; }
     .nav-contact:hover { opacity: 0.85; }
     .nav-ham { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.08); border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transition: background .2s; }
     .nav-ham:hover { background: rgba(255,255,255,0.13); }
@@ -35,66 +36,121 @@
     .nav-ham.open span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
     .nav-drop { display: none; position: fixed; top: 82px; left: 50%; transform: translateX(-50%); width: min(94vw, 1000px); background: rgba(8,8,8,0.97); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; z-index: 999; }
     .nav-drop.open { display: block; }
-    .nav-drop a { display: block; padding: 18px 28px; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.9rem; color: rgba(255,255,255,0.55); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s, background .2s; }
+    .nav-drop a { display: block; padding: 18px 28px; font-weight: 400; font-size: 0.9rem; color: rgba(255,255,255,0.55); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s, background .2s; }
     .nav-drop a:last-child { border-bottom: none; }
     .nav-drop a:hover { color: #fff; background: rgba(255,255,255,0.03); }
 
-    /* Page Hero */
-    .page-hero { padding-top: calc(54px + 80px + 20px); padding-bottom: 80px; padding-left: clamp(24px,6vw,80px); padding-right: clamp(24px,6vw,80px); border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .page-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 20px; }
-    .page-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,6rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
+    /* Hero — full height with photo backdrop */
+    .hero {
+      position: relative;
+      height: 100dvh;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 clamp(24px,6vw,80px) 80px;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('/assets/pexels-diego-f-parra-33199-15478112.jpg');
+      background-size: cover; background-position: center;
+      filter: brightness(0.28) saturate(0.6);
+      z-index: 0;
+      transform: scale(1.04);
+      transition: transform 8s ease;
+    }
+    .hero:hover .hero-bg { transform: scale(1.0); }
+    .hero-grad { position: absolute; inset: 0; background: linear-gradient(to top, rgba(3,3,3,0.92) 0%, rgba(3,3,3,0.3) 50%, rgba(3,3,3,0.2) 100%); z-index: 1; }
+    .hero-content { position: relative; z-index: 2; max-width: 700px; }
+    .page-label { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 20px; }
+    .hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,6rem); letter-spacing: -0.03em; line-height: 0.95; color: #fff; }
+    .hero-sub { font-size: 0.95rem; color: rgba(255,255,255,0.42); line-height: 1.75; margin-top: 20px; max-width: 460px; }
 
-    /* Services list */
-    .services-list { padding: 0 clamp(24px,6vw,80px); }
-    .service-item { display: grid; grid-template-columns: 60px 1fr 1fr; gap: 40px; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 52px 0; align-items: start; transition: background .2s; cursor: default; }
-    .service-item:hover { background: rgba(255,255,255,0.01); }
-    .service-num { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.85rem; color: rgba(255,255,255,0.15); padding-top: 8px; }
-    .service-title { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(1.6rem,3vw,2.2rem); color: #fff; letter-spacing: -0.02em; line-height: 1.1; }
-    .service-desc-wrap { }
-    .service-desc { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.88rem; color: rgba(255,255,255,0.4); line-height: 1.85; margin-bottom: 20px; }
-    .service-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .tag { font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 400; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 100px; }
+    /* Service chapters — each a full visual section */
+    .service-chapter {
+      position: relative;
+      padding: 100px clamp(24px,6vw,80px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      min-height: 520px;
+    }
+    .service-chapter:nth-child(even) { direction: rtl; }
+    .service-chapter:nth-child(even) > * { direction: ltr; }
+    .chapter-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      filter: brightness(0.18) saturate(0.5);
+      z-index: 0;
+      transition: filter 0.6s ease;
+    }
+    .service-chapter:hover .chapter-bg { filter: brightness(0.25) saturate(0.6); }
+    .chapter-grad { position: absolute; inset: 0; z-index: 1; }
+    .service-chapter:nth-child(odd) .chapter-grad { background: linear-gradient(to right, rgba(3,3,3,0.85) 0%, rgba(3,3,3,0.4) 60%, rgba(3,3,3,0.1) 100%); }
+    .service-chapter:nth-child(even) .chapter-grad { background: linear-gradient(to left, rgba(3,3,3,0.85) 0%, rgba(3,3,3,0.4) 60%, rgba(3,3,3,0.1) 100%); }
+    .chapter-content { position: relative; z-index: 2; }
+    .chapter-num { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 5rem; color: rgba(255,255,255,0.05); line-height: 1; margin-bottom: 8px; letter-spacing: -0.04em; }
+    .chapter-name { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(1.8rem,3.5vw,2.8rem); letter-spacing: -0.03em; color: #fff; margin-bottom: 20px; line-height: 1.1; }
+    .chapter-body { font-size: 0.92rem; color: rgba(255,255,255,0.42); line-height: 1.85; max-width: 420px; }
+    .chapter-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+    .tag { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.14); padding: 5px 12px; border-radius: 100px; backdrop-filter: blur(8px); background: rgba(255,255,255,0.04); transition: border-color .2s, color .2s; }
+    .service-chapter:hover .tag { border-color: rgba(255,255,255,0.28); color: rgba(255,255,255,0.7); }
+    .chapter-visual { position: relative; z-index: 2; }
+    .chapter-glow {
+      width: 100%; padding-top: 100%;
+      background: radial-gradient(ellipse, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 40%, transparent 70%);
+      border-radius: 50%;
+      position: relative;
+    }
+    .chapter-glow::after {
+      content: '';
+      position: absolute;
+      inset: 15%;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 50%;
+      animation: pulse 4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
 
-    /* Process grid */
-    .process-section { padding: 80px clamp(24px,6vw,80px); border-top: 1px solid rgba(255,255,255,0.06); }
-    .process-section h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(1.8rem,3.5vw,2.8rem); letter-spacing: -0.02em; margin-bottom: 48px; }
-    .process-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.06); }
-    .process-cell { background: #030303; padding: 44px 32px; transition: background .25s; }
-    .process-cell:hover { background: rgba(255,255,255,0.02); }
-    .process-step { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255,255,255,0.3); margin-bottom: 16px; }
-    .process-title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.4rem; color: #fff; margin-bottom: 12px; }
-    .process-body { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.82rem; color: rgba(255,255,255,0.38); line-height: 1.8; }
-
-    /* CTA block */
-    .cta-section { margin: 0 clamp(24px,6vw,80px) 80px; border: 1px solid rgba(255,255,255,0.08); padding: 64px; text-align: center; }
-    .cta-section h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 2.5rem; letter-spacing: -0.02em; color: #fff; margin-bottom: 16px; }
-    .cta-section p { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.9rem; color: rgba(255,255,255,0.38); line-height: 1.8; margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto; }
-    .btn-primary { background: #fff; color: #000; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.1em; padding: 13px 28px; border-radius: 100px; border: none; cursor: pointer; text-decoration: none; display: inline-block; transition: opacity .2s; }
-    .btn-primary:hover { opacity: 0.82; }
+    /* CTA strip */
+    .cta-strip {
+      position: relative;
+      padding: 100px clamp(24px,6vw,80px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+      background: rgba(0,0,0,0.45);
+    }
+    .cta-strip h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2.5rem,6vw,5rem); letter-spacing: -0.03em; margin-bottom: 16px; }
+    .cta-strip p { font-size: 0.92rem; color: rgba(255,255,255,0.38); margin-bottom: 36px; }
+    .btn-white { background: #fff; color: #000; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.1em; padding: 15px 36px; border-radius: 100px; text-decoration: none; display: inline-block; transition: opacity .2s; }
+    .btn-white:hover { opacity: 0.85; }
 
     /* Footer */
-    footer { background: #000; border-top: 1px solid rgba(255,255,255,0.06); }
+    footer { background: rgba(0,0,0,0.88); border-top: 1px solid rgba(255,255,255,0.06); }
     .footer-inner { padding: 0 clamp(24px,6vw,80px); }
     .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 32px 0; gap: 24px; flex-wrap: wrap; }
     .footer-nav { display: flex; list-style: none; gap: 24px; flex-wrap: wrap; }
-    .footer-nav a { font-family: 'Inter', sans-serif; font-size: 0.7rem; color: rgba(255,255,255,0.22); text-decoration: none; letter-spacing: 0.06em; transition: color .2s; }
+    .footer-nav a { font-size: 0.7rem; color: rgba(255,255,255,0.22); text-decoration: none; letter-spacing: 0.06em; transition: color .2s; }
     .footer-nav a:hover { color: rgba(255,255,255,0.6); }
-    .footer-copy { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
+    .footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
 
     @media (max-width: 860px) {
-      .nav-center { display: none; }
-      .service-item { grid-template-columns: 40px 1fr; }
-      .service-desc-wrap { grid-column: 2; }
-      .process-grid { grid-template-columns: 1fr 1fr; }
-      .cta-section { padding: 40px 24px; }
-    }
-    @media (max-width: 520px) {
-      .service-item { grid-template-columns: 1fr; gap: 16px; }
-      .process-grid { grid-template-columns: 1fr; }
+      .service-chapter { grid-template-columns: 1fr; direction: ltr !important; }
+      .service-chapter:nth-child(even) { direction: ltr; }
+      .chapter-visual { display: none; }
+      .service-chapter:nth-child(odd) .chapter-grad,
+      .service-chapter:nth-child(even) .chapter-grad { background: linear-gradient(to top, rgba(3,3,3,0.9) 0%, rgba(3,3,3,0.4) 100%); }
     }
   </style>
 </head>
 <body>
+
+  <video class="site-video" autoplay muted playsinline loop preload="auto" disablepictureinpicture>
+    <source src="/assets/hero-backdrop.mp4" type="video/mp4">
+  </video>
+  <div class="site-overlay"></div>
 
   <nav class="island-nav">
     <a href="/" class="nav-logo">
@@ -107,7 +163,6 @@
       </button>
     </div>
   </nav>
-
   <div class="nav-drop" id="navDrop">
     <a href="/about">About</a>
     <a href="/services">Services</a>
@@ -115,110 +170,103 @@
     <a href="/contact">Contact</a>
   </div>
 
-  <div class="page-hero">
-    <p class="page-label" data-reveal>Services</p>
-    <h1 data-reveal="d1">What we build.</h1>
-  </div>
-
-  <div class="services-list">
-    <div class="service-item" data-reveal>
-      <span class="service-num">01</span>
-      <h2 class="service-title">Automation &amp; Systems</h2>
-      <div class="service-desc-wrap">
-        <p class="service-desc">Custom automation systems that handle complex operational workflows — customer support, sales pipelines, internal operations — with 24/7 reliability. We map your processes and engineer solutions that run without constant oversight.</p>
-        <div class="service-tags">
-          <span class="tag">Workflow Automation</span>
-          <span class="tag">AI Integration</span>
-          <span class="tag">API Orchestration</span>
-          <span class="tag">24/7 Systems</span>
-        </div>
-      </div>
-    </div>
-    <div class="service-item" data-reveal>
-      <span class="service-num">02</span>
-      <h2 class="service-title">Platform Development</h2>
-      <div class="service-desc-wrap">
-        <p class="service-desc">Full-stack web and mobile platforms engineered for scale. From consumer-facing products to complex internal tools, we build with modern stacks, clean architecture, and a relentless focus on performance.</p>
-        <div class="service-tags">
-          <span class="tag">Web Applications</span>
-          <span class="tag">Mobile Apps</span>
-          <span class="tag">APIs &amp; Backend</span>
-          <span class="tag">Performance</span>
-        </div>
-      </div>
-    </div>
-    <div class="service-item" data-reveal>
-      <span class="service-num">03</span>
-      <h2 class="service-title">Data &amp; Analytics</h2>
-      <div class="service-desc-wrap">
-        <p class="service-desc">Turn raw data into a strategic asset. We design pipelines, dashboards, and reporting systems that give leadership the visibility to make faster, better decisions — and the infrastructure to act on them.</p>
-        <div class="service-tags">
-          <span class="tag">Data Pipelines</span>
-          <span class="tag">Dashboards</span>
-          <span class="tag">Reporting</span>
-          <span class="tag">Business Intelligence</span>
-        </div>
-      </div>
-    </div>
-    <div class="service-item" data-reveal>
-      <span class="service-num">04</span>
-      <h2 class="service-title">Brand &amp; Creative Systems</h2>
-      <div class="service-desc-wrap">
-        <p class="service-desc">Design systems and visual identities that scale. We build the creative infrastructure — component libraries, brand guidelines, motion standards — that keeps your product and marketing in lock-step as you grow.</p>
-        <div class="service-tags">
-          <span class="tag">Design Systems</span>
-          <span class="tag">Brand Identity</span>
-          <span class="tag">UI Components</span>
-          <span class="tag">Motion Design</span>
-        </div>
-      </div>
-    </div>
-    <div class="service-item" data-reveal>
-      <span class="service-num">05</span>
-      <h2 class="service-title">Infrastructure &amp; Security</h2>
-      <div class="service-desc-wrap">
-        <p class="service-desc">Cloud architecture designed for uptime, performance, and security at scale. We handle deployment pipelines, monitoring, access controls, and compliance frameworks so your technical foundation is never a liability.</p>
-        <div class="service-tags">
-          <span class="tag">Cloud Architecture</span>
-          <span class="tag">DevOps</span>
-          <span class="tag">Security</span>
-          <span class="tag">Compliance</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <section class="process-section">
-    <h2 data-reveal>How we work.</h2>
-    <div class="process-grid">
-      <div class="process-cell" data-reveal>
-        <p class="process-step">Step 01</p>
-        <h3 class="process-title">Discovery</h3>
-        <p class="process-body">We begin by listening. Deep conversations about your business, your constraints, and where you want to go. No assumptions — just rigorous understanding.</p>
-      </div>
-      <div class="process-cell" data-reveal="d1">
-        <p class="process-step">Step 02</p>
-        <h3 class="process-title">Architecture</h3>
-        <p class="process-body">We map out the solution — technically and strategically. Every decision is documented and explained before a line of code is written.</p>
-      </div>
-      <div class="process-cell" data-reveal="d2">
-        <p class="process-step">Step 03</p>
-        <h3 class="process-title">Build</h3>
-        <p class="process-body">We build with precision. Regular check-ins, clear milestones, and a feedback loop that keeps you informed and in control throughout.</p>
-      </div>
-      <div class="process-cell" data-reveal="d3">
-        <p class="process-step">Step 04</p>
-        <h3 class="process-title">Launch &amp; Grow</h3>
-        <p class="process-body">We don't disappear at launch. We monitor, iterate, and remain your technical partner as your business evolves and scales.</p>
-      </div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grad"></div>
+    <div class="hero-content">
+      <p class="page-label" data-reveal>Services</p>
+      <h1 data-reveal="d1">What we<br>build.</h1>
+      <p class="hero-sub" data-reveal="d2">Custom platforms, automation, and infrastructure — engineered for businesses that refuse to settle.</p>
     </div>
   </section>
 
-  <section class="cta-section" data-reveal>
-    <h2>Ready to start?</h2>
-    <p>Tell us what you're building. We'll figure out the best way to help — no obligation, no pitch deck.</p>
-    <a href="/contact" class="btn-primary">Get in touch</a>
-  </section>
+  <!-- Service 01 -->
+  <div class="service-chapter">
+    <div class="chapter-bg" style="background-image:url('/assets/pexels-todd-trapani-488382-3790058.jpg');"></div>
+    <div class="chapter-grad"></div>
+    <div class="chapter-content" data-reveal>
+      <div class="chapter-num">01</div>
+      <h2 class="chapter-name">Automation &amp; Systems</h2>
+      <p class="chapter-body">We build the systems that run your business while you sleep. Custom workflows, intelligent routing, and 24/7 operations — designed around your exact process.</p>
+      <div class="chapter-tags">
+        <span class="tag">Workflow Automation</span>
+        <span class="tag">CRM Integration</span>
+        <span class="tag">Operations</span>
+        <span class="tag">24/7 Systems</span>
+      </div>
+    </div>
+    <div class="chapter-visual" data-reveal="d1">
+      <div class="chapter-glow"></div>
+    </div>
+  </div>
+
+  <!-- Service 02 -->
+  <div class="service-chapter">
+    <div class="chapter-bg" style="background-image:url('/assets/pexels-luis-ruiz-1774931.jpg');"></div>
+    <div class="chapter-grad"></div>
+    <div class="chapter-content" data-reveal>
+      <div class="chapter-num">02</div>
+      <h2 class="chapter-name">Platform Development</h2>
+      <p class="chapter-body">Full-stack web and mobile applications built to scale from day one. We move fast and build for the long term — no shortcuts, no tech debt that comes back to bite.</p>
+      <div class="chapter-tags">
+        <span class="tag">Web Applications</span>
+        <span class="tag">Mobile</span>
+        <span class="tag">E-Commerce</span>
+        <span class="tag">APIs</span>
+      </div>
+    </div>
+    <div class="chapter-visual" data-reveal="d1">
+      <div class="chapter-glow"></div>
+    </div>
+  </div>
+
+  <!-- Service 03 -->
+  <div class="service-chapter">
+    <div class="chapter-bg" style="background-image:url('/assets/pexels-diego-f-parra-33199-15478112.jpg');"></div>
+    <div class="chapter-grad"></div>
+    <div class="chapter-content" data-reveal>
+      <div class="chapter-num">03</div>
+      <h2 class="chapter-name">Data &amp; Infrastructure</h2>
+      <p class="chapter-body">Analytics, cloud architecture, and the operational backbone that lets you scale without breaking. We engineer systems that grow with your business, not against it.</p>
+      <div class="chapter-tags">
+        <span class="tag">Cloud Architecture</span>
+        <span class="tag">Analytics</span>
+        <span class="tag">Data Pipelines</span>
+        <span class="tag">Infrastructure</span>
+      </div>
+    </div>
+    <div class="chapter-visual" data-reveal="d1">
+      <div class="chapter-glow"></div>
+    </div>
+  </div>
+
+  <!-- Service 04 -->
+  <div class="service-chapter">
+    <div class="chapter-bg" style="background-image:url('/assets/pexels-todd-trapani-488382-3790058.jpg'); background-position: bottom;"></div>
+    <div class="chapter-grad"></div>
+    <div class="chapter-content" data-reveal>
+      <div class="chapter-num">04</div>
+      <h2 class="chapter-name">Brand &amp; Design</h2>
+      <p class="chapter-body">Visual systems that make an impression and a statement. From identity to interface, we design for businesses that understand presentation is part of the product.</p>
+      <div class="chapter-tags">
+        <span class="tag">Identity</span>
+        <span class="tag">UI/UX Design</span>
+        <span class="tag">Design Systems</span>
+        <span class="tag">Marketing</span>
+      </div>
+    </div>
+    <div class="chapter-visual" data-reveal="d1">
+      <div class="chapter-glow"></div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-strip">
+    <h2 data-reveal>Ready to build?</h2>
+    <p data-reveal="d1">Tell us what you're working on.</p>
+    <a href="/contact" class="btn-white" data-reveal="d2">Start a conversation</a>
+  </div>
 
   <footer>
     <div class="footer-inner">
@@ -237,14 +285,13 @@
   </footer>
 
   <script>
-    const ham = document.getElementById('navHam');
-    const drop = document.getElementById('navDrop');
+    const ham = document.getElementById('navHam'), drop = document.getElementById('navDrop');
     if (ham && drop) {
       ham.addEventListener('click', () => { ham.classList.toggle('open'); drop.classList.toggle('open'); });
       document.addEventListener('click', e => { if (!ham.contains(e.target) && !drop.contains(e.target)) { ham.classList.remove('open'); drop.classList.remove('open'); } });
       drop.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { ham.classList.remove('open'); drop.classList.remove('open'); }));
     }
-    const io = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    const io = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
     document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
   </script>
 </body>

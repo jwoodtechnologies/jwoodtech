@@ -75,6 +75,8 @@
 
     /* Billboard */
     .billboard { background: rgba(0,0,0,0.35); border-top: 1px solid rgba(255,255,255,0.06); padding: 80px clamp(24px,6vw,80px); }
+    .billboard-headline { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(1.8rem,3vw,2.6rem); letter-spacing: -0.03em; color: #fff; margin-bottom: 12px; }
+    .billboard-copy { font-size: 0.88rem; color: rgba(255,255,255,0.38); line-height: 1.75; max-width: 540px; margin-bottom: 32px; }
     .section-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 24px; }
     .billboard img { width: 100%; max-width: 860px; display: block; }
 
@@ -189,36 +191,10 @@
   <!-- Billboard -->
   <div class="billboard" data-reveal>
     <p class="section-label">Out in the world</p>
-    <img src="/assets/837.jpeg" alt="Jwood Technologies billboard"
-      onerror="this.style.display='none'">
+    <h3 class="billboard-headline">On the billboard.</h3>
+    <p class="billboard-copy">Before the website, there was the billboard. Jwood Technologies has been a visible presence — in the community and in the press — since day one.</p>
+    <img src="/assets/837.jpeg" alt="Jwood Technologies billboard" onerror="this.style.display='none'">
   </div>
-
-  <!-- Pillars -->
-  <section class="pillars">
-    <h2 data-reveal>What we stand for.</h2>
-    <div class="pillars-grid">
-      <div class="pillar" data-reveal>
-        <div class="pillar-num">01</div>
-        <h3 class="pillar-title">Intelligence First</h3>
-        <p class="pillar-body">We don't ship solutions that look impressive. We ship solutions that work.</p>
-      </div>
-      <div class="pillar" data-reveal="d1">
-        <div class="pillar-num">02</div>
-        <h3 class="pillar-title">Built to Last</h3>
-        <p class="pillar-body">Scalable architecture, clean code — systems that grow with your business.</p>
-      </div>
-      <div class="pillar" data-reveal>
-        <div class="pillar-num">03</div>
-        <h3 class="pillar-title">Radical Clarity</h3>
-        <p class="pillar-body">No jargon. On scope, timelines, trade-offs, and outcomes — you always know where things stand.</p>
-      </div>
-      <div class="pillar" data-reveal="d1">
-        <div class="pillar-num">04</div>
-        <h3 class="pillar-title">Partnership Over Projects</h3>
-        <p class="pillar-body">We're invested in your outcomes long after launch.</p>
-      </div>
-    </div>
-  </section>
 
   <footer>
     <div class="footer-inner">
