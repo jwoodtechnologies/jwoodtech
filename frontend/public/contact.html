@@ -4,239 +4,265 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact — Jwood Technologies</title>
-  <link rel="icon" href="/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root { --bg: #08080a; --nav: #0a0a0d; --surface: #0f0f13; --border: rgba(255,255,255,0.07); --text: #f0f0f2; --muted: #888896; --faint: #3a3a46; --accent: #00c8f0; --nav-h: 72px; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-    a { color: inherit; text-decoration: none; }
-    button { cursor: pointer; border: none; background: none; font: inherit; }
-    h1,h2,h3 { font-family: 'Cormorant Garant', Georgia, serif; }
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: var(--nav-h); background: var(--nav); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 clamp(24px, 5vw, 64px); }
-    .nav-inner { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo img { height: 22px; width: auto; filter: brightness(0) invert(1); }
-    .nav-links { display: flex; align-items: center; gap: 40px; list-style: none; }
-    .nav-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); transition: color .2s; }
-    .nav-links a:hover, .nav-links a.active { color: var(--text); }
-    .nav-contact { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(0,200,240,0.3); padding: 8px 22px; border-radius: 2px; transition: background .2s, color .2s; }
-    .nav-contact:hover { background: var(--accent); color: #000; }
-    .mobile-nav { display: none; position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 200; width: calc(100vw - 32px); max-width: 420px; height: 52px; background: rgba(10,10,14,0.92); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 100px; padding: 0 8px 0 16px; align-items: center; justify-content: space-between; }
-    .mobile-nav-logo img { height: 18px; width: auto; filter: brightness(0) invert(1); }
-    .mobile-hamburger { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; }
-    .mobile-hamburger span { display: block; width: 16px; height: 1.5px; background: var(--text); border-radius: 2px; transition: all .25s; }
-    .mobile-hamburger.active span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
-    .mobile-hamburger.active span:nth-child(2) { opacity: 0; }
-    .mobile-hamburger.active span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
-    .mobile-dropdown { display: none; position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 199; width: calc(100vw - 32px); max-width: 420px; background: rgba(10,10,14,0.97); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; animation: drop-in .22s cubic-bezier(.22,1,.36,1) both; }
-    .mobile-dropdown.open { display: block; }
-    @keyframes drop-in { from { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.97); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
-    .mobile-dropdown a { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; font-size: 1rem; font-weight: 500; color: var(--muted); border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s, background .2s; }
-    .mobile-dropdown a:last-child { border-bottom: none; }
-    .mobile-dropdown a:hover { color: var(--text); background: rgba(255,255,255,0.03); }
-    .page-wrap { padding-top: var(--nav-h); }
-    .page-hero { padding: 100px clamp(24px, 5vw, 64px) 80px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
-    .page-hero::before { content: ''; position: absolute; top: -120px; right: -80px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,200,240,0.06) 0%, transparent 70%); pointer-events: none; }
-    .page-hero-inner { max-width: 1400px; margin: 0 auto; }
-    .page-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
-    .page-h1 { font-family: 'Cormorant Garant', Georgia, serif; font-size: clamp(3rem, 7vw, 6.5rem); font-weight: 700; letter-spacing: -0.02em; line-height: 0.95; }
-    .page-h1 em { font-style: italic; }
-    .content { max-width: 1400px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 64px); }
+    body { background: #030303; color: #fff; font-family: 'Inter', sans-serif; font-weight: 300; overflow-x: hidden; }
 
-    .contact-grid { display: grid; grid-template-columns: 360px 1fr; gap: 100px; padding: 80px 0 100px; align-items: start; }
-    .contact-info-title { font-family: 'Cormorant Garant', Georgia, serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 32px; }
-    .info-item { display: flex; gap: 16px; margin-bottom: 32px; align-items: flex-start; }
-    .info-icon { width: 36px; height: 36px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
-    .info-icon svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 1.5; }
-    .info-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: 4px; }
-    .info-val { font-size: 0.9rem; font-weight: 300; color: var(--text); }
-    .info-val a { color: var(--accent); }
-    .contact-note { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); font-size: 0.82rem; font-weight: 300; color: var(--muted); line-height: 1.8; }
+    [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    [data-reveal].in { opacity: 1; transform: none; }
+    [data-reveal="d1"] { transition-delay: 0.12s; }
+    [data-reveal="d2"] { transition-delay: 0.22s; }
+    [data-reveal="d3"] { transition-delay: 0.32s; }
 
-    .form-panel { }
-    .form-title { font-family: 'Cormorant Garant', Georgia, serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 32px; }
+    /* Island Nav */
+    .island-nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: min(94vw, 1000px); height: 54px; background: rgba(8,8,8,0.55); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; padding: 0 6px 0 20px; display: flex; align-items: center; justify-content: space-between; z-index: 1000; }
+    .nav-logo img { height: 20px; filter: brightness(0) invert(1); display: block; }
+    .nav-center { display: flex; align-items: center; gap: 32px; }
+    .nav-center a { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.78rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); text-decoration: none; transition: color .2s; }
+    .nav-center a:hover { color: #fff; }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-contact { background: #fff; color: #000; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.75rem; letter-spacing: 0.08em; padding: 9px 20px; border-radius: 100px; text-decoration: none; transition: opacity .2s; white-space: nowrap; }
+    .nav-contact:hover { opacity: 0.85; }
+    .nav-ham { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.08); border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transition: background .2s; }
+    .nav-ham:hover { background: rgba(255,255,255,0.13); }
+    .nav-ham span { display: block; width: 15px; height: 1px; background: #fff; transition: transform .25s, opacity .25s; }
+    .nav-ham.open span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+    .nav-ham.open span:nth-child(2) { opacity: 0; }
+    .nav-ham.open span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+    .nav-drop { display: none; position: fixed; top: 82px; left: 50%; transform: translateX(-50%); width: min(94vw, 1000px); background: rgba(8,8,8,0.97); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; z-index: 999; }
+    .nav-drop.open { display: block; }
+    .nav-drop a { display: block; padding: 18px 28px; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.9rem; color: rgba(255,255,255,0.55); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s, background .2s; }
+    .nav-drop a:last-child { border-bottom: none; }
+    .nav-drop a:hover { color: #fff; background: rgba(255,255,255,0.03); }
+
+    /* Page Hero */
+    .page-hero { padding-top: calc(54px + 80px + 20px); padding-bottom: 80px; padding-left: clamp(24px,6vw,80px); padding-right: clamp(24px,6vw,80px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .page-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 20px; }
+    .page-hero h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,6rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
+
+    /* Contact layout */
+    .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; padding: 80px clamp(24px,6vw,80px); align-items: start; }
+
+    /* Left: info */
+    .info-intro { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.95rem; color: rgba(255,255,255,0.42); line-height: 1.85; margin-bottom: 48px; }
+    .info-items { display: flex; flex-direction: column; gap: 28px; }
+    .info-item { display: flex; gap: 16px; align-items: flex-start; }
+    .info-icon { width: 34px; height: 34px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .info-icon svg { stroke: rgba(255,255,255,0.5); }
+    .info-label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.28); margin-bottom: 4px; }
+    .info-value { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.88rem; color: #fff; line-height: 1.6; }
+    .info-value a { color: #fff; text-decoration: none; transition: color .2s; }
+    .info-value a:hover { color: rgba(255,255,255,0.65); }
+
+    /* Right: form */
+    .contact-form { display: flex; flex-direction: column; gap: 20px; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .form-field { margin-bottom: 20px; }
-    .form-field label { display: block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
-    .form-field input, .form-field textarea, .form-field select {
-      width: 100%; background: var(--surface); border: 1px solid var(--border);
-      padding: 13px 16px; color: var(--text); font-family: 'Inter', sans-serif;
-      font-size: 0.88rem; font-weight: 300; outline: none; transition: border-color .2s; -webkit-appearance: none;
+    .field { display: flex; flex-direction: column; gap: 8px; }
+    .field label { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(255,255,255,0.35); }
+    .field input, .field textarea, .field select {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 0.88rem;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color .2s;
+      border-radius: 0;
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
     }
-    .form-field input:focus, .form-field textarea:focus, .form-field select:focus { border-color: rgba(0,200,240,0.4); }
-    .form-field textarea { resize: vertical; min-height: 130px; }
-    .form-submit { width: 100%; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 15px; background: var(--accent); color: #000; transition: opacity .2s; margin-top: 4px; }
-    .form-submit:hover { opacity: 0.85; }
-    .form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
-    .form-success { display: none; margin-top: 16px; padding: 16px; border: 1px solid rgba(0,200,240,0.2); background: rgba(0,200,240,0.05); font-size: 0.85rem; color: var(--accent); }
+    .field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,0.2); }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color: rgba(255,255,255,0.35); }
+    .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; cursor: pointer; }
+    .field select option { background: #111; color: #fff; }
+    .field textarea { resize: vertical; min-height: 120px; line-height: 1.7; }
+    .btn-submit { background: #fff; color: #000; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.1em; padding: 15px 28px; border-radius: 100px; border: none; cursor: pointer; width: 100%; transition: opacity .2s; margin-top: 4px; }
+    .btn-submit:hover { opacity: 0.82; }
+    .form-success { display: none; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.7); font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.88rem; padding: 20px 24px; line-height: 1.7; }
 
-    footer { background: #000; padding: 48px clamp(24px, 5vw, 64px); border-top: 1px solid rgba(255,255,255,0.06); }
-    .footer-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-    .footer-logo img { height: 18px; filter: brightness(0) invert(1); opacity: 0.4; }
-    .footer-links { display: flex; gap: 28px; list-style: none; }
-    .footer-links a { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.25); transition: color .2s; }
-    .footer-links a:hover { color: rgba(255,255,255,0.6); }
-    .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.18); }
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
-    .reveal.up { opacity: 1; transform: none; }
-    @media (max-width: 900px) {
-      nav { display: none; }
-      .mobile-nav { display: flex; }
-      .page-wrap { padding-top: 80px; }
-      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+    /* Footer */
+    footer { background: #000; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-inner { padding: 0 clamp(24px,6vw,80px); }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 32px 0; gap: 24px; flex-wrap: wrap; }
+    .footer-nav { display: flex; list-style: none; gap: 24px; flex-wrap: wrap; }
+    .footer-nav a { font-family: 'Inter', sans-serif; font-size: 0.7rem; color: rgba(255,255,255,0.22); text-decoration: none; letter-spacing: 0.06em; transition: color .2s; }
+    .footer-nav a:hover { color: rgba(255,255,255,0.6); }
+    .footer-copy { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
+
+    @media (max-width: 860px) {
+      .nav-center { display: none; }
+      .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+    }
+    @media (max-width: 520px) {
       .form-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-<nav>
-  <div class="nav-inner">
-    <a href="/" class="nav-logo"><img src="/assets/IMG_6989.png" alt="Jwood Technologies"></a>
-    <ul class="nav-links">
-      <li><a href="/about">About</a></li>
-      <li><a href="/services">Services</a></li>
-      <li><a href="/careers">Careers</a></li>
-      <li><a href="/terms">Legal</a></li>
-    </ul>
-    <a href="/contact" class="nav-contact active" style="color:#000;background:var(--accent);">Contact</a>
-  </div>
-</nav>
-<div class="mobile-nav" id="mobileNav">
-  <a href="/" class="mobile-nav-logo"><img src="/assets/IMG_6989.png" alt="Jwood Technologies"></a>
-  <button class="mobile-hamburger" id="mobileHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-</div>
-<div class="mobile-dropdown" id="mobileDropdown">
-  <a href="/">Home <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
-  <a href="/about">About <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
-  <a href="/services">Services <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
-  <a href="/careers">Careers <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
-  <a href="/terms">Legal <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></a>
-</div>
 
-<div class="page-wrap">
+  <nav class="island-nav">
+    <a href="/" class="nav-logo">
+      <img src="/assets/IMG_6989.png" alt="Jwood Technologies" onerror="this.style.display='none'">
+    </a>
+    <div class="nav-center">
+      <a href="/about">About</a>
+      <a href="/services">Services</a>
+      <a href="/careers">Careers</a>
+    </div>
+    <div class="nav-right">
+      <a href="/contact" class="nav-contact">Contact</a>
+      <button class="nav-ham" id="navHam" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="nav-drop" id="navDrop">
+    <a href="/about">About</a>
+    <a href="/services">Services</a>
+    <a href="/careers">Careers</a>
+    <a href="/contact">Contact</a>
+  </div>
+
   <div class="page-hero">
-    <div class="page-hero-inner">
-      <div class="page-label">Contact</div>
-      <h1 class="page-h1">Let's build<br><em>something.</em></h1>
-    </div>
+    <p class="page-label" data-reveal>Contact</p>
+    <h1 data-reveal="d1">Let's build something.</h1>
   </div>
-  <div class="content">
-    <div class="contact-grid">
-      <div class="reveal">
-        <div class="contact-info-title">Get in touch.</div>
+
+  <div class="contact-layout">
+    <div data-reveal>
+      <p class="info-intro">Tell us about your project. We respond to every inquiry personally — usually within one business day.</p>
+      <div class="info-items">
         <div class="info-item">
           <div class="info-icon">
-            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 4l6 5 6-5M2 3h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
+            </svg>
           </div>
           <div>
-            <div class="info-label">Email</div>
-            <div class="info-val"><a href="mailto:hello@jwoodtechnologies.com">hello@jwoodtechnologies.com</a></div>
+            <p class="info-label">Email</p>
+            <p class="info-value"><a href="mailto:hello@jwoodtechnologies.com">hello@jwoodtechnologies.com</a></p>
           </div>
         </div>
         <div class="info-item">
           <div class="info-icon">
-            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 1C5.24 1 3 3.24 3 6c0 4.25 5 9 5 9s5-4.75 5-9c0-2.76-2.24-5-5-5z"/>
+              <circle cx="8" cy="6" r="1.5"/>
+            </svg>
           </div>
           <div>
-            <div class="info-label">Location</div>
-            <div class="info-val">United States — Remote-first</div>
+            <p class="info-label">Location</p>
+            <p class="info-value">United States</p>
           </div>
         </div>
         <div class="info-item">
           <div class="info-icon">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="8" r="6"/>
+              <path d="M8 4v4l2.5 2.5"/>
+            </svg>
           </div>
           <div>
-            <div class="info-label">Response Time</div>
-            <div class="info-val">Within 24 hours</div>
+            <p class="info-label">Response Time</p>
+            <p class="info-value">Within 1 business day</p>
           </div>
         </div>
-        <p class="contact-note">We work with a small number of clients at a time, which means every engagement gets our full attention. If the timing and fit are right, we'll know quickly.</p>
-      </div>
-      <div class="form-panel reveal">
-        <div class="form-title">Tell us about your project.</div>
-        <form id="contactForm">
-          <div class="form-row">
-            <div class="form-field">
-              <label>First Name</label>
-              <input type="text" name="firstName" placeholder="Jacob" required>
-            </div>
-            <div class="form-field">
-              <label>Last Name</label>
-              <input type="text" name="lastName" placeholder="Wood" required>
-            </div>
-          </div>
-          <div class="form-field">
-            <label>Email Address</label>
-            <input type="email" name="email" placeholder="you@company.com" required>
-          </div>
-          <div class="form-field">
-            <label>Company</label>
-            <input type="text" name="company" placeholder="Your company name">
-          </div>
-          <div class="form-field">
-            <label>Area of Interest</label>
-            <select name="service">
-              <option value="">Select...</option>
-              <option>Conversational AI &amp; Automation</option>
-              <option>Digital Platform Development</option>
-              <option>Data &amp; Analytics</option>
-              <option>Brand &amp; Creative Systems</option>
-              <option>Infrastructure &amp; Security</option>
-              <option>Other / Not sure yet</option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label>Project Details</label>
-            <textarea name="message" placeholder="Describe your goals, timeline, and anything else we should know..."></textarea>
-          </div>
-          <button type="submit" class="form-submit" id="submitBtn">Send Message</button>
-          <div class="form-success" id="formSuccess">Your message has been received. We'll be in touch within 24 hours.</div>
-        </form>
       </div>
     </div>
+
+    <div data-reveal="d1">
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Jacob" required>
+          </div>
+          <div class="field">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Wood" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@company.com" required>
+        </div>
+        <div class="field">
+          <label for="company">Company</label>
+          <input type="text" id="company" name="company" placeholder="Your Company">
+        </div>
+        <div class="field">
+          <label for="service">Service Interest</label>
+          <select id="service" name="service" style="-webkit-appearance:none; background-color:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); color:#fff; font-family:'Inter',sans-serif; font-weight:300; font-size:0.88rem; padding:13px 40px 13px 16px; outline:none; width:100%; cursor:pointer; transition:border-color .2s; background-image:url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'8\' viewBox=\'0 0 12 8\' fill=\'none\'%3E%3Cpath d=\'M1 1l5 5 5-5\' stroke=\'rgba(255,255,255,0.4)\' stroke-width=\'1.2\' stroke-linecap=\'round\'/%3E%3C/svg%3E'); background-repeat:no-repeat; background-position:right 16px center;">
+            <option value="" style="background:#111;color:#fff;">Select a service…</option>
+            <option value="automation" style="background:#111;color:#fff;">Automation &amp; Systems</option>
+            <option value="platform" style="background:#111;color:#fff;">Platform Development</option>
+            <option value="data" style="background:#111;color:#fff;">Data &amp; Analytics</option>
+            <option value="brand" style="background:#111;color:#fff;">Brand &amp; Creative Systems</option>
+            <option value="infrastructure" style="background:#111;color:#fff;">Infrastructure &amp; Security</option>
+            <option value="other" style="background:#111;color:#fff;">Other / Not sure yet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell us about your project, timeline, and any specific requirements…" required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Send Message</button>
+        <div class="form-success" id="formSuccess">
+          Thank you — your message has been received. We'll be in touch within one business day.
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 
-<footer>
-  <div class="footer-inner">
-    <a href="/" class="footer-logo"><img src="/assets/IMG_6989.png" alt="Jwood Technologies"></a>
-    <ul class="footer-links">
-      <li><a href="/about">About</a></li>
-      <li><a href="/services">Services</a></li>
-      <li><a href="/careers">Careers</a></li>
-      <li><a href="/contact">Contact</a></li>
-      <li><a href="/terms">Legal</a></li>
-    </ul>
-    <span class="footer-copy">© 2025 Jwood Technologies, LLC</span>
-  </div>
-</footer>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-bottom">
+        <a href="/"><img src="/assets/IMG_6989.png" alt="Jwood Technologies" style="height:18px;filter:brightness(0) invert(1);opacity:0.35;" onerror="this.style.display='none'"></a>
+        <ul class="footer-nav">
+          <li><a href="/about">About</a></li>
+          <li><a href="/services">Services</a></li>
+          <li><a href="/careers">Careers</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/terms">Legal</a></li>
+        </ul>
+        <span class="footer-copy">© 2025 Jwood Technologies</span>
+      </div>
+    </div>
+  </footer>
 
-<script>
-  const ham = document.getElementById('mobileHamburger');
-  const drop = document.getElementById('mobileDropdown');
-  ham.addEventListener('click', () => { ham.classList.toggle('active'); drop.classList.toggle('open'); });
-  document.addEventListener('click', e => { if (!ham.contains(e.target) && !drop.contains(e.target)) { ham.classList.remove('active'); drop.classList.remove('open'); } });
-  const obs = new IntersectionObserver(entries => { entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('up'), i * 80); obs.unobserve(e.target); } }); }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-  document.getElementById('contactForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    const btn = document.getElementById('submitBtn');
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
-    const data = Object.fromEntries(new FormData(e.target));
-    try {
-      await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-      document.getElementById('formSuccess').style.display = 'block';
-      e.target.reset();
-      btn.textContent = 'Sent';
-    } catch {
-      btn.textContent = 'Send Message';
-      btn.disabled = false;
+  <script>
+    const ham = document.getElementById('navHam');
+    const drop = document.getElementById('navDrop');
+    if (ham && drop) {
+      ham.addEventListener('click', () => { ham.classList.toggle('open'); drop.classList.toggle('open'); });
+      document.addEventListener('click', e => { if (!ham.contains(e.target) && !drop.contains(e.target)) { ham.classList.remove('open'); drop.classList.remove('open'); } });
+      drop.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { ham.classList.remove('open'); drop.classList.remove('open'); }));
     }
-  });
-</script>
+    const io = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+
+    const form = document.getElementById('contactForm');
+    const success = document.getElementById('formSuccess');
+    if (form) {
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const btn = form.querySelector('.btn-submit');
+        btn.textContent = 'Sending…';
+        btn.disabled = true;
+        setTimeout(() => {
+          form.querySelectorAll('input, textarea, select, button').forEach(el => el.style.display = 'none');
+          success.style.display = 'block';
+        }, 900);
+      });
+    }
+  </script>
 </body>
 </html>
