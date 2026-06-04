@@ -65,13 +65,13 @@
     .chat-form-fields { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
     .chat-field { display: flex; flex-direction: column; gap: 5px; }
     .chat-field label { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.25); }
-    .chat-field input, .chat-field select { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 11px 14px; font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.85rem; color: #fff; outline: none; transition: border-color .2s; -webkit-appearance: none; }
+    .chat-field input, .chat-field select, #chatMessageInput { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 11px 14px; font-family: 'Inter', sans-serif; font-weight: 300; font-size: 16px; color: #fff; outline: none; transition: border-color .2s; -webkit-appearance: none; }
     .chat-field input::placeholder { color: rgba(255,255,255,0.16); }
     .chat-field input:focus, .chat-field select:focus { border-color: rgba(255,255,255,0.24); }
     .chat-field select option { background: #111; color: #fff; }
     .chat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .chat-input-row { display: flex; gap: 10px; align-items: flex-end; }
-    .chat-input-row textarea { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.85rem; color: #fff; outline: none; resize: none; transition: border-color .2s; min-height: 80px; }
+    .chat-input-row textarea { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; font-family: 'Inter', sans-serif; font-weight: 300; font-size: 16px; color: #fff; outline: none; resize: none; transition: border-color .2s; min-height: 80px; }
     .chat-input-row textarea::placeholder { color: rgba(255,255,255,0.16); }
     .chat-input-row textarea:focus { border-color: rgba(255,255,255,0.24); }
     .chat-send { width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,0.1); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.2); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, border-color .2s; flex-shrink: 0; }
