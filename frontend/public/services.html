@@ -81,11 +81,12 @@
     .service-chapter:nth-child(even) { direction: rtl; }
     .service-chapter:nth-child(even) > * { direction: ltr; }
     .chapter-bg {
-      position: absolute; inset: 0;
+      position: absolute; inset: -12%;
       background-size: cover; background-position: center;
       filter: brightness(0.38) saturate(0.6);
       z-index: 0;
       transition: filter 0.6s ease;
+      will-change: transform;
     }
     .service-chapter:hover .chapter-bg { filter: brightness(0.5) saturate(0.75); }
     .chapter-grad { position: absolute; inset: 0; z-index: 1; }
@@ -392,6 +393,22 @@
     }
     const io = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
     document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+    (function paralax() {
+      const bgs = document.querySelectorAll('.chapter-bg');
+      let ticking = false;
+      function update() {
+        bgs.forEach(bg => {
+          const rect = bg.parentElement.getBoundingClientRect();
+          const vh = window.innerHeight;
+          const ratio = (rect.top + rect.height / 2 - vh / 2) / (vh + rect.height);
+          const shift = ratio * 70;
+          bg.style.transform = 'translateY(' + shift + 'px)';
+        });
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(update); ticking = true; } }, { passive: true });
+      update();
+    })();
   </script>
 </body>
 </html>
