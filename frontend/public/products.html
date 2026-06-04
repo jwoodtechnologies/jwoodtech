@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — Jwood Technologies</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,600;0,700;0,800;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body { background: #030303; color: #fff; font-family: 'Inter', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    [data-reveal].in { opacity: 1; transform: none; }
+    [data-reveal="d1"] { transition-delay: 0.12s; }
+    [data-reveal="d2"] { transition-delay: 0.22s; }
+    [data-reveal="d3"] { transition-delay: 0.32s; }
+
+    /* Video */
+    .site-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.3; }
+    .site-overlay { position: fixed; inset: 0; z-index: -1; background: linear-gradient(to bottom, rgba(3,3,3,0.5) 0%, rgba(3,3,3,0.2) 40%, rgba(3,3,3,0.7) 100%); }
+
+    /* Nav */
+    .island-nav { position: fixed; top: 18px; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 10px 16px 10px 20px; gap: 20px; background: rgba(10,10,10,0.72); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 100px; width: min(92vw, 760px); }
+    .nav-logo img { height: 22px; display: block; filter: brightness(0) invert(1); opacity: 0.9; }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .nav-contact { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; color: rgba(255,255,255,0.78); text-decoration: none; background: rgba(255,255,255,0.1); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.2); padding: 8px 18px; border-radius: 100px; transition: background .2s, border-color .2s; }
+    .nav-contact:hover { background: rgba(255,255,255,0.17); border-color: rgba(255,255,255,0.32); }
+    .nav-ham { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 5px; padding: 6px; }
+    .nav-ham span { display: block; width: 20px; height: 1.5px; background: rgba(255,255,255,0.7); transition: transform .3s, opacity .3s; border-radius: 2px; }
+    .nav-ham.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-ham.open span:nth-child(2) { opacity: 0; }
+    .nav-ham.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .nav-drop { position: fixed; top: 76px; left: 50%; transform: translateX(-50%); width: min(92vw, 760px); background: rgba(10,10,10,0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 12px 0 0; z-index: 99; opacity: 0; pointer-events: none; transform: translateX(-50%) translateY(-8px); transition: opacity .25s, transform .25s; }
+    .nav-drop.open { opacity: 1; pointer-events: all; transform: translateX(-50%) translateY(0); }
+    .nav-drop a { display: block; padding: 13px 28px; font-size: 0.85rem; color: rgba(255,255,255,0.52); text-decoration: none; letter-spacing: 0.02em; transition: color .15s, background .15s; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .nav-drop a:hover { color: #fff; background: rgba(255,255,255,0.03); }
+    .nav-drop-socials { display: flex; align-items: center; gap: 10px; padding: 16px 28px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .nav-drop-socials a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); text-decoration: none; transition: background .2s, color .2s, border-color .2s; padding: 0; border-bottom: none !important; }
+    .nav-drop-socials a:hover { background: rgba(255,255,255,0.14); color: #fff; border-color: rgba(255,255,255,0.25); }
+
+    /* Hero */
+    .page-hero { padding: calc(54px + 80px) clamp(24px,6vw,80px) 80px; }
+    .page-label { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 18px; }
+    .page-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3.2rem,8vw,6.5rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
+    .page-hero-sub { font-size: 1rem; color: rgba(255,255,255,0.36); line-height: 1.75; margin-top: 24px; max-width: 520px; }
+
+    /* Products */
+    .product { border-top: 1px solid rgba(255,255,255,0.06); padding: 100px clamp(24px,6vw,80px); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; background: rgba(0,0,0,0.35); }
+    .product:nth-child(even) { background: rgba(0,0,0,0.52); }
+    .product:nth-child(even) .product-logo-side { order: 2; }
+    .product:nth-child(even) .product-info { order: 1; }
+
+    .product-logo-side { display: flex; align-items: center; justify-content: center; }
+    .product-logo-frame { width: 100%; max-width: 340px; aspect-ratio: 1; background: #000; border: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .product-logo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .product-tag { display: inline-flex; align-items: center; gap: 7px; font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 5px 13px; border-radius: 100px; margin-bottom: 24px; }
+    .product-tag::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.25); flex-shrink: 0; }
+    .product-name { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2.8rem,6vw,5rem); letter-spacing: -0.03em; color: #fff; line-height: 1; margin-bottom: 20px; }
+    .product-body { font-size: 0.92rem; color: rgba(255,255,255,0.42); line-height: 1.85; max-width: 480px; }
+    .product-status { display: inline-flex; align-items: center; gap: 8px; margin-top: 32px; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.22); }
+    .product-status-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.18); animation: pulse 2.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 0.9; } }
+
+    /* Footer */
+    footer { background: rgba(0,0,0,0.85); border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-inner { padding: 0 clamp(24px,6vw,80px); }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 28px 0; gap: 20px; flex-wrap: wrap; }
+    .footer-left { display: flex; align-items: center; gap: 14px; }
+    .footer-nav { display: flex; list-style: none; gap: 20px; flex-wrap: wrap; }
+    .footer-nav a { font-size: 0.7rem; color: rgba(255,255,255,0.22); text-decoration: none; letter-spacing: 0.06em; transition: color .2s; }
+    .footer-nav a:hover { color: rgba(255,255,255,0.6); }
+    .footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
+    .footer-socials { display: flex; align-items: center; gap: 8px; }
+    .footer-socials a { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.35); text-decoration: none; transition: background .2s, color .2s; }
+    .footer-socials a:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
+
+    @media (max-width: 860px) {
+      .product { grid-template-columns: 1fr; gap: 48px; }
+      .product:nth-child(even) .product-logo-side { order: 0; }
+      .product:nth-child(even) .product-info { order: 0; }
+      .product-logo-frame { max-width: 260px; }
+    }
+    @media (max-width: 700px) {
+      .footer-nav { gap: 10px; }
+      .footer-nav a { font-size: 0.62rem; }
+      .footer-bottom { gap: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <video class="site-video" autoplay muted playsinline loop preload="auto" disablepictureinpicture>
+    <source src="/assets/hero-backdrop.mp4" type="video/mp4">
+  </video>
+  <div class="site-overlay"></div>
+
+  <nav class="island-nav">
+    <a href="/" class="nav-logo">
+      <img src="/assets/IMG_6989.png" alt="Jwood Technologies" onerror="this.style.display='none'">
+    </a>
+    <div class="nav-right">
+      <a href="/contact" class="nav-contact">Contact</a>
+      <button class="nav-ham" id="navHam" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="nav-drop" id="navDrop">
+    <a href="/about">About</a>
+    <a href="/services">Services</a>
+    <a href="/consulting">Consulting</a>
+    <a href="/products">Products</a>
+    <a href="/careers">Careers</a>
+    <a href="/contact">Contact</a>
+    <div class="nav-drop-socials">
+      <a href="https://www.instagram.com/jwoodtechnologies" target="_blank" rel="noopener" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.linkedin.com/company/jwood-technologies" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+      <a href="https://x.com/jwoodtech" target="_blank" rel="noopener" aria-label="X / Twitter"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    </div>
+  </div>
+
+  <div class="page-hero">
+    <p class="page-label" data-reveal>In-House Products</p>
+    <h1 data-reveal="d1">Built by us.<br>For everyone.</h1>
+    <p class="page-hero-sub" data-reveal="d2">Jwood Technologies develops proprietary products alongside our client work — each one built on the same infrastructure and intelligence we bring to every engagement.</p>
+  </div>
+
+  <!-- EON -->
+  <div class="product" data-reveal>
+    <div class="product-logo-side">
+      <div class="product-logo-frame">
+        <img src="/assets/eon-logo.png" alt="EON" onerror="this.style.display='none'">
+      </div>
+    </div>
+    <div class="product-info">
+      <span class="product-tag">AI &amp; Autonomous Systems</span>
+      <div class="product-name">EON</div>
+      <p class="product-body">An intelligent agent platform engineered for autonomous operation. EON executes complex workflows, makes real-time decisions, and scales operations without human intervention — built for businesses that demand performance around the clock.</p>
+      <div class="product-status"><span class="product-status-dot"></span>In Development</div>
+    </div>
+  </div>
+
+  <!-- WoodX -->
+  <div class="product" data-reveal>
+    <div class="product-logo-side">
+      <div class="product-logo-frame">
+        <img src="/assets/woodx-logo.png" alt="WoodX" onerror="this.style.display='none'">
+      </div>
+    </div>
+    <div class="product-info">
+      <span class="product-tag">Social &amp; Communication</span>
+      <div class="product-name">WoodX</div>
+      <p class="product-body">A next-generation platform redefining how people connect, communicate, and build communities. More than social — WoodX is infrastructure for conversation, built with privacy, speed, and scale as first principles.</p>
+      <div class="product-status"><span class="product-status-dot"></span>In Development</div>
+    </div>
+  </div>
+
+  <!-- NXT1 -->
+  <div class="product" data-reveal>
+    <div class="product-logo-side">
+      <div class="product-logo-frame">
+        <img src="/assets/nxt1-logo.png" alt="NXT1" onerror="this.style.display='none'">
+      </div>
+    </div>
+    <div class="product-info">
+      <span class="product-tag">Development &amp; Deployment</span>
+      <div class="product-name">NXT1</div>
+      <p class="product-body">Build and deploy software at unprecedented speed. NXT1 abstracts the complexity of modern development — from conception to production in record time. Design it, build it, ship it. No friction, no bottlenecks.</p>
+      <div class="product-status"><span class="product-status-dot"></span>In Development</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-bottom">
+        <div class="footer-left">
+          <a href="/"><img src="/assets/IMG_6989.png" alt="Jwood Technologies" style="height:18px;filter:brightness(0) invert(1);opacity:0.35;" onerror="this.style.display='none'"></a>
+          <div class="footer-socials">
+            <a href="https://www.instagram.com/jwoodtechnologies" target="_blank" rel="noopener" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>
+            <a href="https://www.linkedin.com/company/jwood-technologies" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+            <a href="https://x.com/jwoodtech" target="_blank" rel="noopener" aria-label="X / Twitter"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          </div>
+        </div>
+        <ul class="footer-nav">
+          <li><a href="/about">About</a></li>
+          <li><a href="/services">Services</a></li>
+          <li><a href="/consulting">Consulting</a></li>
+          <li><a href="/products">Products</a></li>
+          <li><a href="/careers">Careers</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/terms">Legal</a></li>
+        </ul>
+        <span class="footer-copy">© 2026 Jwood Technologies</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const ham = document.getElementById('navHam'), drop = document.getElementById('navDrop');
+    if (ham && drop) {
+      ham.addEventListener('click', () => { ham.classList.toggle('open'); drop.classList.toggle('open'); });
+      document.addEventListener('click', e => { if (!ham.contains(e.target) && !drop.contains(e.target)) { ham.classList.remove('open'); drop.classList.remove('open'); } });
+      drop.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { ham.classList.remove('open'); drop.classList.remove('open'); }));
+    }
+    const io = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>

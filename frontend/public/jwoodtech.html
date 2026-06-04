@@ -85,6 +85,18 @@
     .card-link { display: flex; align-items: center; gap: 6px; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.28); text-decoration: none; transition: color .2s; }
     .card-link:hover { color: rgba(255,255,255,0.8); }
 
+    /* Products banner */
+    .products-banner { border-top: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.6); padding: 100px clamp(24px,6vw,80px); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .products-banner-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 16px; }
+    .products-banner h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3.4rem); letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 18px; }
+    .products-banner-sub { font-size: 0.9rem; color: rgba(255,255,255,0.36); line-height: 1.8; margin-bottom: 36px; max-width: 420px; }
+    .products-logos { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+    .product-logo-tile { aspect-ratio: 1; background: #000; border: 1px solid rgba(255,255,255,0.07); overflow: hidden; transition: border-color .25s; }
+    .product-logo-tile:hover { border-color: rgba(255,255,255,0.18); }
+    .product-logo-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .btn-products { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; padding: 13px 26px; border-radius: 100px; text-decoration: none; transition: background .2s, border-color .2s; }
+    .btn-products:hover { background: rgba(255,255,255,0.17); border-color: rgba(255,255,255,0.32); }
+
     /* Preview — lighter */
     .preview-section { background: rgba(0,0,0,0.35); border-top: 1px solid rgba(255,255,255,0.06); padding: 100px clamp(24px,6vw,80px); }
     .preview-section h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3.2rem); letter-spacing: -0.02em; margin-bottom: 48px; }
@@ -123,6 +135,7 @@
     @media (max-width: 860px) {
       .services-grid { grid-template-columns: 1fr; }
       .preview-grid { grid-template-columns: 1fr; }
+      .products-banner { grid-template-columns: 1fr; gap: 48px; }
     }
     @media (max-width: 700px) {
       .footer-nav { gap: 10px; }
@@ -159,6 +172,7 @@
     <a href="/about">About</a>
     <a href="/services">Services</a>
     <a href="/consulting">Consulting</a>
+    <a href="/products">Products</a>
     <a href="/careers">Careers</a>
     <a href="/contact">Contact</a>
     <div class="nav-drop-socials">
@@ -243,6 +257,20 @@
     </div>
   </section>
 
+  <section class="products-banner">
+    <div data-reveal>
+      <p class="products-banner-label">In-House Products</p>
+      <h2>Proprietary.<br>Built to last.</h2>
+      <p class="products-banner-sub">Alongside our client work, Jwood Technologies develops its own products — each one engineered with the same precision we bring to every engagement.</p>
+      <a href="/products" class="btn-products">View products <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <div class="products-logos" data-reveal="d1">
+      <div class="product-logo-tile"><img src="/assets/eon-logo.png" alt="EON" onerror="this.style.background='rgba(255,255,255,0.03)'"></div>
+      <div class="product-logo-tile"><img src="/assets/woodx-logo.png" alt="WoodX" onerror="this.style.background='rgba(255,255,255,0.03)'"></div>
+      <div class="product-logo-tile"><img src="/assets/nxt1-logo.png" alt="NXT1" onerror="this.style.background='rgba(255,255,255,0.03)'"></div>
+    </div>
+  </section>
+
   <section class="preview-section">
     <h2 data-reveal>Explore further.</h2>
     <div class="preview-grid">
@@ -286,6 +314,7 @@
           <li><a href="/about">About</a></li>
           <li><a href="/services">Services</a></li>
           <li><a href="/consulting">Consulting</a></li>
+          <li><a href="/products">Products</a></li>
           <li><a href="/careers">Careers</a></li>
           <li><a href="/contact">Contact</a></li>
           <li><a href="/terms">Legal</a></li>

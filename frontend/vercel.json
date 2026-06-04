@@ -50,6 +50,10 @@
       "dest": "/consulting.html"
     },
     {
+      "src": "^/products$",
+      "dest": "/products.html"
+    },
+    {
       "src": "^/(woodchat|vineyard|privacy|research|woodchat-admin|vineyard-admin)(.*)",
       "dest": "/index.html"
     },
