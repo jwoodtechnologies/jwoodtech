@@ -48,16 +48,6 @@
     .globe-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,5.5rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
     .hero-sub { font-size: 0.95rem; color: rgba(255,255,255,0.42); line-height: 1.75; margin-top: 20px; max-width: 460px; }
 
-    /* Values */
-    .values { background: #030303; border-top: 1px solid rgba(255,255,255,0.06); padding: 80px clamp(24px,6vw,80px); }
-    .values h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.03em; margin-bottom: 56px; }
-    .values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.06); }
-    .value { background: rgba(3,3,3,0.6); backdrop-filter: blur(12px); padding: 44px 36px; transition: background .3s; }
-    .value:hover { background: rgba(255,255,255,0.04); }
-    .value-num { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 3rem; color: rgba(255,255,255,0.06); line-height: 1; margin-bottom: 14px; }
-    .value-name { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
-    .value-body { font-size: 0.82rem; color: rgba(255,255,255,0.32); line-height: 1.8; }
-
     /* Roles */
     .roles { background: #030303; border-top: 1px solid rgba(255,255,255,0.06); padding: 80px clamp(24px,6vw,80px); }
     .roles h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.03em; margin-bottom: 40px; }
@@ -77,16 +67,6 @@
     .footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.04em; }
 
     .nav-drop-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 4px 0; }
-    .nav-drop-socials { display: flex; align-items: center; gap: 10px; padding: 16px 28px; border-top: 1px solid rgba(255,255,255,0.05); }
-    .nav-drop-socials a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); text-decoration: none; transition: background .2s, color .2s, border-color .2s; padding: 0; border-bottom: none !important; }
-    .nav-drop-socials a:hover { background: rgba(255,255,255,0.14); color: #fff; border-color: rgba(255,255,255,0.25); }
-    .footer-socials { display: flex; align-items: center; gap: 8px; }
-    .footer-socials a { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.35); text-decoration: none; transition: background .2s, color .2s; }
-    .footer-socials a:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
-
-    @media (max-width: 860px) {
-      .values-grid { grid-template-columns: 1fr; }
-    }
 
     @media (max-width: 700px) {
       .footer-nav { gap: 10px; }
@@ -120,11 +100,6 @@
     <a href="/products">Products</a>
     <a href="/careers">Careers</a>
     <a href="/contact">Contact</a>
-    <div class="nav-drop-socials">
-      <a href="https://www.instagram.com/jwoodtechnologies" target="_blank" rel="noopener" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>
-      <a href="https://www.linkedin.com/company/jwood-technologies" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-      <a href="https://x.com/jwoodtech" target="_blank" rel="noopener" aria-label="X / Twitter"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-    </div>
   </div>
 
   <div class="careers-bg-fixed"></div>
@@ -135,32 +110,6 @@
       <p class="page-label" data-reveal>Careers</p>
       <h1 data-reveal="d1">Work on<br>what matters.</h1>
       <p class="hero-sub" data-reveal="d2">Craft, curiosity, character. That's what we hire for.</p>
-    </div>
-  </section>
-
-  <section class="values">
-    <h2 data-reveal>What we value.</h2>
-    <div class="values-grid">
-      <div class="value" data-reveal>
-        <div class="value-num">I</div>
-        <h4 class="value-name">High Standards</h4>
-        <p class="value-body">Average is never acceptable here.</p>
-      </div>
-      <div class="value" data-reveal="d1">
-        <div class="value-num">II</div>
-        <h4 class="value-name">Ownership</h4>
-        <p class="value-body">You own what you build — the pride and the accountability.</p>
-      </div>
-      <div class="value" data-reveal>
-        <div class="value-num">III</div>
-        <h4 class="value-name">Honest Communication</h4>
-        <p class="value-body">Direct, respectful, no politics.</p>
-      </div>
-      <div class="value" data-reveal="d1">
-        <div class="value-num">IV</div>
-        <h4 class="value-name">Continuous Learning</h4>
-        <p class="value-body">Curiosity is a baseline, not a bonus.</p>
-      </div>
     </div>
   </section>
 
@@ -178,11 +127,6 @@
       <div class="footer-bottom">
         <div class="footer-left">
         <a href="/"><img src="/assets/IMG_6989.png" alt="Jwood Technologies" style="height:18px;filter:brightness(0) invert(1);opacity:0.35;" onerror="this.style.display='none'"></a>
-        <div class="footer-socials">
-          <a href="https://www.instagram.com/jwoodtechnologies" target="_blank" rel="noopener" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>
-          <a href="https://www.linkedin.com/company/jwood-technologies" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-          <a href="https://x.com/jwoodtech" target="_blank" rel="noopener" aria-label="X / Twitter"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-        </div>
         </div>
         <ul class="footer-nav">
           <li><a href="/about">About</a></li>
