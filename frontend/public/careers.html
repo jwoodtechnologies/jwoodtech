@@ -40,6 +40,13 @@
     /* Careers fixed photo backdrop */
     .careers-bg-fixed { position: fixed; inset: 0; z-index: -2; background-image: url('/assets/pexels-jacob-lister-haugen-713703615-18249972.jpg'); background-size: cover; background-position: center; filter: brightness(0.48) saturate(0.5); }
 
+    /* Hero text over photo */
+    .careers-hero { height: 100dvh; display: flex; align-items: flex-end; padding: 0 clamp(24px,6vw,80px) 80px; position: relative; }
+    .hero-content { max-width: 680px; }
+    .page-label { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+    .careers-hero h1 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(3rem,7vw,5.5rem); letter-spacing: -0.03em; line-height: 1.0; color: #fff; }
+    .hero-sub { font-size: 0.95rem; color: rgba(255,255,255,0.42); line-height: 1.75; margin-top: 20px; max-width: 460px; }
+
     /* Roles — white card over photo */
     .roles { background: #fff; color: #000; padding: 100px clamp(24px,6vw,80px) 100px; margin-top: 100dvh; position: relative; }
     .roles h2 { font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: clamp(2rem,4vw,3rem); letter-spacing: -0.03em; margin-bottom: 40px; color: #000; }
@@ -90,6 +97,14 @@
   </div>
 
   <div class="careers-bg-fixed"></div>
+
+  <section class="careers-hero">
+    <div class="hero-content">
+      <p class="page-label" data-reveal>Careers</p>
+      <h1 data-reveal="d1">Work on<br>what matters.</h1>
+      <p class="hero-sub" data-reveal="d2">Craft, curiosity, character. That's what we hire for.</p>
+    </div>
+  </section>
 
   <section class="roles">
     <h2 data-reveal>Open Roles</h2>
