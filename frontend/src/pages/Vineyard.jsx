@@ -161,15 +161,6 @@ const PasswordGate = ({ onUnlock }) => {
 
 // ---------------------------------------------------------------------------
 const Vineyard = () => {
-  // Unlock state in sessionStorage — survives page refresh, clears on
-  // full browser close per product spec.
-  const [unlocked, setUnlocked] = useState(() => {
-    try {
-      return sessionStorage.getItem(UNLOCK_KEY) === "1";
-    } catch {
-      return false;
-    }
-  });
   const { typed, done: typingDone } = useTypingTitle();
 
   // Search state — single-flow: AI Answer + Citations + Paginated all-pages.
@@ -361,21 +352,6 @@ const Vineyard = () => {
     }, 100);
   };
 
-  const lock = () => {
-    try {
-      sessionStorage.removeItem(UNLOCK_KEY);
-    } catch {
-      /* ignore */
-    }
-    setUnlocked(false);
-  };
-
-  if (!unlocked)
-    return (
-      <PasswordGate
-        onUnlock={() => setUnlocked(true)}
-      />
-    );
 
   return (
     <div
@@ -450,15 +426,6 @@ const Vineyard = () => {
             >
               <Sparkles className="h-3.5 w-3.5" />
             </Link>
-            <button
-              onClick={lock}
-              className="text-xs font-mono tracking-[0.2em] uppercase text-white/45 hover:text-white/80 px-1"
-              data-testid="vineyard-lock"
-              title="Lock"
-              aria-label="Lock"
-            >
-              <Lock className="h-3.5 w-3.5" />
-            </button>
           </div>
         </div>
       </header>
