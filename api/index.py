@@ -43,6 +43,17 @@ if db is not None:
         except Exception as e:
             print(f"❌ {mod_name}: {e}")
 
+    # Vineyard search/auth — self-contained, no heavy crawl dependencies
+    try:
+        spec = importlib.util.spec_from_file_location("vineyard_router", os.path.join(_backend, "vineyard_router.py"))
+        if spec and spec.loader:
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            app.include_router(mod.build_vineyard_router(db), prefix="/api")
+            print("✅ Loaded vineyard_router")
+    except Exception as e:
+        print(f"❌ vineyard_router: {e}")
+
 @app.get("/api/")
 async def root():
     return {"service": "jwood-technologies-vercel", "ok": True, "db": db is not None}
