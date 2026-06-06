@@ -48,7 +48,7 @@ mongo_url = os.environ["MONGO_URL"]
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ["DB_NAME"]]
 
-VINEYARD_PASSWORD = os.environ.get("VINEYARD_PASSWORD", "777")
+VINEYARD_PASSWORD = os.environ.get("VINEYARD_PASSWORD", "555")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "7607")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
