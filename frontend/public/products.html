@@ -59,6 +59,11 @@
     .product-body { font-size: 0.92rem; color: rgba(255,255,255,0.42); line-height: 1.85; max-width: 480px; }
     .product-status { display: inline-flex; align-items: center; gap: 8px; margin-top: 32px; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.22); }
     .product-status-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.18); animation: pulse 2.5s ease-in-out infinite; }
+    .product-status.limited { color: rgba(255,220,120,0.55); }
+    .product-status.limited .product-status-dot { background: rgba(255,210,80,0.5); }
+    .product-access-link { display: inline-flex; align-items: center; gap: 10px; margin-top: 28px; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; color: #fff; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); padding: 11px 22px; border-radius: 100px; text-decoration: none; transition: background .2s, border-color .2s; }
+    .product-access-link:hover { background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.28); }
+    .product-access-link svg { opacity: 0.6; }
     @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 0.9; } }
 
     /* Footer */
@@ -127,7 +132,11 @@
       <span class="product-tag">AI &amp; Autonomous Systems</span>
       <div class="product-name">EON</div>
       <p class="product-body">An intelligent agent platform engineered for autonomous operation. EON executes complex workflows, makes real-time decisions, and scales operations without human intervention — built for businesses that demand performance around the clock.</p>
-      <div class="product-status"><span class="product-status-dot"></span>In Development</div>
+      <div class="product-status limited"><span class="product-status-dot"></span>Limited Access &mdash; In Development</div>
+      <a href="https://www.eon-agent.com/" target="_blank" rel="noopener" class="product-access-link">
+        Visit eon-agent.com
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
     </div>
   </div>
 
